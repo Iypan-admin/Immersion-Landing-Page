@@ -8,33 +8,39 @@ const LEVELS = {
   Japanese: ['N5 → N3 (Advanced)',  'N5 → N4 (Foundation)'],
 }
 
-// ── Real API Call ──
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
+
 async function submitLead(data) {
-  // Uses your Railway backend URL if deployed, otherwise falls back to localhost for local testing
-  // NOTE: Ensure your Railway backend variable uses https://
-  const baseURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-  const API_URL = `${baseURL}/api/leads`;
-  
-  const response = await fetch(API_URL, {
+  const res = await fetch(`${BACKEND_URL}/api/leads`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to submit form');
-  }
-
-  return response.json();
+  })
+  if (!res.ok) throw new Error('Failed')
+  return res.json()
 }
 
 export default function LeadForm() {
-  const [form, setForm]     = useState({ name: '', email: '', phone: '', language: '', level: '' })
-  const [errors, setErrors] = useState({})
-  const [status, setStatus] = useState('idle') // idle | loading | success | error
+  const [form, setForm]         = useState({ name: '', email: '', phone: '', language: '', level: '' })
+  const [errors, setErrors]     = useState({})
+  const [status, setStatus]     = useState('idle')
+  const [referral, setReferral] = useState(null)
   const ref = useRef(null)
+
+  // ── Capture referral code from URL on mount ──
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const code = params.get('ref')
+    if (code) {
+      setReferral(code)
+      localStorage.setItem('sl_referral', code)
+      console.log('Referral captured:', code)
+    } else {
+      // Try localStorage if already visited via referral link before
+      const saved = localStorage.getItem('sl_referral')
+      if (saved) setReferral(saved)
+    }
+  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -47,18 +53,16 @@ export default function LeadForm() {
 
   useEffect(() => {
     if (status !== 'success') return
-    setTimeout(() => {
-      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }, 100)
+    setTimeout(() => ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
   }, [status])
 
   const validate = () => {
     const e = {}
-    if (!form.name.trim())                    e.name     = 'Full name is required'
-    if (!form.email.match(/^\S+@\S+\.\S+$/))  e.email    = 'Enter a valid email'
-    if (!form.phone.match(/^\d{10}$/))        e.phone    = 'Enter a 10-digit phone number'
-    if (!form.language)                       e.language = 'Please select a language'
-    if (!form.level)                          e.level    = 'Please select a level'
+    if (!form.name.trim())                   e.name     = 'Full name is required'
+    if (!form.email.match(/^\S+@\S+\.\S+$/)) e.email    = 'Enter a valid email'
+    if (!form.phone.match(/^\d{10}$/))       e.phone    = 'Enter a 10-digit phone number'
+    if (!form.language)                      e.language = 'Please select a language'
+    if (!form.level)                         e.level    = 'Please select a level'
     return e
   }
 
@@ -72,14 +76,14 @@ export default function LeadForm() {
     if (Object.keys(e).length) { setErrors(e); return }
     setStatus('loading')
     try {
-      await submitLead(form)
+      await submitLead({ ...form, referral })
       setStatus('success')
     } catch {
       setStatus('error')
     }
   }
 
-  // ── Success state ──
+  // ── Success state ──────────────────────────────────────────────
   if (status === 'success') {
     return (
       <section className="section lead-form" id="enquire" ref={ref}>
@@ -93,11 +97,7 @@ export default function LeadForm() {
               We've received your enquiry for <strong>{form.language}</strong>.<br />
               Poornima Mam will reach out within 24 hours.
             </p>
-
-            <div className="success-divider">
-              <span>OR connect with her right now</span>
-            </div>
-
+            <div className="success-divider"><span>OR connect with her right now</span></div>
             <div className="success-state__btns">
               <a href="tel:+91XXXXXXXXXX" className="expert-btn expert-btn--call">
                 <span className="expert-btn__icon">📞</span>
@@ -106,12 +106,7 @@ export default function LeadForm() {
                   <span className="expert-btn__sub">Poornima Mam</span>
                 </div>
               </a>
-              <a
-                href="https://wa.me/91XXXXXXXXXX"
-                target="_blank"
-                rel="noreferrer"
-                className="expert-btn expert-btn--whatsapp"
-              >
+              <a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noreferrer" className="expert-btn expert-btn--whatsapp">
                 <span className="expert-btn__icon">💬</span>
                 <div className="expert-btn__text">
                   <span className="expert-btn__label">Chat on WhatsApp</span>
@@ -119,14 +114,8 @@ export default function LeadForm() {
                 </div>
               </a>
             </div>
-
-            <button
-              className="success-state__reset"
-              onClick={() => {
-                setStatus('idle')
-                setForm({ name: '', email: '', phone: '', language: '', level: '' })
-              }}
-            >
+            <button className="success-state__reset"
+              onClick={() => { setStatus('idle'); setForm({ name: '', email: '', phone: '', language: '', level: '' }) }}>
               ← Submit another enquiry
             </button>
           </div>
@@ -135,21 +124,30 @@ export default function LeadForm() {
     )
   }
 
-  // ── Form state ──
+  // ── Form state ─────────────────────────────────────────────────
   return (
     <section className="section lead-form" id="enquire" ref={ref}>
       <div className="container">
         <div className="lead-form__inner">
+
           {/* Left info */}
           <div className="lead-form__info">
             <div className="badge reveal">✦ Free Counseling</div>
-            <h2 className="section-title reveal" style={{textAlign:'left', maxWidth: '420px'}}>
+            <h2 className="section-title reveal" style={{ textAlign: 'left', maxWidth: '420px' }}>
               Start Your Journey<br /><span>Today</span>
             </h2>
-            <p className="reveal" style={{color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: '1.7', marginBottom: '32px'}}>
+            <p className="reveal" style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: '1.7', marginBottom: '32px' }}>
               Fill in your details and our expert counselor will get back to you
               with a personalized program recommendation.
             </p>
+
+            {/* Show referral banner if code present */}
+            {referral && (
+              <div className="reveal" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: '10px', padding: '10px 14px', marginBottom: '20px', fontSize: '0.82rem', color: '#6ae8a0', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <span>🎁</span>
+                <span>You were referred by a partner — code <strong>{referral}</strong> applied!</span>
+              </div>
+            )}
 
             <div className="lead-form__promises reveal">
               {[
@@ -165,7 +163,6 @@ export default function LeadForm() {
               ))}
             </div>
 
-            {/* Counselor card */}
             <div className="counselor-card reveal">
               <div className="counselor-card__avatar">PM</div>
               <div>
@@ -184,48 +181,33 @@ export default function LeadForm() {
 
               <div className="form-group">
                 <label className="form-label">Full Name</label>
-                <input
-                  className={`form-input ${errors.name ? 'form-input--error' : ''}`}
-                  type="text"
-                  placeholder="e.g. Priya Sharma"
-                  value={form.name}
-                  onChange={e => handleChange('name', e.target.value)}
-                />
+                <input className={`form-input ${errors.name ? 'form-input--error' : ''}`}
+                  type="text" placeholder="e.g. Priya Sharma" value={form.name}
+                  onChange={e => handleChange('name', e.target.value)} />
                 {errors.name && <span className="form-error">{errors.name}</span>}
               </div>
 
               <div className="form-group">
                 <label className="form-label">Email Address</label>
-                <input
-                  className={`form-input ${errors.email ? 'form-input--error' : ''}`}
-                  type="email"
-                  placeholder="you@example.com"
-                  value={form.email}
-                  onChange={e => handleChange('email', e.target.value)}
-                />
+                <input className={`form-input ${errors.email ? 'form-input--error' : ''}`}
+                  type="email" placeholder="you@example.com" value={form.email}
+                  onChange={e => handleChange('email', e.target.value)} />
                 {errors.email && <span className="form-error">{errors.email}</span>}
               </div>
 
               <div className="form-group">
                 <label className="form-label">Phone Number</label>
-                <input
-                  className={`form-input ${errors.phone ? 'form-input--error' : ''}`}
-                  type="tel"
-                  placeholder="10-digit mobile number"
-                  value={form.phone}
-                  onChange={e => handleChange('phone', e.target.value)}
-                />
+                <input className={`form-input ${errors.phone ? 'form-input--error' : ''}`}
+                  type="tel" placeholder="10-digit mobile number" value={form.phone}
+                  onChange={e => handleChange('phone', e.target.value)} />
                 {errors.phone && <span className="form-error">{errors.phone}</span>}
               </div>
 
               <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">Preferred Language</label>
-                  <select
-                    className={`form-select ${errors.language ? 'form-input--error' : ''}`}
-                    value={form.language}
-                    onChange={e => handleChange('language', e.target.value)}
-                  >
+                  <select className={`form-select ${errors.language ? 'form-input--error' : ''}`}
+                    value={form.language} onChange={e => handleChange('language', e.target.value)}>
                     <option value="">Select language</option>
                     {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
                   </select>
@@ -234,12 +216,9 @@ export default function LeadForm() {
 
                 <div className="form-group">
                   <label className="form-label">Preferred Level</label>
-                  <select
-                    className={`form-select ${errors.level ? 'form-input--error' : ''}`}
-                    value={form.level}
-                    onChange={e => handleChange('level', e.target.value)}
-                    disabled={!form.language}
-                  >
+                  <select className={`form-select ${errors.level ? 'form-input--error' : ''}`}
+                    value={form.level} onChange={e => handleChange('level', e.target.value)}
+                    disabled={!form.language}>
                     <option value="">{form.language ? 'Select level' : 'Pick language first'}</option>
                     {(LEVELS[form.language] || []).map(l => <option key={l} value={l}>{l}</option>)}
                   </select>
@@ -247,20 +226,15 @@ export default function LeadForm() {
                 </div>
               </div>
 
-              <button
-                className={`form-submit ${status === 'loading' ? 'form-submit--loading' : ''}`}
-                onClick={handleSubmit}
-                disabled={status === 'loading'}
-              >
+              <button className={`form-submit ${status === 'loading' ? 'form-submit--loading' : ''}`}
+                onClick={handleSubmit} disabled={status === 'loading'}>
                 {status === 'loading'
                   ? <><span className="spinner" /> Submitting...</>
                   : <>Submit Enquiry <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></>
                 }
               </button>
 
-              {status === 'error' && (
-                <p className="form-api-error">Something went wrong. Please try again.</p>
-              )}
+              {status === 'error' && <p className="form-api-error">Something went wrong. Please try again.</p>}
             </div>
           </div>
         </div>
