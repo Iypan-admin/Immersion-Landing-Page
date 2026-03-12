@@ -11,6 +11,7 @@ const LEVELS = {
 // ── Real API Call ──
 async function submitLead(data) {
   // Uses your Railway backend URL if deployed, otherwise falls back to localhost for local testing
+  // NOTE: Ensure your Railway backend variable uses https://
   const baseURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
   const API_URL = `${baseURL}/api/leads`;
   
@@ -44,7 +45,6 @@ export default function LeadForm() {
     return () => observer.disconnect()
   }, [])
 
-  // Scroll to section when success state appears
   useEffect(() => {
     if (status !== 'success') return
     setTimeout(() => {
@@ -79,7 +79,7 @@ export default function LeadForm() {
     }
   }
 
-  // ── Success state (NO reveal class — always visible immediately) ──
+  // ── Success state ──
   if (status === 'success') {
     return (
       <section className="section lead-form" id="enquire" ref={ref}>
@@ -135,7 +135,7 @@ export default function LeadForm() {
     )
   }
 
-  // ── Form state ─────────────────────────────────────────────
+  // ── Form state ──
   return (
     <section className="section lead-form" id="enquire" ref={ref}>
       <div className="container">
