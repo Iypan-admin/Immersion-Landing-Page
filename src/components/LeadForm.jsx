@@ -16,44 +16,64 @@ async function submitLead(data) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   })
-  if (!res.ok) throw new Error('Failed')
+
+  // Show the actual server error in console to help debug
+  if (!res.ok) {
+    const errBody = await res.text()
+    console.error('Server error:', res.status, errBody)
+    throw new Error(errBody || 'Failed')
+  }
   return res.json()
 }
 
+const EMPTY_FORM = { name: '', email: '', phone: '', language: '', level: '' }
+
 export default function LeadForm() {
-  const [form, setForm]         = useState({ name: '', email: '', phone: '', language: '', level: '' })
+  const [form, setForm]         = useState(EMPTY_FORM)
   const [errors, setErrors]     = useState({})
   const [status, setStatus]     = useState('idle')
+  const [errorMsg, setErrorMsg] = useState('')
   const [referral, setReferral] = useState(null)
-  const ref = useRef(null)
+  const sectionRef = useRef(null)
 
-  // ── Capture referral code from URL on mount ──
+  // ── Capture referral from URL ──────────────────────────────
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const code = params.get('ref')
     if (code) {
       setReferral(code)
       localStorage.setItem('sl_referral', code)
-      console.log('Referral captured:', code)
     } else {
-      // Try localStorage if already visited via referral link before
       const saved = localStorage.getItem('sl_referral')
       if (saved) setReferral(saved)
     }
   }, [])
 
+  // ── Intersection observer — re-runs whenever status changes ──
+  // This fixes the "form invisible after reset" bug:
+  // after clicking "Submit another enquiry", status → idle,
+  // component re-renders form, and this effect re-observes all .reveal elements
   useEffect(() => {
+    // Immediately make all .reveal elements visible (no fade-in delay on re-render)
+    if (status === 'idle') {
+      sectionRef.current?.querySelectorAll('.reveal').forEach(el => {
+        el.classList.add('visible')
+      })
+      return
+    }
+
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
       { threshold: 0.1 }
     )
-    ref.current?.querySelectorAll('.reveal').forEach(el => observer.observe(el))
+    sectionRef.current?.querySelectorAll('.reveal').forEach(el => observer.observe(el))
     return () => observer.disconnect()
-  }, [])
+  }, [status]) // ← re-runs on every status change, including idle reset
 
+  // ── Scroll to section on success ──────────────────────────
   useEffect(() => {
     if (status !== 'success') return
-    setTimeout(() => ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
+    setTimeout(() => sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
   }, [status])
 
   const validate = () => {
@@ -75,18 +95,31 @@ export default function LeadForm() {
     const e = validate()
     if (Object.keys(e).length) { setErrors(e); return }
     setStatus('loading')
+    setErrorMsg('')
     try {
       await submitLead({ ...form, referral })
       setStatus('success')
-    } catch {
+    } catch (err) {
       setStatus('error')
+      // Show a more helpful error message
+      setErrorMsg(err.message?.includes('Failed to fetch')
+        ? 'Cannot reach server. Check your internet connection.'
+        : 'Something went wrong. Please try again.'
+      )
     }
   }
 
-  // ── Success state ──────────────────────────────────────────────
+  const handleReset = () => {
+    setStatus('idle')
+    setForm(EMPTY_FORM)
+    setErrors({})
+    setErrorMsg('')
+  }
+
+  // ── SUCCESS STATE ──────────────────────────────────────────
   if (status === 'success') {
     return (
-      <section className="section lead-form" id="enquire" ref={ref}>
+      <section className="section lead-form" id="enquire" ref={sectionRef}>
         <div className="container">
           <div className="success-state">
             <div className="success-state__confetti">🎉</div>
@@ -114,8 +147,7 @@ export default function LeadForm() {
                 </div>
               </a>
             </div>
-            <button className="success-state__reset"
-              onClick={() => { setStatus('idle'); setForm({ name: '', email: '', phone: '', language: '', level: '' }) }}>
+            <button className="success-state__reset" onClick={handleReset}>
               ← Submit another enquiry
             </button>
           </div>
@@ -124,9 +156,9 @@ export default function LeadForm() {
     )
   }
 
-  // ── Form state ─────────────────────────────────────────────────
+  // ── FORM STATE ─────────────────────────────────────────────
   return (
-    <section className="section lead-form" id="enquire" ref={ref}>
+    <section className="section lead-form" id="enquire" ref={sectionRef}>
       <div className="container">
         <div className="lead-form__inner">
 
@@ -141,11 +173,10 @@ export default function LeadForm() {
               with a personalized program recommendation.
             </p>
 
-            {/* Show referral banner if code present */}
             {referral && (
               <div className="reveal" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: '10px', padding: '10px 14px', marginBottom: '20px', fontSize: '0.82rem', color: '#6ae8a0', display: 'flex', gap: '8px', alignItems: 'center' }}>
                 <span>🎁</span>
-                <span>You were referred by a partner — code <strong>{referral}</strong> applied!</span>
+                <span>Referred by partner — code <strong>{referral}</strong> applied!</span>
               </div>
             )}
 
@@ -234,9 +265,12 @@ export default function LeadForm() {
                 }
               </button>
 
-              {status === 'error' && <p className="form-api-error">Something went wrong. Please try again.</p>}
+              {status === 'error' && (
+                <p className="form-api-error">{errorMsg || 'Something went wrong. Please try again.'}</p>
+              )}
             </div>
           </div>
+
         </div>
       </div>
     </section>
