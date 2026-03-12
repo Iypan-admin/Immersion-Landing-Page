@@ -1,0 +1,387 @@
+/* --- MAIN HERO CONTAINER --- */
+/* Sets the main wrapper to be the full height of the screen (100vh) and centers its contents vertically */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 80px; /* Gives space for the fixed navbar */
+  overflow: hidden; /* Stops the blurry background orbs from causing horizontal scrolling */
+}
+
+/* --- BACKGROUND ORBS --- */
+/* Base styles for the glowing background circles */
+.hero__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px); /* Makes them look like soft glowing lights instead of sharp circles */
+  pointer-events: none; /* Prevents them from blocking clicks on buttons or links */
+}
+
+/* Large purple orb floating in the top left */
+.hero__orb--1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(61,32,128,0.6) 0%, transparent 70%);
+  top: -200px; left: -200px;
+  animation: float 8s ease-in-out infinite; /* Bobbing animation */
+}
+
+/* Medium brighter purple orb floating in the bottom right */
+.hero__orb--2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(90,53,176,0.4) 0%, transparent 70%);
+  bottom: -100px; right: -100px;
+  animation: float 10s ease-in-out infinite reverse; /* Bobs in the opposite direction */
+}
+
+/* Small gold orb floating on the right side */
+.hero__orb--3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(232,201,106,0.12) 0%, transparent 70%);
+  top: 40%; right: 20%;
+  animation: float 12s ease-in-out infinite 2s; /* Has a 2-second delay before starting */
+}
+
+/* --- GRID OVERLAY --- */
+/* Creates the faint, high-tech looking grid pattern in the background */
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  /* Uses two repeating lines to draw the vertical and horizontal grid */
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px; /* Size of the grid squares */
+  /* Fades the grid out near the edges so it's only visible in the center */
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+}
+
+/* --- LAYOUT --- */
+/* The main container holding your text and the stacked cards */
+.hero__inner {
+  position: relative;
+  z-index: 1; /* Puts the content above the background orbs and grid */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Splits the screen into 2 equal halves (text on left, cards on right) */
+  gap: 64px;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+/* --- TYPOGRAPHY / CONTENT --- */
+/* The massive main headline text */
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5vw, 4rem); /* Shrinks automatically on smaller screens */
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+/* The gradient, shimmering text effect (e.g., "Your Dreams") */
+.hero__title-highlight {
+  background: linear-gradient(135deg, var(--gold) 0%, #f0b8ff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; /* Clips the background so it only shows inside the letters */
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite; /* Moves the gradient back and forth */
+}
+
+/* The paragraph text under the main headline */
+.hero__desc {
+  font-size: 1.1rem;
+  color: var(--text-body);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  max-width: 480px; /* Prevents the text from getting too wide and hard to read */
+}
+
+/* --- LANGUAGE PILLS (French, German, Japanese badges) --- */
+/* Container holding the badges */
+.hero__langs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+/* Individual badge styling */
+.lang-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(30,15,64,0.8);
+  border: 1px solid rgba(90,53,176,0.35);
+  border-radius: 100px;
+  padding: 8px 16px;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+/* Makes the badge float up and borders brighten on hover */
+.lang-pill:hover {
+  border-color: var(--purple-400);
+  transform: translateY(-2px);
+}
+
+.lang-pill__flag { font-size: 1.1rem; }
+.lang-pill__name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--white);
+}
+.lang-pill__level {
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* --- CALL TO ACTION BUTTONS --- */
+/* Container for the buttons */
+.hero__ctas {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+/* Base button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 13px 28px;
+  border-radius: 100px;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+/* Primary "Apply Now" button with glowing pulse effect */
+.btn--primary {
+  background: linear-gradient(135deg, var(--purple-500), var(--purple-600));
+  color: var(--white);
+  animation: pulse-glow 3s ease infinite;
+}
+
+/* Primary button hover effect */
+.btn--primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(90,53,176,0.6);
+}
+
+/* Ghost "Explore Programs" button (transparent with border) */
+.btn--ghost {
+  background: transparent;
+  color: var(--text-body);
+  border: 1px solid var(--border);
+}
+
+/* Ghost button hover effect */
+.btn--ghost:hover {
+  border-color: var(--purple-400);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* --- STATS SECTION (500+, 98%, etc) --- */
+.hero__stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.hero__stat {
+  display: flex;
+  flex-direction: column;
+}
+.hero__stat-num {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+}
+.hero__stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  letter-spacing: 0.04em;
+}
+
+/* --- STACKED CARDS VISUAL (Right side of desktop) --- */
+/* Container holding the floating cards */
+.hero__visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 420px;
+}
+.hero__card-stack {
+  position: relative;
+  width: 280px;
+  height: 360px;
+}
+
+/* Base style for all cards in the stack */
+.dest-card {
+  position: absolute;
+  width: 260px;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: transform 0.4s ease;
+}
+
+/* The card furthest in the back (rotated 8 degrees) */
+.dest-card--back {
+  background: linear-gradient(135deg, rgba(30,15,64,0.9), rgba(19,8,43,0.9));
+  top: 40px; right: -30px;
+  transform: rotate(8deg);
+  z-index: 1; /* Lowest priority layer */
+}
+
+/* The card in the middle (rotated left -4 degrees) */
+.dest-card--mid {
+  background: linear-gradient(135deg, rgba(45,23,96,0.95), rgba(30,15,64,0.95));
+  top: 20px; left: 20px;
+  transform: rotate(-4deg);
+  z-index: 2;
+}
+
+/* The main front card */
+.dest-card--front {
+  background: linear-gradient(135deg, var(--purple-700), var(--purple-600));
+  top: 0; left: 0;
+  transform: rotate(0deg);
+  z-index: 3; /* Highest priority layer so it stays on top */
+  box-shadow: var(--shadow-card), 0 0 60px rgba(90,53,176,0.3);
+  animation: float 6s ease-in-out infinite; /* Slowly bobs up and down */
+}
+
+/* Card internal content styles */
+.dest-card__flag { font-size: 2.4rem; }
+.dest-card__city {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+}
+.dest-card__level {
+  font-size: 0.8rem;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+/* The mini progress bar on the front card */
+.dest-card__progress {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple-400), var(--gold));
+  border-radius: 2px;
+  transition: width 1.2s ease 0.5s; /* Smoothly fills up when the page loads */
+}
+
+/* --- SCROLL INDICATOR (The mouse icon at the bottom) --- */
+.hero__scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%); /* Centers it perfectly */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: fadeIn 1s ease 1.2s both; /* Fades in slightly after the page loads */
+}
+
+/* Drawing the outline of a computer mouse */
+.scroll-mouse {
+  width: 22px; height: 36px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+/* The animated dot inside the mouse that bobs up and down */
+.scroll-mouse__dot {
+  width: 4px; height: 8px;
+  background: var(--purple-400);
+  border-radius: 2px;
+  animation: float 1.6s ease-in-out infinite;
+}
+
+/* --- RESPONSIVE TABLET / SMALL DESKTOP (Screens under 960px) --- */
+@media (max-width: 960px) {
+  .hero__inner {
+    grid-template-columns: 1fr; /* Switches from 2 columns to 1 single column */
+    text-align: center; /* Centers all text */
+    gap: 48px;
+  }
+  /* Forces all items to center align since the text is now centered */
+  .hero__langs { justify-content: center; }
+  .hero__ctas  { justify-content: center; }
+  .hero__stats { justify-content: center; }
+  .hero__desc  { margin-left: auto; margin-right: auto; }
+  
+  .hero__visual { height: 320px; }
+  .hero__card-stack { transform: scale(0.85); } /* Shrinks the floating cards slightly so they fit */
+}
+
+/* --- RESPONSIVE MOBILE (Screens under 480px) --- */
+@media (max-width: 480px) {
+  /* Hides the floating cards and the scroll mouse entirely to save space on phones */
+  .hero__visual { display: none; }
+  .hero__scroll { display: none; }
+}
+
+/* ── MOBILE FIXES (Screens under 480px) ── */
+@media (max-width: 480px) {
+  /* Controls the main hero container on mobile */
+  .hero {
+    min-height: auto; /* Removes the massive full-screen vertical gap */
+    padding-top: 100px; /* Pushes content just below your fixed navbar */
+    padding-bottom: 40px; 
+    align-items: flex-start; /* Stops it from forcing itself to the middle of the screen */
+  }
+
+  /* Removes extra padding so it doesn't double-up with the .hero padding */
+  .hero__inner { padding-top: 0; padding-bottom: 0; gap: 32px; } 
+  
+  /* Shrinks down font sizes, buttons, and spacing to fit comfortably on small phone screens */
+  .hero__title { font-size: 2.1rem; }
+  .hero__desc { font-size: 0.95rem; }
+  .hero__langs { gap: 8px; }
+  .lang-pill { padding: 6px 12px; }
+  .lang-pill__name { font-size: 0.8rem; }
+  .btn { padding: 12px 20px; font-size: 0.88rem; }
+  .hero__stats { gap: 20px; }
+  .hero__stat-num { font-size: 1.3rem; }
+}

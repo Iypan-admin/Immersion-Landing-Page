@@ -1,0 +1,206 @@
+/* --- MAIN NAVBAR CONTAINER --- */
+/* Pins the navbar to the very top of the screen so it stays there when you scroll */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100; /* Ensures the navbar stays on top of all other content on the page */
+  padding: 20px 0; /* Starting padding when at the very top of the page */
+  transition: var(--transition); /* Smoothly animates any changes, like when it shrinks on scroll */
+}
+
+/* Added dynamically by Javascript when the user scrolls down */
+.navbar--scrolled {
+  background: rgba(13, 6, 24, 0.92); /* Dark purple, slightly transparent */
+  backdrop-filter: blur(20px); /* Creates the trendy "frosted glass" effect */
+  -webkit-backdrop-filter: blur(20px); /* Safari support for the blur */
+  padding: 12px 0; /* Shrinks the navbar slightly to save screen space */
+  border-bottom: 1px solid var(--border);
+}
+
+/* The invisible box holding all the navbar items */
+.navbar__inner {
+  display: flex;
+  align-items: center; /* Aligns logo, links, and buttons vertically in the middle */
+  gap: 32px;
+}
+
+/* --- LOGO --- */
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0; /* Prevents the logo from squishing if the screen gets tight */
+  margin-right: auto; /* Magically pushes all the navigation links to the far right side */
+}
+
+/* The little spark icon next to the logo */
+.logo-icon {
+  color: var(--gold);
+  font-size: 1.2rem;
+  animation: spin-slow 8s linear infinite; /* Constantly rotates the icon very slowly */
+  display: inline-block;
+}
+
+/* The main text of the logo */
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+
+/* Colors just the word "Learning" in gold */
+.logo-text span {
+  color: var(--gold);
+}
+
+/* --- DESKTOP NAVIGATION LINKS --- */
+/* The container holding "Programs", "Why Us", etc. */
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 36px; /* Spacing between each link */
+}
+
+/* Individual link styling */
+.navbar__link {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  transition: color var(--transition);
+  position: relative; /* Crucial: allows us to position the hover underline perfectly underneath */
+}
+
+/* The hidden gold underline effect (created using a pseudo-element) */
+.navbar__link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0); /* Squishes the line to 0 width so it's invisible by default */
+  transform-origin: left; /* Makes the line grow from left to right */
+  transition: transform var(--transition);
+}
+
+/* Link hover effects */
+.navbar__link:hover { color: var(--white); } /* Text turns white */
+.navbar__link:hover::after { transform: scaleX(1); } /* The gold line expands to full width */
+
+/* --- CALL TO ACTION BUTTON (Desktop) --- */
+.navbar__cta {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, var(--purple-600), var(--purple-500));
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 9px 22px;
+  border-radius: 100px;
+  transition: transform var(--transition), box-shadow var(--transition);
+  white-space: nowrap; /* Prevents the button text from wrapping onto two lines */
+  flex-shrink: 0;
+}
+
+/* Button float and glow effect on hover */
+.navbar__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(90,53,176,0.5);
+}
+
+/* --- HAMBURGER MENU BUTTON (Mobile Only) --- */
+.navbar__hamburger {
+  display: none; /* Hidden by default on large screens */
+  flex-direction: column;
+  gap: 5px; /* Space between the 3 lines */
+  padding: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* The 3 white horizontal lines that make up the hamburger icon */
+.navbar__hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: var(--transition); /* Allows the lines to animate smoothly into an X */
+}
+
+/* The animation when the menu is clicked (turns the hamburger into an X) */
+.navbar__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); } /* Tilts top line down */
+.navbar__hamburger.open span:nth-child(2) { opacity: 0; } /* Hides middle line entirely */
+.navbar__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); } /* Tilts bottom line up */
+
+/* --- MOBILE DRAWER (The dropdown menu) --- */
+.navbar__mobile {
+  display: none; /* Completely disabled on desktop layout */
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 24px 24px;
+  background: rgba(13, 6, 24, 0.97);
+  border-top: 1px solid var(--border);
+  
+  /* Positions the dropdown exactly underneath the bottom edge of the navbar */
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  right: 0;
+  
+  /* Hides the menu cleanly without messing up the layout */
+  opacity: 0;
+  visibility: hidden; /* Makes it unclickable when closed */
+  transform: translateY(-10px); /* Pulls it up slightly so it can slide down when opening */
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+/* Added dynamically by Javascript when the hamburger button is clicked */
+.navbar__mobile--open {
+  opacity: 1; /* Fades in */
+  visibility: visible; /* Becomes clickable */
+  transform: translateY(0); /* Slides down into final position */
+}
+
+/* Styles for the links inside the mobile dropdown */
+.navbar__mobile-link {
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-body);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color var(--transition);
+}
+
+.navbar__mobile-link:hover { color: var(--white); }
+
+/* Centers the Call to Action button specifically inside the mobile menu */
+.navbar__cta--mobile {
+  margin-top: 16px;
+  text-align: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+  .navbar__links { 
+    display: none; /* Hides desktop links so they don't crash into the logo */
+  }
+  
+  .navbar__cta:not(.navbar__cta--mobile) { 
+    display: none; /* Hides the desktop version of the button */
+  }
+  
+  .navbar__hamburger { 
+    display: flex; /* Makes the hamburger icon visible */
+  }
+  
+  .navbar__mobile { 
+    display: flex; /* Activates the mobile drawer HTML (still hidden until the 'open' class is added) */
+  }
+}

@@ -1,0 +1,131 @@
+/* --- MAIN WHY US CONTAINER --- */
+/* Sets a smooth, dark purple gradient background for the entire section */
+.why-us {
+  background: linear-gradient(180deg, var(--purple-950) 0%, var(--purple-900) 100%);
+}
+
+/* --- GRID LAYOUT --- */
+/* Creates a 3-column layout for the feature cards */
+.whyus__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Divides the available space into 3 equal columns */
+  gap: 20px; /* Space between the cards */
+  margin-bottom: 48px; /* Space between the grid and the banner below it */
+}
+
+/* --- INDIVIDUAL FEATURE CARDS --- */
+/* Base styling for the dark, semi-transparent cards */
+.whyus__card {
+  background: rgba(19,8,43,0.7);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  position: relative; /* Allows the ::before gradient overlay to position itself inside the card */
+  overflow: hidden; /* Keeps the overlay from spilling outside the card's rounded corners */
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+/* Creates a subtle purple light effect shining from the top-left corner of every card */
+.whyus__card::before {
+  content: '';
+  position: absolute;
+  inset: 0; /* Stretches the overlay to fill the entire card */
+  background: linear-gradient(135deg, rgba(90,53,176,0.07) 0%, transparent 60%);
+  pointer-events: none; /* Ensures this overlay doesn't block you from clicking anything inside the card */
+}
+
+/* Hover effects for the cards */
+.whyus__card:hover {
+  transform: translateY(-5px); /* Makes the card float upwards */
+  border-color: rgba(90,53,176,0.45); /* Brightens the border */
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3), 0 0 30px rgba(90,53,176,0.15); /* Adds a deep shadow and a soft purple glow */
+}
+
+/* Size and spacing for the emoji/icon at the top of the card */
+.whyus__icon {
+  font-size: 2rem;
+  margin-bottom: 14px;
+}
+
+/* Styling for the card's main heading */
+.whyus__title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+/* Styling for the paragraph text inside the card */
+.whyus__desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* --- CALL TO ACTION BANNER (Bottom of section) --- */
+/* The wide banner box below the grid */
+.whyus__banner {
+  display: flex;
+  align-items: center; /* Vertically centers the text and the button */
+  justify-content: space-between; /* Pushes the text to the left and the button to the far right */
+  gap: 32px;
+  background: linear-gradient(135deg, var(--purple-800), var(--purple-700)); /* A lighter, brighter purple background */
+  border: 1px solid rgba(90,53,176,0.5);
+  border-radius: var(--radius-xl);
+  padding: 40px 48px;
+  position: relative;
+  overflow: hidden; /* Contains the background glow */
+}
+
+/* Creates a soft gold glow tucked into the top right corner of the banner */
+.whyus__banner::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(232,201,106,0.1), transparent 70%);
+  pointer-events: none;
+}
+
+/* Banner heading */
+.whyus__banner-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+/* Banner subtext */
+.whyus__banner-content p {
+  font-size: 0.9rem;
+  color: var(--purple-200); /* A very light purple so it's readable but not as harsh as pure white */
+}
+
+/* Prevents the button from shrinking if the text gets too long on narrow screens */
+.whyus__banner .btn {
+  flex-shrink: 0;
+}
+
+/* --- RESPONSIVE LAYOUTS --- */
+
+/* Tablet (Screens under 900px) */
+@media (max-width: 900px) {
+  .whyus__grid { grid-template-columns: repeat(2, 1fr); } /* Changes from 3 columns to 2 columns */
+}
+
+/* Mobile Phones (Screens under 600px) */
+@media (max-width: 600px) {
+  .whyus__grid { grid-template-columns: 1fr; } /* Stacks all cards into a single vertical column */
+  
+  /* Stacks the banner text and button on top of each other and centers everything */
+  .whyus__banner { flex-direction: column; text-align: center; padding: 28px 24px; }
+}
+
+/* ── MOBILE FIXES (Screens under 480px) ── */
+@media (max-width: 480px) {
+  .whyus__card { padding: 22px 18px; } /* Shrinks padding inside the cards */
+  .whyus__banner { padding: 24px 18px; } /* Shrinks padding inside the banner */
+  .whyus__banner-content h3 { font-size: 1.15rem; } /* Shrinks the banner heading slightly */
+}

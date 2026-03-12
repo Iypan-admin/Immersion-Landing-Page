@@ -1,0 +1,144 @@
+/* Sets the background color for the whole about section using a smooth top-to-bottom purple gradient */
+.about {
+  background: linear-gradient(180deg, var(--purple-950) 0%, var(--purple-900) 50%, var(--purple-950) 100%);
+}
+
+/* Creates a grid layout with exactly 2 columns of equal width (1fr) and a 20px gap between them */
+.about__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 64px;
+}
+
+/* Styles the individual cards with a semi-transparent background, rounded corners, and prepares them for a hover animation (transition) */
+.about__card {
+  position: relative;
+  background: rgba(30,15,64,0.6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  overflow: hidden; /* Keeps the glow effect inside the card edges */
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+/* Makes the card float up 4px and brightens the border when you hover over it */
+.about__card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(90,53,176,0.5);
+}
+
+/* Triggers the glow effect to become visible (opacity 1) when hovering over the card */
+.about__card:hover .about__card-glow {
+  opacity: 1;
+}
+
+/* Creates a hidden (opacity 0) purple radial glow effect positioned inside the card */
+.about__card-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(90,53,176,0.12), transparent 60%);
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none; /* Ensures the glow doesn't block you from clicking text inside */
+}
+
+/* Sizes the emoji or icon inside the card and gives it bottom spacing */
+.about__card-icon {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  display: inline-block;
+}
+
+/* Styles the card's main heading text (font, size, weight, color) */
+.about__card-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+/* Styles the smaller description text inside the card */
+.about__card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* Journey Section */
+
+/* Creates a flexible, horizontally centered container for the journey steps with a custom background and rounded borders */
+.about__journey {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: rgba(30,15,64,0.5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 28px 40px;
+  flex-wrap: wrap; /* Allows items to wrap to a new line if the screen gets too small */
+}
+
+/* Stacks each individual step (the dot and the label) vertically on top of each other */
+.journey__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Creates the circular purple step numbers (44x44px, rounded 50%) */
+.journey__dot {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple-700), var(--purple-600));
+  border: 2px solid var(--purple-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+/* A modifier class to make a specific journey dot gold instead of purple */
+.journey__dot--gold {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  border-color: var(--gold);
+  color: var(--purple-950);
+}
+
+/* Styles the small text labels right below the journey dots */
+.journey__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  white-space: nowrap; /* Prevents the label text from breaking into two lines */
+}
+
+/* Creates the horizontal connecting line between the journey dots */
+.journey__line {
+  flex: 1; /* Makes the line stretch to fill available space between steps */
+  min-width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--purple-600), var(--purple-700));
+  margin: 0 8px;
+  margin-bottom: 22px; /* Pushes the line up slightly so it aligns with the dots, not the text */
+}
+
+/* Tablet/Small Desktop Layout (Screens smaller than 768px) */
+@media (max-width: 768px) {
+  .about__grid { grid-template-columns: 1fr; } /* Changes the 2-column grid to a single column */
+  .about__journey { gap: 16px; flex-direction: column; padding: 24px; } /* Stacks the journey steps vertically instead of horizontally */
+  .journey__line { width: 2px; height: 24px; min-width: unset; margin: 0; } /* Changes the horizontal connecting line into a vertical line */
+}
+
+/* Mobile Fixes (Screens smaller than 480px) */
+@media (max-width: 480px) {
+  .about__card { padding: 22px 18px; } /* Shrinks the padding inside cards to save space on small phones */
+  .about__journey { padding: 20px 16px; } /* Shrinks the padding inside the journey box to save space */
+}
