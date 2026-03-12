@@ -2,60 +2,60 @@ import { useState, useCallback } from "react";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
+// ─── Light Theme Styles ───────────────────────────────────────────────────────
 const S = {
-  page:    { minHeight: "100vh", background: "#0d0618", fontFamily: "'DM Sans', system-ui, sans-serif", color: "#c8b8e0" },
-  center:  { minHeight: "100vh", background: "#0d0618", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans', system-ui, sans-serif" },
+  page:    { minHeight: "100vh", background: "#f5f5f5", fontFamily: "'DM Sans', system-ui, sans-serif", color: "#111827" },
+  center:  { minHeight: "100vh", background: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans', system-ui, sans-serif" },
 
-  header:  { background: "rgba(19,8,43,0.95)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "14px 32px", display: "flex", alignItems: "center", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 50 },
-  logo:    { width: 34, height: 34, background: "linear-gradient(135deg,#3d2080,#5a35b0)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, marginRight: 10 },
-  logoText:{ fontWeight: 700, fontSize: 15, color: "#fff", letterSpacing: "-0.02em" },
-  logoSub: { fontSize: 11, color: "#7c5cbf", marginLeft: 4 },
+  header:  { background: "#fff", borderBottom: "1px solid #e5e7eb", padding: "14px 32px", display: "flex", alignItems: "center", position: "sticky", top: 0, zIndex: 50, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" },
+  logo:    { width: 34, height: 34, background: "linear-gradient(135deg,#4f46e5,#7c3aed)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, marginRight: 10, flexShrink: 0 },
+  logoText:{ fontWeight: 700, fontSize: 15, color: "#111827" },
+  logoSub: { fontSize: 11, color: "#9ca3af", marginLeft: 4 },
 
-  tabBar:  { background: "rgba(13,6,24,0.9)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 32px", display: "flex", gap: 4, position: "sticky", top: 57, zIndex: 40, backdropFilter: "blur(8px)" },
+  tabBar:  { background: "#fff", borderBottom: "1px solid #e5e7eb", padding: "0 32px", display: "flex", gap: 4, position: "sticky", top: 57, zIndex: 40 },
   tab: (a) => ({
     background: "none", border: "none", cursor: "pointer", fontFamily: "inherit",
     padding: "13px 18px", fontSize: 13, fontWeight: 600,
-    color: a ? "#a68fd4" : "#5a4680",
-    borderBottom: a ? "2px solid #5a35b0" : "2px solid transparent",
+    color: a ? "#4f46e5" : "#6b7280",
+    borderBottom: a ? "2px solid #4f46e5" : "2px solid transparent",
     marginBottom: -1, transition: "all 0.15s",
   }),
 
   content: { padding: "28px 32px", maxWidth: 1400, margin: "0 auto" },
-
-  card:    { background: "rgba(19,8,43,0.8)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: 20, marginBottom: 20, boxShadow: "0 4px 20px rgba(0,0,0,0.3)" },
+  card:    { background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, padding: 20, marginBottom: 20, boxShadow: "0 1px 4px rgba(0,0,0,0.05)" },
 
   statCard: (accent) => ({
-    background: "rgba(19,8,43,0.8)", border: "1px solid rgba(255,255,255,0.07)",
+    background: "#fff", border: "1px solid #e5e7eb",
     borderRadius: 12, padding: "18px 22px", flex: 1, minWidth: 130,
-    borderTop: `3px solid ${accent}`, boxShadow: "0 4px 16px rgba(0,0,0,0.25)"
+    borderTop: `3px solid ${accent}`, boxShadow: "0 1px 4px rgba(0,0,0,0.05)"
   }),
-  statLabel: { color: "#7c5cbf", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 },
-  statValue: { color: "#fff", fontSize: 24, fontWeight: 700, fontFamily: "monospace" },
+  statLabel: { color: "#9ca3af", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 },
+  statValue: { color: "#111827", fontSize: 24, fontWeight: 700, fontFamily: "monospace" },
 
-  tableWrap: { background: "rgba(19,8,43,0.8)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 12, overflow: "hidden" },
-  tableHead: { padding: "10px 14px", textAlign: "left", color: "#7c5cbf", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", borderBottom: "1px solid rgba(255,255,255,0.06)", whiteSpace: "nowrap", background: "rgba(30,15,64,0.5)" },
-  tableCell: { padding: "10px 14px", color: "#c8b8e0", fontSize: 13 },
-  tableInfo: { padding: "10px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", color: "#5a4680", fontSize: 12 },
-  emptyMsg:  { textAlign: "center", color: "#5a4680", padding: "48px 0", fontSize: 14 },
+  tableWrap: { background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" },
+  tableHead: { padding: "10px 14px", textAlign: "left", color: "#6b7280", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", borderBottom: "1px solid #f3f4f6", whiteSpace: "nowrap", background: "#f9fafb" },
+  tableCell: { padding: "10px 14px", color: "#374151", fontSize: 13 },
+  tableInfo: { padding: "10px 16px", borderBottom: "1px solid #f3f4f6", color: "#9ca3af", fontSize: 12 },
+  emptyMsg:  { textAlign: "center", color: "#9ca3af", padding: "48px 0", fontSize: 14 },
 
-  input:    { background: "rgba(30,15,64,0.7)", border: "1px solid rgba(90,53,176,0.3)", color: "#fff", padding: "8px 13px", borderRadius: 8, fontSize: 13, fontFamily: "inherit", outline: "none", boxSizing: "border-box" },
-  inputFull:{ background: "rgba(30,15,64,0.7)", border: "1px solid rgba(90,53,176,0.3)", color: "#fff", padding: "8px 13px", borderRadius: 8, fontSize: 13, fontFamily: "inherit", outline: "none", width: "100%", boxSizing: "border-box" },
-  label:    { fontSize: 12, color: "#9b8ab8", fontWeight: 600, display: "block", marginBottom: 4 },
+  input:    { background: "#fff", border: "1px solid #d1d5db", color: "#111827", padding: "8px 13px", borderRadius: 8, fontSize: 13, fontFamily: "inherit", outline: "none", boxSizing: "border-box" },
+  inputFull:{ background: "#fff", border: "1px solid #d1d5db", color: "#111827", padding: "8px 13px", borderRadius: 8, fontSize: 13, fontFamily: "inherit", outline: "none", width: "100%", boxSizing: "border-box" },
+  label:    { fontSize: 12, color: "#6b7280", fontWeight: 600, display: "block", marginBottom: 4 },
 
-  btnPrimary:   { background: "linear-gradient(135deg,#5a35b0,#3d2080)", color: "#fff", border: "none", padding: "8px 18px", borderRadius: 8, fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" },
-  btnSecondary: { background: "rgba(30,15,64,0.7)", color: "#9b8ab8", border: "1px solid rgba(90,53,176,0.3)", padding: "8px 18px", borderRadius: 8, fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" },
+  btnPrimary:   { background: "#4f46e5", color: "#fff", border: "none", padding: "8px 18px", borderRadius: 8, fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" },
+  btnSecondary: { background: "#fff", color: "#6b7280", border: "1px solid #d1d5db", padding: "8px 18px", borderRadius: 8, fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" },
   btnSuccess:   { background: "#16a34a", color: "#fff", border: "none", padding: "5px 12px", borderRadius: 6, fontWeight: 600, fontSize: 12, cursor: "pointer", fontFamily: "inherit" },
   btnWarning:   { background: "#d97706", color: "#fff", border: "none", padding: "6px 14px", borderRadius: 6, fontWeight: 600, fontSize: 12, cursor: "pointer", fontFamily: "inherit" },
-  btnGhost:     { background: "none", color: "#7c5cbf", border: "1px solid rgba(90,53,176,0.3)", padding: "5px 12px", borderRadius: 6, fontWeight: 600, fontSize: 12, cursor: "pointer", fontFamily: "inherit" },
+  btnGhost:     { background: "#fff", color: "#6b7280", border: "1px solid #d1d5db", padding: "5px 12px", borderRadius: 6, fontWeight: 600, fontSize: 12, cursor: "pointer", fontFamily: "inherit" },
+  btnDanger:    { background: "#fff", color: "#dc2626", border: "1px solid #fca5a5", padding: "5px 12px", borderRadius: 6, fontWeight: 600, fontSize: 12, cursor: "pointer", fontFamily: "inherit" },
 
-  loginBox:  { background: "rgba(19,8,43,0.95)", border: "1px solid rgba(90,53,176,0.3)", borderRadius: 18, padding: "44px 38px", width: "100%", maxWidth: 380, textAlign: "center", boxShadow: "0 0 60px rgba(90,53,176,0.2)" },
+  loginBox:  { background: "#fff", border: "1px solid #e5e7eb", borderRadius: 18, padding: "44px 38px", width: "100%", maxWidth: 380, textAlign: "center", boxShadow: "0 4px 24px rgba(0,0,0,0.08)" },
   loginIcon: { fontSize: 36, marginBottom: 18, display: "block" },
-  loginTitle:{ color: "#fff", fontSize: 22, fontWeight: 700, margin: "0 0 6px", fontFamily: "Georgia,serif" },
-  loginSub:  { color: "#7c5cbf", fontSize: 14, margin: "0 0 28px" },
+  loginTitle:{ color: "#111827", fontSize: 22, fontWeight: 700, margin: "0 0 6px" },
+  loginSub:  { color: "#9ca3af", fontSize: 14, margin: "0 0 28px" },
 
-  modalOverlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: 20 },
-  modalBox:     { background: "#13082b", border: "1px solid rgba(90,53,176,0.3)", borderRadius: 16, padding: 28, width: "100%", maxWidth: 520, boxShadow: "0 20px 60px rgba(0,0,0,0.5)" },
+  modalOverlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.35)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: 20 },
+  modalBox:     { background: "#fff", border: "1px solid #e5e7eb", borderRadius: 16, padding: 28, width: "100%", maxWidth: 480, boxShadow: "0 20px 60px rgba(0,0,0,0.15)" },
 };
 
 // ─── Small components ─────────────────────────────────────────────────────────
@@ -78,8 +78,8 @@ function Table({ columns, rows, emptyMsg }) {
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={i} style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
-              onMouseEnter={e => e.currentTarget.style.background = "rgba(90,53,176,0.07)"}
+            <tr key={i} style={{ borderBottom: "1px solid #f3f4f6" }}
+              onMouseEnter={e => e.currentTarget.style.background = "#f9fafb"}
               onMouseLeave={e => e.currentTarget.style.background = "transparent"}
             >
               {columns.map(c => (
@@ -100,8 +100,8 @@ function Modal({ title, onClose, children }) {
     <div style={S.modalOverlay} onClick={e => e.target === e.currentTarget && onClose()}>
       <div style={S.modalBox}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-          <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#fff" }}>{title}</h3>
-          <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#7c5cbf", lineHeight: 1 }}>×</button>
+          <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#111827" }}>{title}</h3>
+          <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#9ca3af", lineHeight: 1 }}>×</button>
         </div>
         {children}
       </div>
@@ -114,30 +114,44 @@ function FilterBtn({ active, onClick, children }) {
     <button onClick={onClick} style={{
       padding: "6px 13px", borderRadius: 8, border: "1px solid", fontSize: 12, fontWeight: 600,
       cursor: "pointer", fontFamily: "inherit",
-      borderColor: active ? "#5a35b0" : "rgba(90,53,176,0.3)",
-      background: active ? "rgba(90,53,176,0.25)" : "rgba(30,15,64,0.5)",
-      color: active ? "#a68fd4" : "#5a4680"
+      borderColor: active ? "#4f46e5" : "#d1d5db",
+      background: active ? "#eef2ff" : "#fff",
+      color: active ? "#4f46e5" : "#6b7280"
     }}>{children}</button>
   );
 }
 
 function LangBadge({ lang }) {
-  const map = { French: "#4f6ef7", German: "#e8c96a", Japanese: "#e86a9e" };
-  const color = map[lang] || "#7c5cbf";
-  return <span style={{ background: color + "22", color, border: `1px solid ${color}44`, padding: "2px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>{lang}</span>;
+  const map = { French: ["#eef2ff","#4f46e5"], German: ["#fefce8","#ca8a04"], Japanese: ["#fdf2f8","#db2777"] };
+  const [bg, color] = map[lang] || ["#f3f4f6","#6b7280"];
+  return <span style={{ background: bg, color, border: `1px solid ${color}33`, padding: "2px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>{lang}</span>;
+}
+
+function StatusPill({ status }) {
+  const map = {
+    PENDING: ["#fefce8","#ca8a04","#fde047"],
+    PAID:    ["#f0fdf4","#16a34a","#86efac"],
+  };
+  const [bg, color, dot] = map[status] || map.PENDING;
+  return (
+    <span style={{ background: bg, color, border: `1px solid ${dot}`, padding: "3px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 5 }}>
+      <span style={{ width: 6, height: 6, borderRadius: "50%", background: color, display: "inline-block" }} />
+      {status}
+    </span>
+  );
 }
 
 function DateCell({ v }) {
-  if (!v) return <span style={{ color: "#5a4680" }}>—</span>;
-  return <span style={{ color: "#7c5cbf" }}>{new Date(v).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</span>;
+  if (!v) return <span style={{ color: "#d1d5db" }}>—</span>;
+  return <span style={{ color: "#6b7280" }}>{new Date(v).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</span>;
 }
 
 // ─── LEADS TAB ────────────────────────────────────────────────────────────────
 function LeadsTab({ password }) {
-  const [rows, setRows]           = useState([]);
-  const [loading, setLoading]     = useState(false);
-  const [loaded, setLoaded]       = useState(false);
-  const [search, setSearch]       = useState("");
+  const [rows, setRows]             = useState([]);
+  const [loading, setLoading]       = useState(false);
+  const [loaded, setLoaded]         = useState(false);
+  const [search, setSearch]         = useState("");
   const [langFilter, setLangFilter] = useState("ALL");
 
   const load = useCallback(async () => {
@@ -148,8 +162,7 @@ function LeadsTab({ password }) {
         body: JSON.stringify({ password })
       });
       if (!res.ok) { alert("Wrong password or server error"); setLoading(false); return; }
-      const data = await res.json();
-      setRows(data); setLoaded(true);
+      setRows(await res.json()); setLoaded(true);
     } catch { alert("Failed to load leads"); }
     setLoading(false);
   }, [password]);
@@ -172,23 +185,23 @@ function LeadsTab({ password }) {
   });
 
   const counts = {
-    total:    rows.length,
-    french:   rows.filter(r => r.language === "French").length,
-    german:   rows.filter(r => r.language === "German").length,
+    total: rows.length,
+    french: rows.filter(r => r.language === "French").length,
+    german: rows.filter(r => r.language === "German").length,
     japanese: rows.filter(r => r.language === "Japanese").length,
     referred: rows.filter(r => r.referral).length,
   };
 
   const columns = [
-    { key: "id",       label: "#",        render: v => <span style={{ color: "#5a4680", fontSize: 11 }}>{v}</span> },
-    { key: "name",     label: "Name",     render: v => <span style={{ fontWeight: 600, color: "#fff" }}>{v}</span> },
-    { key: "email",    label: "Email",    render: v => <span style={{ color: "#9b8ab8" }}>{v}</span> },
-    { key: "phone",    label: "Phone",    render: v => <span style={{ color: "#c8b8e0" }}>{v}</span> },
+    { key: "id",       label: "#",        render: v => <span style={{ color: "#9ca3af", fontSize: 11 }}>{v}</span> },
+    { key: "name",     label: "Name",     render: v => <span style={{ fontWeight: 600, color: "#111827" }}>{v}</span> },
+    { key: "email",    label: "Email",    render: v => <span style={{ color: "#6b7280" }}>{v}</span> },
+    { key: "phone",    label: "Phone" },
     { key: "language", label: "Language", render: v => <LangBadge lang={v} /> },
-    { key: "level",    label: "Level",    render: v => <span style={{ color: "#9b8ab8", fontSize: 12 }}>{v}</span> },
+    { key: "level",    label: "Level",    render: v => <span style={{ color: "#6b7280", fontSize: 12 }}>{v}</span> },
     { key: "referral", label: "Ref Code", render: v => v
-      ? <span style={{ fontFamily: "monospace", color: "#a68fd4", background: "rgba(90,53,176,0.2)", padding: "2px 8px", borderRadius: 4, fontSize: 12 }}>{v}</span>
-      : <span style={{ color: "#3d2080" }}>—</span>
+      ? <span style={{ fontFamily: "monospace", color: "#4f46e5", background: "#eef2ff", padding: "2px 8px", borderRadius: 4, fontSize: 12 }}>{v}</span>
+      : <span style={{ color: "#d1d5db" }}>—</span>
     },
     { key: "created_at", label: "Date", render: v => <DateCell v={v} /> },
   ];
@@ -196,7 +209,7 @@ function LeadsTab({ password }) {
   if (!loaded) return (
     <div style={{ textAlign: "center", paddingTop: 80 }}>
       <div style={{ fontSize: 44, marginBottom: 16 }}>📋</div>
-      <p style={{ color: "#5a4680", marginBottom: 20, fontSize: 14 }}>Click to load enquiry leads</p>
+      <p style={{ color: "#9ca3af", marginBottom: 20, fontSize: 14 }}>Click to load enquiry leads</p>
       <button onClick={load} disabled={loading} style={S.btnPrimary}>{loading ? "Loading..." : "Load Leads"}</button>
     </div>
   );
@@ -204,18 +217,17 @@ function LeadsTab({ password }) {
   return (
     <div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
-        <StatCard label="Total Leads"  value={counts.total}    accent="#5a35b0" />
-        <StatCard label="French"       value={counts.french}   accent="#4f6ef7" />
-        <StatCard label="German"       value={counts.german}   accent="#e8c96a" />
-        <StatCard label="Japanese"     value={counts.japanese} accent="#e86a9e" />
-        <StatCard label="Via Referral" value={counts.referred} accent="#22c55e" />
+        <StatCard label="Total"    value={counts.total}    accent="#4f46e5" />
+        <StatCard label="French"   value={counts.french}   accent="#4f6ef7" />
+        <StatCard label="German"   value={counts.german}   accent="#ca8a04" />
+        <StatCard label="Japanese" value={counts.japanese} accent="#db2777" />
+        <StatCard label="Referred" value={counts.referred} accent="#16a34a" />
       </div>
-
       <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 14, flexWrap: "wrap" }}>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search name, email, phone..."
           style={{ ...S.input, width: 260 }} />
         <div style={{ display: "flex", gap: 6 }}>
-          {["ALL", "French", "German", "Japanese"].map(l => (
+          {["ALL","French","German","Japanese"].map(l => (
             <FilterBtn key={l} active={langFilter === l} onClick={() => setLangFilter(l)}>{l}</FilterBtn>
           ))}
         </div>
@@ -224,7 +236,6 @@ function LeadsTab({ password }) {
           <button onClick={download} style={S.btnPrimary}>↓ Export CSV</button>
         </div>
       </div>
-
       <div style={S.tableWrap}>
         <div style={S.tableInfo}>Showing {filtered.length} of {rows.length} leads</div>
         <Table columns={columns} rows={filtered} emptyMsg="No leads yet" />
@@ -255,8 +266,7 @@ function AffiliatesTab({ password }) {
         body: JSON.stringify({ password })
       });
       if (!res.ok) { alert("Error loading"); setLoading(false); return; }
-      const data = await res.json();
-      setRows(data); setLoaded(true);
+      setRows(await res.json()); setLoaded(true);
     } catch { alert("Failed to load"); }
     setLoading(false);
   }, [password]);
@@ -278,7 +288,7 @@ function AffiliatesTab({ password }) {
     setCreating(false);
   };
 
-  const openEdit = (row) => {
+  const openEdit = row => {
     setEditRow(row);
     setEditForm({ name: row.name, email: row.email, phone: row.phone, referred_by: row.referred_by || "", referred_by_name: row.referred_by_name || "" });
   };
@@ -305,56 +315,54 @@ function AffiliatesTab({ password }) {
   const totalPaid    = rows.reduce((s, r) => s + parseFloat(r.paid_payout || 0), 0);
 
   const columns = [
-    { key: "ref_code", label: "Ref Code", render: v => <span style={{ fontFamily: "monospace", color: "#a68fd4", fontWeight: 700, fontSize: 12 }}>{v}</span> },
-    { key: "name",  label: "Name",  render: v => <span style={{ fontWeight: 600, color: "#fff" }}>{v}</span> },
-    { key: "email", label: "Email", render: v => <span style={{ color: "#9b8ab8" }}>{v}</span> },
-    { key: "phone", label: "Phone", render: v => <span style={{ color: "#c8b8e0" }}>{v}</span> },
+    { key: "ref_code", label: "Ref Code",    render: v => <span style={{ fontFamily: "monospace", color: "#4f46e5", fontWeight: 700, fontSize: 12, background: "#eef2ff", padding: "2px 8px", borderRadius: 4 }}>{v}</span> },
+    { key: "name",     label: "Name",         render: v => <span style={{ fontWeight: 600, color: "#111827" }}>{v}</span> },
+    { key: "email",    label: "Email",        render: v => <span style={{ color: "#6b7280" }}>{v}</span> },
+    { key: "phone",    label: "Phone" },
     { key: "referred_by", label: "Referred By", render: v => v
-      ? <span style={{ fontFamily: "monospace", color: "#c9a63a", fontSize: 12, background: "rgba(232,201,106,0.1)", padding: "2px 8px", borderRadius: 4 }}>{v}</span>
-      : <span style={{ color: "#3d2080" }}>—</span>
+      ? <span style={{ fontFamily: "monospace", color: "#7c3aed", fontSize: 12, background: "#faf5ff", padding: "2px 8px", borderRadius: 4 }}>{v}</span>
+      : <span style={{ color: "#d1d5db" }}>—</span>
     },
-    { key: "success",         label: "Sales",    render: v => <span style={{ color: "#22c55e", fontWeight: 700 }}>{v || 0}</span> },
-    { key: "pending_payout",  label: "Pending",  render: v => <span style={{ color: "#d97706", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
-    { key: "paid_payout",     label: "Paid",     render: v => <span style={{ color: "#22c55e", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
-    { key: "total_earnings",  label: "Total",    render: v => <span style={{ color: "#a68fd4", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
+    { key: "success",        label: "Sales",   render: v => <span style={{ color: "#16a34a", fontWeight: 700 }}>{v || 0}</span> },
+    { key: "pending_payout", label: "Pending", render: v => <span style={{ color: "#d97706", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
+    { key: "paid_payout",    label: "Paid",    render: v => <span style={{ color: "#16a34a", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
+    { key: "total_earnings", label: "Total",   render: v => <span style={{ color: "#4f46e5", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
     { key: "_edit", label: "", render: (_, row) => <button onClick={() => openEdit(row)} style={S.btnGhost}>✏️ Edit</button> },
   ];
 
   return (
     <div>
-      {/* Create form */}
       <div style={S.card}>
-        <div style={{ color: "#5a4680", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 14 }}>➕ Add New Affiliate</div>
+        <div style={{ color: "#9ca3af", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 14 }}>➕ Add New Affiliate</div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end" }}>
-          {[["Name *", "name", 150], ["Email *", "email", 200], ["Phone *", "phone", 140]].map(([lbl, key, w]) => (
+          {[["Name *","name",150],["Email *","email",200],["Phone *","phone",140]].map(([lbl,key,w]) => (
             <div key={key}>
               <div style={S.label}>{lbl}</div>
-              <input placeholder={lbl.replace(" *", "")} value={form[key]}
+              <input placeholder={lbl.replace(" *","")} value={form[key]}
                 onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                 style={{ ...S.input, width: w }} />
             </div>
           ))}
           <div>
-            <div style={S.label}>Referred By (Ref Code)</div>
-            <input placeholder="e.g. PRI123 (optional)" value={form.referred_by}
+            <div style={S.label}>Referred By (Code)</div>
+            <input placeholder="Optional" value={form.referred_by}
               onChange={e => setForm(f => ({ ...f, referred_by: e.target.value }))}
-              style={{ ...S.input, width: 170 }} />
+              style={{ ...S.input, width: 140 }} />
           </div>
           <div>
             <div style={S.label}>Referred By (Name)</div>
-            <input placeholder="Their name (optional)" value={form.referred_by_name}
+            <input placeholder="Optional" value={form.referred_by_name}
               onChange={e => setForm(f => ({ ...f, referred_by_name: e.target.value }))}
-              style={{ ...S.input, width: 160 }} />
+              style={{ ...S.input, width: 150 }} />
           </div>
           <button onClick={createAffiliate} disabled={creating} style={{ ...S.btnPrimary, alignSelf: "flex-end" }}>
             {creating ? "Creating..." : "+ Generate Link"}
           </button>
         </div>
-
         {generatedLink && (
-          <div style={{ marginTop: 14, background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.25)", borderRadius: 8, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-            <span style={{ color: "#22c55e", fontSize: 12, fontWeight: 700 }}>✓ LINK GENERATED</span>
-            <span style={{ color: "#c8b8e0", fontSize: 12, fontFamily: "monospace", flex: 1, wordBreak: "break-all" }}>{generatedLink}</span>
+          <div style={{ marginTop: 14, background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 8, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <span style={{ color: "#16a34a", fontSize: 12, fontWeight: 700 }}>✓ LINK GENERATED</span>
+            <span style={{ color: "#374151", fontSize: 12, fontFamily: "monospace", flex: 1, wordBreak: "break-all" }}>{generatedLink}</span>
             <button onClick={() => { navigator.clipboard.writeText(generatedLink); setCopied(true); setTimeout(() => setCopied(false), 2000); }} style={S.btnSecondary}>
               {copied ? "✓ Copied!" : "Copy"}
             </button>
@@ -369,11 +377,10 @@ function AffiliatesTab({ password }) {
       ) : (
         <>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
-            <StatCard label="Total Affiliates" value={rows.length}                                         accent="#5a35b0" />
-            <StatCard label="Pending Payouts"  value={`₹${totalPending.toLocaleString()}`}                accent="#d97706" />
-            <StatCard label="Total Paid Out"   value={`₹${totalPaid.toLocaleString()}`}                   accent="#22c55e" />
+            <StatCard label="Total Affiliates" value={rows.length}                          accent="#4f46e5" />
+            <StatCard label="Pending Payouts"  value={`₹${totalPending.toLocaleString()}`} accent="#d97706" />
+            <StatCard label="Total Paid Out"   value={`₹${totalPaid.toLocaleString()}`}    accent="#16a34a" />
           </div>
-
           <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search name, ref code, email..."
               style={{ ...S.input, width: 280 }} />
@@ -381,7 +388,6 @@ function AffiliatesTab({ password }) {
               <button onClick={load} style={S.btnSecondary} disabled={loading}>↻ Refresh</button>
             </div>
           </div>
-
           <div style={S.tableWrap}>
             <div style={S.tableInfo}>{filtered.length} affiliate{filtered.length !== 1 ? "s" : ""}</div>
             <Table columns={columns} rows={filtered} emptyMsg="No affiliates yet" />
@@ -392,23 +398,23 @@ function AffiliatesTab({ password }) {
       {editRow && (
         <Modal title={`Edit — ${editRow.name} (${editRow.ref_code})`} onClose={() => setEditRow(null)}>
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            {[["Name", "name"], ["Email", "email"], ["Phone", "phone"]].map(([lbl, key]) => (
+            {[["Name","name"],["Email","email"],["Phone","phone"]].map(([lbl,key]) => (
               <div key={key}>
                 <label style={S.label}>{lbl}</label>
                 <input value={editForm[key]} onChange={e => setEditForm(f => ({ ...f, [key]: e.target.value }))} style={S.inputFull} />
               </div>
             ))}
-            <div style={{ background: "rgba(30,15,64,0.5)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 8, padding: 14 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#5a4680", textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>Referral Chain</div>
+            <div style={{ background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 8, padding: 14 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>Referral Chain</div>
               <div style={{ display: "flex", gap: 10 }}>
                 <div style={{ flex: 1 }}>
-                  <label style={S.label}>Referred By (Code)</label>
+                  <label style={S.label}>Referred By Code</label>
                   <input value={editForm.referred_by} placeholder="Blank to remove"
                     onChange={e => setEditForm(f => ({ ...f, referred_by: e.target.value }))} style={S.inputFull} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <label style={S.label}>Referred By (Name)</label>
-                  <input value={editForm.referred_by_name} placeholder="Their name"
+                  <label style={S.label}>Referred By Name</label>
+                  <input value={editForm.referred_by_name}
                     onChange={e => setEditForm(f => ({ ...f, referred_by_name: e.target.value }))} style={S.inputFull} />
                 </div>
               </div>
@@ -426,13 +432,22 @@ function AffiliatesTab({ password }) {
 
 // ─── PAYOUTS TAB ──────────────────────────────────────────────────────────────
 function PayoutsTab({ password }) {
-  const [rows, setRows]           = useState([]);
-  const [loading, setLoading]     = useState(false);
-  const [loaded, setLoaded]       = useState(false);
+  const [rows, setRows]               = useState([]);
+  const [loading, setLoading]         = useState(false);
+  const [loaded, setLoaded]           = useState(false);
   const [statusFilter, setStatusFilter] = useState("ALL");
-  const [search, setSearch]       = useState("");
-  const [markingId, setMarkingId] = useState(null);
-  const [markingAll, setMarkingAll] = useState(null);
+  const [search, setSearch]           = useState("");
+
+  // Manual payout modal
+  const [payModal, setPayModal]       = useState(null); // { row } | null
+  const [payAmount, setPayAmount]     = useState("");
+  const [payNote, setPayNote]         = useState("");
+  const [paying, setPaying]           = useState(false);
+
+  // Bulk settle modal
+  const [bulkModal, setBulkModal]     = useState(null); // { ref_code, name, rows[] } | null
+  const [bulkAmounts, setBulkAmounts] = useState({});   // { [payout_id]: amount }
+  const [bulkPaying, setBulkPaying]   = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -442,28 +457,54 @@ function PayoutsTab({ password }) {
         body: JSON.stringify({ password })
       });
       if (!res.ok) { alert("Error loading payouts"); setLoading(false); return; }
-      const data = await res.json();
-      setRows(data); setLoaded(true);
+      setRows(await res.json()); setLoaded(true);
     } catch { alert("Failed"); }
     setLoading(false);
   }, [password]);
 
-  const markPaid = async (id) => {
-    setMarkingId(id);
-    await fetch(`${BACKEND_URL}/admin/mark-payout-paid`, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password, payout_id: id })
-    });
-    await load(); setMarkingId(null);
+  // Mark single payout paid with admin-entered amount
+  const openPayModal = (row) => {
+    setPayModal(row);
+    setPayAmount(String(row.amount || ""));
+    setPayNote("");
   };
 
-  const markAllPaid = async (ref_code) => {
-    setMarkingAll(ref_code);
-    await fetch(`${BACKEND_URL}/admin/mark-all-paid`, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password, ref_code })
-    });
-    await load(); setMarkingAll(null);
+  const confirmPay = async () => {
+    if (!payAmount || isNaN(payAmount) || parseFloat(payAmount) < 0) {
+      alert("Enter a valid amount"); return;
+    }
+    setPaying(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/admin/mark-payout-paid`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password, payout_id: payModal.id, amount: parseFloat(payAmount) })
+      });
+      if (!res.ok) { alert("Failed to update"); setPaying(false); return; }
+      setPayModal(null); await load();
+    } catch { alert("Error"); }
+    setPaying(false);
+  };
+
+  // Open bulk settle — pre-fill amounts from DB
+  const openBulkModal = (ref_code) => {
+    const aff = pendingByAffiliate[ref_code];
+    const amounts = {};
+    aff.rows.forEach(r => { amounts[r.id] = String(r.amount); });
+    setBulkAmounts(amounts);
+    setBulkModal(aff);
+  };
+
+  const confirmBulkPay = async () => {
+    setBulkPaying(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/admin/mark-all-paid`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password, ref_code: bulkModal.ref_code, amounts: bulkAmounts })
+      });
+      if (!res.ok) { alert("Failed"); setBulkPaying(false); return; }
+      setBulkModal(null); await load();
+    } catch { alert("Error"); }
+    setBulkPaying(false);
   };
 
   const download = async () => {
@@ -486,56 +527,47 @@ function PayoutsTab({ password }) {
   const totalPending = rows.filter(r => r.status === "PENDING").reduce((s, r) => s + parseFloat(r.amount || 0), 0);
   const totalPaid    = rows.filter(r => r.status === "PAID").reduce((s, r) => s + parseFloat(r.amount || 0), 0);
 
+  // Group pending by affiliate, keep rows for bulk modal
   const pendingByAffiliate = rows.filter(r => r.status === "PENDING").reduce((acc, r) => {
-    if (!acc[r.influencer_ref_code]) acc[r.influencer_ref_code] = { name: r.influencer_name, ref_code: r.influencer_ref_code, total: 0, count: 0 };
+    if (!acc[r.influencer_ref_code]) acc[r.influencer_ref_code] = { name: r.influencer_name, ref_code: r.influencer_ref_code, total: 0, count: 0, rows: [] };
     acc[r.influencer_ref_code].total += parseFloat(r.amount || 0);
     acc[r.influencer_ref_code].count += 1;
+    acc[r.influencer_ref_code].rows.push(r);
     return acc;
   }, {});
 
   const columns = [
     { key: "influencer_name", label: "Affiliate", render: (v, row) => (
       <div>
-        <div style={{ fontWeight: 600, color: "#fff" }}>{v}</div>
-        <div style={{ fontFamily: "monospace", color: "#a68fd4", fontSize: 11 }}>{row.influencer_ref_code}</div>
+        <div style={{ fontWeight: 600, color: "#111827" }}>{v}</div>
+        <div style={{ fontFamily: "monospace", color: "#4f46e5", fontSize: 11 }}>{row.influencer_ref_code}</div>
       </div>
     )},
     { key: "level", label: "Level", render: v => (
-      <span style={{ background: v == 1 ? "rgba(90,53,176,0.2)" : "rgba(124,58,237,0.2)", color: v == 1 ? "#a68fd4" : "#c084fc", padding: "2px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
-        L{v} · {v == 1 ? "₹200" : "₹50"}
+      <span style={{ background: v == 1 ? "#eef2ff" : "#faf5ff", color: v == 1 ? "#4f46e5" : "#7c3aed", padding: "3px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
+        L{v}
       </span>
     )},
     { key: "customer_name", label: "Lead", render: (v, row) => (
       <div>
-        <div style={{ color: "#c8b8e0", fontWeight: 600 }}>{v}</div>
-        <div style={{ color: "#5a4680", fontSize: 11 }}>{row.customer_email}</div>
+        <div style={{ color: "#374151", fontWeight: 600 }}>{v}</div>
+        <div style={{ color: "#9ca3af", fontSize: 11 }}>{row.customer_email}</div>
       </div>
     )},
-    { key: "amount", label: "Amount", render: v => <span style={{ fontWeight: 700, color: "#fff" }}>₹{v}</span> },
-    { key: "status", label: "Status", render: v => (
-      <span style={{
-        background: v === "PAID" ? "rgba(34,197,94,0.12)" : "rgba(234,179,8,0.12)",
-        color: v === "PAID" ? "#22c55e" : "#eab308",
-        border: `1px solid ${v === "PAID" ? "rgba(34,197,94,0.3)" : "rgba(234,179,8,0.3)"}`,
-        padding: "3px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700,
-        display: "inline-flex", alignItems: "center", gap: 5,
-      }}>
-        <span style={{ width: 6, height: 6, borderRadius: "50%", background: v === "PAID" ? "#22c55e" : "#eab308", display: "inline-block" }} />
-        {v}
-      </span>
-    )},
+    { key: "amount", label: "Amount", render: v => <span style={{ fontWeight: 700, color: "#111827" }}>₹{parseFloat(v).toLocaleString()}</span> },
+    { key: "status", label: "Status", render: v => <StatusPill status={v} /> },
     { key: "created_at", label: "Date",    render: v => <DateCell v={v} /> },
-    { key: "paid_at",    label: "Paid On", render: v => v ? <DateCell v={v} /> : <span style={{ color: "#3d2080" }}>—</span> },
+    { key: "paid_at",    label: "Paid On", render: v => v ? <DateCell v={v} /> : <span style={{ color: "#d1d5db" }}>—</span> },
     { key: "_action", label: "", render: (_, row) => row.status === "PENDING"
-      ? <button onClick={() => markPaid(row.id)} disabled={markingId === row.id} style={S.btnSuccess}>{markingId === row.id ? "..." : "Mark Paid"}</button>
-      : <span style={{ color: "#22c55e", fontSize: 12, fontWeight: 600 }}>✓ Paid</span>
+      ? <button onClick={() => openPayModal(row)} style={S.btnSuccess}>Mark Paid</button>
+      : <span style={{ color: "#16a34a", fontSize: 12, fontWeight: 600 }}>✓ Paid</span>
     },
   ];
 
   if (!loaded) return (
     <div style={{ textAlign: "center", paddingTop: 80 }}>
       <div style={{ fontSize: 44, marginBottom: 16 }}>💰</div>
-      <p style={{ color: "#5a4680", marginBottom: 20, fontSize: 14 }}>Click to load payout records</p>
+      <p style={{ color: "#9ca3af", marginBottom: 20, fontSize: 14 }}>Click to load payout records</p>
       <button onClick={load} disabled={loading} style={S.btnPrimary}>{loading ? "Loading..." : "Load Payouts"}</button>
     </div>
   );
@@ -543,25 +575,25 @@ function PayoutsTab({ password }) {
   return (
     <div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
-        <StatCard label="Total Payouts" value={rows.length}                             accent="#5a35b0" />
+        <StatCard label="Total Payouts" value={rows.length}                             accent="#4f46e5" />
         <StatCard label="Pending"       value={`₹${totalPending.toLocaleString()}`}     accent="#d97706" />
-        <StatCard label="Paid Out"      value={`₹${totalPaid.toLocaleString()}`}        accent="#22c55e" />
+        <StatCard label="Paid Out"      value={`₹${totalPaid.toLocaleString()}`}        accent="#16a34a" />
       </div>
 
-      {/* Quick settle */}
+      {/* Quick Settle cards */}
       {Object.keys(pendingByAffiliate).length > 0 && (
-        <div style={{ background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.25)", borderRadius: 12, padding: 16, marginBottom: 20 }}>
-          <div style={{ color: "#d97706", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 12 }}>⚡ Pending — Quick Settle</div>
+        <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 12, padding: 16, marginBottom: 20 }}>
+          <div style={{ color: "#92400e", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 12 }}>⚡ Pending — Quick Settle</div>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             {Object.values(pendingByAffiliate).map(aff => (
-              <div key={aff.ref_code} style={{ background: "rgba(19,8,43,0.8)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 8, padding: "10px 14px", display: "flex", alignItems: "center", gap: 12 }}>
+              <div key={aff.ref_code} style={{ background: "#fff", border: "1px solid #fde68a", borderRadius: 8, padding: "10px 16px", display: "flex", alignItems: "center", gap: 14 }}>
                 <div>
-                  <div style={{ fontWeight: 600, fontSize: 13, color: "#fff" }}>{aff.name}</div>
-                  <div style={{ fontSize: 11, color: "#7c5cbf" }}>{aff.ref_code} · {aff.count} payout{aff.count > 1 ? "s" : ""}</div>
+                  <div style={{ fontWeight: 600, fontSize: 13, color: "#111827" }}>{aff.name}</div>
+                  <div style={{ fontSize: 11, color: "#9ca3af" }}>{aff.ref_code} · {aff.count} payout{aff.count > 1 ? "s" : ""}</div>
                 </div>
                 <span style={{ fontWeight: 700, color: "#d97706" }}>₹{aff.total.toLocaleString()}</span>
-                <button onClick={() => markAllPaid(aff.ref_code)} disabled={markingAll === aff.ref_code} style={S.btnWarning}>
-                  {markingAll === aff.ref_code ? "Settling..." : "Mark All Paid"}
+                <button onClick={() => openBulkModal(aff.ref_code)} style={S.btnWarning}>
+                  Settle All
                 </button>
               </div>
             ))}
@@ -573,7 +605,7 @@ function PayoutsTab({ password }) {
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search affiliate or lead..."
           style={{ ...S.input, width: 280 }} />
         <div style={{ display: "flex", gap: 6 }}>
-          {["ALL", "PENDING", "PAID"].map(s => (
+          {["ALL","PENDING","PAID"].map(s => (
             <FilterBtn key={s} active={statusFilter === s} onClick={() => setStatusFilter(s)}>{s}</FilterBtn>
           ))}
         </div>
@@ -587,15 +619,103 @@ function PayoutsTab({ password }) {
         <div style={S.tableInfo}>Showing {filtered.length} of {rows.length} payouts</div>
         <Table columns={columns} rows={filtered} emptyMsg="No payouts yet" />
       </div>
+
+      {/* ── Single Payout Modal ── */}
+      {payModal && (
+        <Modal title="Mark Payout as Paid" onClose={() => setPayModal(null)}>
+          <div style={{ marginBottom: 16, background: "#f9fafb", borderRadius: 8, padding: "12px 14px" }}>
+            <div style={{ fontSize: 13, color: "#374151" }}>
+              <strong>{payModal.influencer_name}</strong> ({payModal.influencer_ref_code})
+            </div>
+            <div style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>
+              Lead: {payModal.customer_name} · {payModal.customer_email}
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 16 }}>
+            <label style={S.label}>Payout Amount (₹)</label>
+            <input
+              type="number"
+              min="0"
+              value={payAmount}
+              onChange={e => setPayAmount(e.target.value)}
+              style={{ ...S.inputFull, fontSize: 18, fontWeight: 700, padding: "10px 14px" }}
+              placeholder="Enter amount"
+              autoFocus
+            />
+            <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 5 }}>
+              Default from DB: ₹{payModal.amount} — edit if the actual payout differs
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 20 }}>
+            <label style={S.label}>Note (optional)</label>
+            <input
+              value={payNote}
+              onChange={e => setPayNote(e.target.value)}
+              style={S.inputFull}
+              placeholder="e.g. Paid via UPI on 12 Mar"
+            />
+          </div>
+
+          <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+            <button onClick={() => setPayModal(null)} style={S.btnSecondary}>Cancel</button>
+            <button onClick={confirmPay} disabled={paying} style={S.btnSuccess}>
+              {paying ? "Saving..." : `✓ Confirm Pay ₹${payAmount || 0}`}
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {/* ── Bulk Settle Modal ── */}
+      {bulkModal && (
+        <Modal title={`Settle All — ${bulkModal.name} (${bulkModal.ref_code})`} onClose={() => setBulkModal(null)}>
+          <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 16 }}>
+            Review and adjust each payout amount before confirming.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20, maxHeight: 320, overflowY: "auto" }}>
+            {bulkModal.rows.map(r => (
+              <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 12, background: "#f9fafb", borderRadius: 8, padding: "10px 12px" }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "#111827" }}>{r.customer_name}</div>
+                  <div style={{ fontSize: 11, color: "#9ca3af" }}>{r.customer_email}</div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ fontSize: 13, color: "#374151" }}>₹</span>
+                  <input
+                    type="number"
+                    min="0"
+                    value={bulkAmounts[r.id] ?? r.amount}
+                    onChange={e => setBulkAmounts(a => ({ ...a, [r.id]: e.target.value }))}
+                    style={{ ...S.input, width: 90, fontWeight: 700, textAlign: "right" }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 8, padding: "10px 14px", marginBottom: 16, display: "flex", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 13, color: "#374151" }}>Total to be paid</span>
+            <span style={{ fontWeight: 700, color: "#16a34a", fontSize: 15 }}>
+              ₹{Object.values(bulkAmounts).reduce((s, v) => s + (parseFloat(v) || 0), 0).toLocaleString()}
+            </span>
+          </div>
+          <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+            <button onClick={() => setBulkModal(null)} style={S.btnSecondary}>Cancel</button>
+            <button onClick={confirmBulkPay} disabled={bulkPaying} style={S.btnSuccess}>
+              {bulkPaying ? "Settling..." : "✓ Confirm Settle All"}
+            </button>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
 
 // ─── MAIN ADMIN ───────────────────────────────────────────────────────────────
 export default function Admin() {
-  const [password, setPassword]     = useState("");
-  const [authed, setAuthed]         = useState(false);
-  const [tab, setTab]               = useState("leads");
+  const [password, setPassword]       = useState("");
+  const [authed, setAuthed]           = useState(false);
+  const [tab, setTab]                 = useState("leads");
   const [authLoading, setAuthLoading] = useState(false);
 
   const handleAuth = async () => {
@@ -608,7 +728,7 @@ export default function Admin() {
       });
       if (res.ok) setAuthed(true);
       else alert("Wrong password");
-    } catch { alert("Server error — check VITE_BACKEND_URL"); }
+    } catch { alert("Server error"); }
     setAuthLoading(false);
   };
 
@@ -617,8 +737,8 @@ export default function Admin() {
       <div style={S.loginBox}>
         <span style={S.loginIcon}>✦</span>
         <h1 style={S.loginTitle}>Success Learning</h1>
-        <p style={S.loginSub}>Admin Dashboard — Enter password to continue</p>
-        <input type="password" placeholder="Admin password" value={password}
+        <p style={S.loginSub}>Admin Dashboard</p>
+        <input type="password" placeholder="Enter admin password" value={password}
           onChange={e => setPassword(e.target.value)}
           onKeyDown={e => e.key === "Enter" && handleAuth()}
           style={{ ...S.inputFull, padding: "12px 16px", fontSize: 14, marginBottom: 12 }} />
@@ -633,13 +753,13 @@ export default function Admin() {
   return (
     <div style={S.page}>
       <div style={S.header}>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={S.logo}>✦</div>
-          <span style={S.logoText}>Success Learning <span style={S.logoSub}>Admin</span></span>
-        </div>
+        <div style={S.logo}>✦</div>
+        <span style={S.logoText}>Success Learning <span style={S.logoSub}>Admin</span></span>
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 6px #22c55e88" }} />
-          <span style={{ color: "#5a4680", fontSize: 13 }}>Live</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 6px #22c55e88" }} />
+            <span style={{ color: "#9ca3af", fontSize: 13 }}>Live</span>
+          </div>
           <button onClick={() => { setAuthed(false); setPassword(""); }} style={S.btnSecondary}>Logout</button>
         </div>
       </div>
