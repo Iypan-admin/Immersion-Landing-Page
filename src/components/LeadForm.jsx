@@ -8,14 +8,25 @@ const LEVELS = {
   Japanese: ['N5 → N3 (Advanced)',  'N5 → N4 (Foundation)'],
 }
 
-// ── Mock API (replace with real fetch when backend is ready) ──
+// ── Real API Call ──
 async function submitLead(data) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log('Lead submitted (mock):', data)
-      resolve({ ok: true })
-    }, 1400)
-  })
+  // Uses your Railway backend URL if deployed, otherwise falls back to localhost for local testing
+  const baseURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+  const API_URL = `${baseURL}/api/leads`;
+  
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to submit form');
+  }
+
+  return response.json();
 }
 
 export default function LeadForm() {
