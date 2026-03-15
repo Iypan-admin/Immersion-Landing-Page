@@ -1,95 +1,107 @@
-/* --- MAIN NAVBAR CONTAINER --- */
-/* Pins the navbar to the very top of the screen so it stays there when you scroll */
 .navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 100; /* Ensures the navbar stays on top of all other content on the page */
-  padding: 20px 0; /* Starting padding when at the very top of the page */
-  transition: var(--transition); /* Smoothly animates any changes, like when it shrinks on scroll */
+  z-index: 100;
+  padding: 14px 0;
+  transition: var(--transition);
 }
 
-/* Added dynamically by Javascript when the user scrolls down */
 .navbar--scrolled {
-  background: rgba(13, 6, 24, 0.92); /* Dark purple, slightly transparent */
-  backdrop-filter: blur(20px); /* Creates the trendy "frosted glass" effect */
-  -webkit-backdrop-filter: blur(20px); /* Safari support for the blur */
-  padding: 12px 0; /* Shrinks the navbar slightly to save screen space */
+  background: rgba(13, 6, 24, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 10px 0;
   border-bottom: 1px solid var(--border);
 }
 
-/* The invisible box holding all the navbar items */
 .navbar__inner {
   display: flex;
-  align-items: center; /* Aligns logo, links, and buttons vertically in the middle */
-  gap: 32px;
+  align-items: center;
+  gap: 24px;
 }
 
-/* --- LOGO --- */
+/* ── Logo group ── */
 .navbar__logo {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-shrink: 0; /* Prevents the logo from squishing if the screen gets tight */
-  margin-right: auto; /* Magically pushes all the navigation links to the far right side */
+  flex-shrink: 0;
+  margin-right: auto;
+  text-decoration: none;
+  min-width: 0;
 }
 
-/* The little spark icon next to the logo */
-.logo-icon {
-  color: var(--gold);
-  font-size: 1.2rem;
-  animation: spin-slow 8s linear infinite; /* Constantly rotates the icon very slowly */
-  display: inline-block;
+/* ISML — Perfect Circle */
+.navbar__logo-isml {
+  height: 42px;
+  width: 42px; /* Explicit width to match height makes it a perfect square */
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 50%; /* This makes it a perfect circle */
+  padding: 6px; /* Space inside the circle */
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+.navbar__logo-isml:hover { transform: scale(1.05); }
+
+/* Divider */
+.navbar__logo-divider {
+  width: 1px;
+  height: 26px;
+  background: rgba(255,255,255,0.2);
+  flex-shrink: 0;
 }
 
-/* The main text of the logo */
-.logo-text {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: -0.02em;
+/* Success Learning wrapper — Square Box */
+.navbar__logo-sl-wrap {
+  background: #ffffff;
+  border-radius: 4px; /* Reduced radius for a sharper, squarish box */
+  padding: 6px 10px; /* Even box padding */
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.navbar__logo-sl {
+  height: 26px;
+  width: auto;
+  max-width: 108px;
+  object-fit: contain;
+  display: block;
 }
 
-/* Colors just the word "Learning" in gold */
-.logo-text span {
-  color: var(--gold);
-}
-
-/* --- DESKTOP NAVIGATION LINKS --- */
-/* The container holding "Programs", "Why Us", etc. */
+/* ── Links ── */
 .navbar__links {
   display: flex;
   align-items: center;
-  gap: 36px; /* Spacing between each link */
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-
-/* Individual link styling */
 .navbar__link {
   font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-muted);
   letter-spacing: 0.02em;
   transition: color var(--transition);
-  position: relative; /* Crucial: allows us to position the hover underline perfectly underneath */
+  position: relative;
+  white-space: nowrap;
+  text-decoration: none;
 }
-
-/* The hidden gold underline effect (created using a pseudo-element) */
 .navbar__link::after {
   content: '';
   position: absolute;
   bottom: -4px; left: 0; right: 0;
   height: 1px;
   background: var(--gold);
-  transform: scaleX(0); /* Squishes the line to 0 width so it's invisible by default */
-  transform-origin: left; /* Makes the line grow from left to right */
+  transform: scaleX(0);
+  transform-origin: left;
   transition: transform var(--transition);
 }
+.navbar__link:hover { color: var(--white); }
+.navbar__link:hover::after { transform: scaleX(1); }
 
-/* Link hover effects */
-.navbar__link:hover { color: var(--white); } /* Text turns white */
-.navbar__link:hover::after { transform: scaleX(1); } /* The gold line expands to full width */
-
-/* --- CALL TO ACTION BUTTON (Desktop) --- */
+/* ── CTA ── */
 .navbar__cta {
   display: inline-flex;
   align-items: center;
@@ -100,107 +112,91 @@
   padding: 9px 22px;
   border-radius: 100px;
   transition: transform var(--transition), box-shadow var(--transition);
-  white-space: nowrap; /* Prevents the button text from wrapping onto two lines */
+  white-space: nowrap;
   flex-shrink: 0;
+  text-decoration: none;
 }
-
-/* Button float and glow effect on hover */
 .navbar__cta:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(90,53,176,0.5);
 }
 
-/* --- HAMBURGER MENU BUTTON (Mobile Only) --- */
+/* ── Hamburger ── */
 .navbar__hamburger {
-  display: none; /* Hidden by default on large screens */
+  display: none;
   flex-direction: column;
-  gap: 5px; /* Space between the 3 lines */
-  padding: 4px;
-  background: transparent;
-  border: none;
+  gap: 5px;
+  padding: 7px 8px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 8px;
+  flex-shrink: 0;
   cursor: pointer;
 }
-
-/* The 3 white horizontal lines that make up the hamburger icon */
 .navbar__hamburger span {
   display: block;
-  width: 24px;
+  width: 22px;
   height: 2px;
   background: var(--white);
   border-radius: 2px;
-  transition: var(--transition); /* Allows the lines to animate smoothly into an X */
+  transition: var(--transition);
 }
+.navbar__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.navbar__hamburger.open span:nth-child(2) { opacity: 0; }
+.navbar__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* The animation when the menu is clicked (turns the hamburger into an X) */
-.navbar__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); } /* Tilts top line down */
-.navbar__hamburger.open span:nth-child(2) { opacity: 0; } /* Hides middle line entirely */
-.navbar__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); } /* Tilts bottom line up */
-
-/* --- MOBILE DRAWER (The dropdown menu) --- */
+/* ── Mobile drawer ── */
 .navbar__mobile {
-  display: none; /* Completely disabled on desktop layout */
+  display: none;
   flex-direction: column;
-  gap: 4px;
-  padding: 16px 24px 24px;
-  background: rgba(13, 6, 24, 0.97);
+  gap: 0;
+  padding: 0 20px; /* Removed vertical padding when closed */
+  background: rgba(10,4,22,0.98);
+  border-top: 1px solid transparent; /* Hide border when closed */
+  max-height: 0;
+  opacity: 0; /* Make it completely invisible when closed */
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease, border-color 0.4s ease;
+}
+
+.navbar__mobile--open { 
+  max-height: 420px; 
+  opacity: 1; /* Fade in */
+  padding: 10px 20px 24px; /* Add vertical padding back only when open */
   border-top: 1px solid var(--border);
-  
-  /* Positions the dropdown exactly underneath the bottom edge of the navbar */
-  position: absolute;
-  top: 100%; 
-  left: 0;
-  right: 0;
-  
-  /* Hides the menu cleanly without messing up the layout */
-  opacity: 0;
-  visibility: hidden; /* Makes it unclickable when closed */
-  transform: translateY(-10px); /* Pulls it up slightly so it can slide down when opening */
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 
-/* Added dynamically by Javascript when the hamburger button is clicked */
-.navbar__mobile--open {
-  opacity: 1; /* Fades in */
-  visibility: visible; /* Becomes clickable */
-  transform: translateY(0); /* Slides down into final position */
-}
-
-/* Styles for the links inside the mobile dropdown */
 .navbar__mobile-link {
-  padding: 12px 0;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text-body);
-  text-decoration: none;
+  padding: 14px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
   border-bottom: 1px solid var(--border);
-  transition: color var(--transition);
+  transition: color var(--transition), padding-left var(--transition);
+  display: block;
+  text-decoration: none;
 }
+.navbar__mobile-link:hover { color: var(--white); padding-left: 6px; }
 
-.navbar__mobile-link:hover { color: var(--white); }
-
-/* Centers the Call to Action button specifically inside the mobile menu */
 .navbar__cta--mobile {
-  margin-top: 16px;
+  margin-top: 20px;
   text-align: center;
   justify-content: center;
-  text-decoration: none;
+  padding: 13px;
+  font-size: 0.95rem;
 }
 
-/* --- MOBILE RESPONSIVENESS --- */
+/* ── Breakpoints ── */
 @media (max-width: 768px) {
-  .navbar__links { 
-    display: none; /* Hides desktop links so they don't crash into the logo */
-  }
-  
-  .navbar__cta:not(.navbar__cta--mobile) { 
-    display: none; /* Hides the desktop version of the button */
-  }
-  
-  .navbar__hamburger { 
-    display: flex; /* Makes the hamburger icon visible */
-  }
-  
-  .navbar__mobile { 
-    display: flex; /* Activates the mobile drawer HTML (still hidden until the 'open' class is added) */
-  }
+  .navbar__links { display: none; }
+  .navbar__cta:not(.navbar__cta--mobile) { display: none; }
+  .navbar__hamburger { display: flex; }
+  .navbar__mobile { display: flex; }
+}
+
+/* Very small phones — shrink logos to fit */
+@media (max-width: 380px) {
+  .navbar__logo-isml { height: 34px; width: 34px; padding: 4px; }
+  .navbar__logo-sl   { height: 20px; max-width: 88px; }
+  .navbar__logo-divider { display: none; }
 }

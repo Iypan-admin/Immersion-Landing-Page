@@ -3,72 +3,80 @@ import './Testimonials.css'
 
 const testimonials = [
   {
-    name: 'Priya Sharma',
-    country: 'Germany 🇩🇪',
-    level: 'German B2',
-    uni: 'TU Munich',
-    avatar: 'PS',
-    color: '#e8c96a',
-    text: "I joined the German A1→B2 track with zero background. In 9 months, I went from not knowing a single word to passing my B2 exam and getting admission to TU Munich. The immersion method actually works!",
-  },
-  {
-    name: 'Arjun Menon',
-    country: 'France 🇫🇷',
-    level: 'French B1',
-    uni: 'Sciences Po Paris',
-    avatar: 'AM',
+    name: 'Sumitha Magesh',
+    language: 'French Conversation',
+    avatar: 'SM',
     color: '#4f6ef7',
-    text: "The live sessions with Success Learning made all the difference. Poornima Mam personally guided me on which French level I needed and which program to apply for. Got into Sciences Po — dream come true.",
+    text: "I thoroughly enjoyed my French conversation classes with ISML. My trainer always came prepared with interesting topics that kept our 2-hour sessions engaging. He was very patient and explained things clearly in English when needed, which really helped. I learned a lot and would definitely recommend ISML to anyone looking to improve their French skills!",
   },
   {
-    name: 'Sneha Reddy',
-    country: 'Japan 🇯🇵',
-    level: 'JLPT N3',
-    uni: 'Waseda University',
-    avatar: 'SR',
+    name: 'Anugayathiri',
+    language: 'German',
+    avatar: 'AN',
+    color: '#e8c96a',
+    text: "I had an excellent experience learning German here. The instructors were knowledgeable and patient, and they made each lesson engaging. I gained both confidence and strong language skills in a supportive, interactive environment that helped me progress quickly. If you're looking to learn a new language effectively, give this place a try!",
+  },
+  {
+    name: 'Nithish Raghavendar T K',
+    language: 'Japanese · JLPT Prep',
+    avatar: 'NR',
     color: '#e86a9e',
-    text: "Japanese seemed impossible at first. But the N5→N3 track at Success Learning broke it down perfectly. The immersion style made me think in Japanese, not translate. Cleared N3 in my first attempt!",
+    text: "I had a great experience at ISML. The teachers are very helpful, and learning from native Japanese speakers made the process more natural. The lessons were well-planned and focused on speaking, listening, and real-life situations. The study materials and practice sessions were very effective. The training truly helped me prepare for the JLPT exams. Overall, it's a great place to learn Japanese — I highly recommend it!",
   },
   {
-    name: 'Karthik Iyer',
-    country: 'Germany 🇩🇪',
-    level: 'German B1',
-    uni: 'RWTH Aachen',
-    avatar: 'KI',
+    name: 'Swetha Venkat',
+    language: 'Foreign Language',
+    avatar: 'SV',
     color: '#6ae8c9',
-    text: "What sets Success Learning apart is the counseling. They didn't just teach me German — they told me exactly which universities accept B1, helped with my SOP, and even prepped me for the visa interview.",
+    text: "I joined ISML, and trust me — this is the best institute to learn a foreign language. My trainer, Mr. Claude, is the best teacher because he has so much patience. Even if we didn't understand the topic well, he would reteach it without hesitation. The best part about this institution is their constant support — no matter what the doubt is, they always take time to clarify. I'm truly happy to have joined.",
   },
   {
-    name: 'Divya Nair',
-    country: 'France 🇫🇷',
-    level: 'French B2',
-    uni: 'Université de Lyon',
-    avatar: 'DN',
+    name: 'Cris Joy',
+    language: 'German',
+    avatar: 'CJ',
     color: '#c96ae8',
-    text: "I was skeptical about online immersion learning. But the live interactive classes with native-level teachers completely changed how I think about learning. Reached B2 French in 9 months. Merci beaucoup!",
+    text: "Spending six months in the German class was one of the best experiences of my life. Arjun Sir, though young, was incredibly patient and knowledgeable — his simple, effective methods made even complex grammar easy to grasp. The flexible timings fit our schedules perfectly, and the friendly, supportive classmates made learning even more enjoyable. It was totally worth it! I highly recommend this institute to anyone wanting to learn German in a warm, positive setting.",
   },
   {
-    name: 'Rahul Verma',
-    country: 'Japan 🇯🇵',
-    level: 'JLPT N4',
-    uni: 'Osaka University',
-    avatar: 'RV',
+    name: 'Sheik Mohamed',
+    language: 'German A1',
+    avatar: 'SM',
     color: '#e8a06a',
-    text: "The structured pace of the N5→N4 track was perfect for me alongside my engineering degree. Could do live classes in the evening, review recordings when busy. Got into Osaka University's research program!",
+    text: "Great place to learn languages! The instructors are knowledgeable, patient, and passionate. The course is well-organized, and the friendly staff ensures a smooth experience. Thanks to Mr. Arjun (Deutsch) and Mr. Ramesh for coordinating!",
+  },
+  {
+    name: 'Sridevi',
+    language: 'German · Online',
+    avatar: 'SR',
+    color: '#6ae8a0',
+    text: "Hi, this is Sridevi from Madurai. I attended German classes online at ISML. All the tutors explained the lessons very well. The notes they provided were very clear and helpful, and they are still useful for me. They supported us a lot by helping us practice exercises, speak in German, and correct our mistakes with clear explanations. Our tutor, Neenu ma'am, was a very supportive person. She explained the grammar very clearly and made it easy for us to understand. Thank you to ISML for giving us this wonderful opportunity.",
+  },
+  {
+    name: 'Subbulakshmi Venkatesan',
+    language: 'German · Online',
+    avatar: 'SB',
+    color: '#f7a64f',
+    text: "I attended the online German course conducted by ISML. The classes were well organized and easy to understand. The trainers explained the topics clearly and were very supportive throughout the course. For every chapter, they provided detailed notes in PDF format, which were very useful for revision and reference. I would like to give a special thanks to our tutors Dennis Sir and Neenu Ma'am for their guidance, patience, and continuous support during the course. Overall, the course was very helpful for improving my German language skills.",
   },
 ]
 
 export default function Testimonials() {
   const [active, setActive] = useState(0)
-  const [auto, setAuto] = useState(true)
+  const [auto, setAuto]     = useState(true)
+  const [animKey, setAnimKey] = useState(0)
   const ref = useRef(null)
 
+  // Auto-cycle
   useEffect(() => {
     if (!auto) return
-    const t = setInterval(() => setActive(a => (a + 1) % testimonials.length), 4200)
+    const t = setInterval(() => {
+      setActive(a => (a + 1) % testimonials.length)
+      setAnimKey(k => k + 1)
+    }, 4500)
     return () => clearInterval(t)
   }, [auto])
 
+  // Scroll reveal
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
@@ -78,36 +86,42 @@ export default function Testimonials() {
     return () => observer.disconnect()
   }, [])
 
+  const goTo = (i) => { setActive(i); setAnimKey(k => k + 1); setAuto(false) }
+
+  const t = testimonials[active]
+
   return (
     <section className="section testimonials" id="testimonials" ref={ref}>
       <div className="container">
         <div className="text-center">
           <div className="badge reveal">✦ Student Stories</div>
           <h2 className="section-title reveal">
-            From Classrooms to<br /><span>Campuses Abroad</span>
+            Real Students,<br /><span>Real Results</span>
           </h2>
           <p className="section-subtitle reveal">
-            Real students. Real results. Real universities.
+            Hear directly from students who transformed their language journey with ISML.
           </p>
         </div>
 
-        {/* Main testimonial */}
+        {/* Main card */}
         <div className="testi__main reveal">
-          <div className="testi__card" key={active}>
+          <div className="testi__card" key={animKey}>
             <div className="testi__quote-icon">"</div>
-            <p className="testi__text">{testimonials[active].text}</p>
+            <p className="testi__text">{t.text}</p>
             <div className="testi__author">
               <div
                 className="testi__avatar"
-                style={{ background: `linear-gradient(135deg, ${testimonials[active].color}33, ${testimonials[active].color}66)`,
-                          borderColor: testimonials[active].color + '55' }}
+                style={{
+                  background: `linear-gradient(135deg, ${t.color}33, ${t.color}66)`,
+                  borderColor: t.color + '55'
+                }}
               >
-                {testimonials[active].avatar}
+                {t.avatar}
               </div>
               <div>
-                <p className="testi__name">{testimonials[active].name}</p>
-                <p className="testi__meta">{testimonials[active].level} · {testimonials[active].uni}</p>
-                <p className="testi__country">{testimonials[active].country}</p>
+                <p className="testi__name">{t.name}</p>
+                <p className="testi__meta">{t.language}</p>
+                <p className="testi__country">ISML Student ⭐⭐⭐⭐⭐</p>
               </div>
             </div>
           </div>
@@ -118,7 +132,7 @@ export default function Testimonials() {
               <button
                 key={i}
                 className={`testi__dot ${active === i ? 'testi__dot--active' : ''}`}
-                onClick={() => { setActive(i); setAuto(false) }}
+                onClick={() => goTo(i)}
               />
             ))}
           </div>
@@ -128,11 +142,14 @@ export default function Testimonials() {
         <div className="testi__thumbs reveal">
           {testimonials.map((t, i) => (
             <button
-              key={t.name}
+              key={t.name + i}
               className={`testi__thumb ${active === i ? 'testi__thumb--active' : ''}`}
-              onClick={() => { setActive(i); setAuto(false) }}
+              onClick={() => goTo(i)}
             >
-              <div className="testi__thumb-avatar" style={{ background: t.color + '33', borderColor: t.color + '66' }}>
+              <div
+                className="testi__thumb-avatar"
+                style={{ background: t.color + '33', borderColor: t.color + '66' }}
+              >
                 {t.avatar}
               </div>
               <span className="testi__thumb-name">{t.name.split(' ')[0]}</span>
