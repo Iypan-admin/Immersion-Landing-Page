@@ -30,7 +30,6 @@ export default function Navbar() {
           </div>
           <div className="navbar__logo-text">
             <span className="navbar__logo-name">ISML</span>
-            <span className="navbar__logo-sub">Foundation</span>
           </div>
         </a>
 

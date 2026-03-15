@@ -16,7 +16,6 @@ export default function Footer() {
             </div>
             <div className="footer__logo-brand-text">
               <span className="footer__logo-name">ISML</span>
-              <span className="footer__logo-sub">Foundation</span>
             </div>
           </div>
           <p className="footer__tagline">

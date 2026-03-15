@@ -64,13 +64,6 @@
   color: var(--white);
   letter-spacing: 0.04em;
 }
-.navbar__logo-sub {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--gold);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
 
 /* ── Links ── */
 .navbar__links {

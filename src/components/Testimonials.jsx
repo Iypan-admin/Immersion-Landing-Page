@@ -60,20 +60,42 @@ const testimonials = [
   },
 ]
 
+const counselors = [
+  {
+    initials: 'PR',
+    name: 'Poornima Rajaram',
+    role: 'Founder & Senior Language Trainer',
+    org: 'ISML',
+    color: '#7c5cbf',
+    badge: 'Since 2014',
+    tags: ['French', 'German', 'DELF Prep', 'Goethe Exam'],
+    bio: "At ISML, learning a language is about creating new opportunities. Since 2014, our programs have helped thousands of students build real speaking confidence and prepare for international exams like DELF and Goethe — through a practical, immersive teaching approach.",
+  },
+  {
+    initials: 'RM',
+    name: 'Ramesh',
+    role: 'Senior Study Abroad Counselor',
+    org: 'Success Learning',
+    color: '#4f6ef7',
+    badge: '500+ Placements',
+    tags: ['University Admissions', 'Visa Guidance', 'Scholarships'],
+    bio: "From application to arrival, Ramesh helps language-ready students find the right university in Germany, France, or Japan — with complete support on admissions, scholarships, education loans, and visa processing.",
+  },
+]
+
 export default function Testimonials() {
   const [active, setActive]   = useState(0)
   const [auto, setAuto]       = useState(true)
   const [animKey, setAnimKey] = useState(0)
-  const ref     = useRef(null)
+  const ref = useRef(null)
 
-  // ── Swipe state ──
   const trackRef    = useRef(null)
   const touchStartX = useRef(null)
   const touchStartY = useRef(null)
   const isDragging  = useRef(false)
   const dragDelta   = useRef(0)
 
-  // Auto-cycle (desktop)
+  // Auto-cycle
   useEffect(() => {
     if (!auto) return
     const t = setInterval(() => {
@@ -93,13 +115,9 @@ export default function Testimonials() {
     return () => observer.disconnect()
   }, [])
 
-  const goTo = (i) => {
-    setActive(i)
-    setAnimKey(k => k + 1)
-    setAuto(false)
-  }
+  const goTo = (i) => { setActive(i); setAnimKey(k => k + 1); setAuto(false) }
 
-  // ── Keep track position in sync ──
+  // Keep track in sync
   useEffect(() => {
     if (trackRef.current) {
       trackRef.current.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
@@ -107,28 +125,22 @@ export default function Testimonials() {
     }
   }, [active])
 
-  // ── Touch handlers ──
   const onTouchStart = useCallback((e) => {
     touchStartX.current = e.touches[0].clientX
     touchStartY.current = e.touches[0].clientY
     isDragging.current  = true
     dragDelta.current   = 0
-    if (trackRef.current) {
-      trackRef.current.style.transition = 'none'
-    }
+    if (trackRef.current) trackRef.current.style.transition = 'none'
   }, [])
 
   const onTouchMove = useCallback((e) => {
     if (!isDragging.current) return
     const dx = e.touches[0].clientX - touchStartX.current
     const dy = e.touches[0].clientY - touchStartY.current
-    // If scrolling vertically more than horizontally, don't intercept
     if (Math.abs(dy) > Math.abs(dx) && Math.abs(dragDelta.current) < 5) return
     dragDelta.current = dx
-    const base = -active * 100
-    const pct  = (dx / (trackRef.current?.offsetWidth || window.innerWidth)) * 100
     if (trackRef.current) {
-      trackRef.current.style.transform = `translateX(calc(${base}% + ${dx}px))`
+      trackRef.current.style.transform = `translateX(calc(${-active * 100}% + ${dx}px))`
     }
   }, [active])
 
@@ -141,7 +153,6 @@ export default function Testimonials() {
     } else if (dragDelta.current > threshold && active > 0) {
       goTo(active - 1)
     } else {
-      // Snap back
       if (trackRef.current) {
         trackRef.current.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
         trackRef.current.style.transform  = `translateX(-${active * 100}%)`
@@ -154,6 +165,8 @@ export default function Testimonials() {
   return (
     <section className="section testimonials" id="testimonials" ref={ref}>
       <div className="container">
+
+        {/* ── Section header ── */}
         <div className="text-center">
           <div className="badge reveal">✦ Student Stories</div>
           <h2 className="section-title reveal">
@@ -198,7 +211,7 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* ── MOBILE: swipe slider (no name tags) ── */}
+        {/* ── MOBILE: swipe slider ── */}
         <div
           className="testi__slider reveal"
           onTouchStart={onTouchStart}
@@ -262,6 +275,87 @@ export default function Testimonials() {
             </button>
           ))}
         </div>
+
+        {/* ══════════════════════════════════════════
+            COUNSELOR PROFILE CARDS
+        ══════════════════════════════════════════ */}
+        <div className="testi__counselors-wrap reveal">
+          {/* Section divider label */}
+          <div className="testi__counselors-divider">
+            <span>Meet Your Expert Counselors</span>
+          </div>
+
+          <div className="testi__counselors-grid">
+            {counselors.map(c => (
+              <div
+                key={c.name}
+                className="testi__counselor-card"
+                style={{ '--c-color': c.color }}
+              >
+                {/* Top gradient accent bar */}
+                <div
+                  className="testi__counselor-bar"
+                  style={{ background: `linear-gradient(90deg, ${c.color}cc, ${c.color}33, transparent)` }}
+                />
+
+                {/* Header: avatar + name + status */}
+                <div className="testi__counselor-header">
+                  <div
+                    className="testi__counselor-avatar"
+                    style={{
+                      background: `linear-gradient(135deg, ${c.color}44, ${c.color}88)`,
+                      borderColor: c.color + '60',
+                      boxShadow: `0 0 0 4px ${c.color}18`,
+                    }}
+                  >
+                    {c.initials}
+                  </div>
+                  <div className="testi__counselor-identity">
+                    <p className="testi__counselor-name">{c.name}</p>
+                    <p className="testi__counselor-role">
+                      {c.role}
+                      <span className="testi__counselor-org" style={{ color: c.color }}>
+                        {' '}· {c.org}
+                      </span>
+                    </p>
+                    <div className="testi__counselor-status">
+                      <span
+                        className="testi__counselor-dot"
+                        style={{ background: c.color }}
+                      />
+                      <span className="testi__counselor-badge-text">{c.badge}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bio */}
+                <p className="testi__counselor-bio">{c.bio}</p>
+
+                {/* Expertise tags */}
+                <div className="testi__counselor-tags">
+                  {c.tags.map(tag => (
+                    <span
+                      key={tag}
+                      className="testi__counselor-tag"
+                      style={{ borderColor: c.color + '44', color: c.color }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* CTA link */}
+                <a href="#enquire" className="testi__counselor-cta">
+                  <span>Talk to {c.name.split(' ')[0]}</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
     </section>
   )
