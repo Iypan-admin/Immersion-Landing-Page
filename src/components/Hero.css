@@ -1,6 +1,6 @@
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 10vh;
   display: flex;
   align-items: center;
   padding-top: 80px;
