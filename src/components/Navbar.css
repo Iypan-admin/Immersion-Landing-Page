@@ -40,16 +40,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.15);
 }
 
-/* Make logo fill circle properly */
+/* Fix logo fill */
 .navbar__logo-isml {
   width: 100%;
   height: 100%;
-  object-fit: cover;       /* ensures it fills the circle */
-  object-position: center; /* keep logo centered */
-  transform: scale(1.15);  /* slight zoom to remove inner padding */
+  object-fit: cover;
+  transform: scale(1.5); /* zooms image to remove inner padding */
 }
 
 /* Text beside logo */
@@ -202,7 +200,7 @@
   .navbar__logo-isml {
     width: 100%;
     height: 100%;
-    transform: scale(1.15);
+    transform: scale(1.35);
   }
 
   .navbar__logo-name {

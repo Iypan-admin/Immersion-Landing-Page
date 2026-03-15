@@ -25,6 +25,7 @@ export default function App() {
         <Testimonials />
         <LeadForm />
       </main>
+      
       <Footer />
     </>
   )
