@@ -1,6 +1,7 @@
+/* --- MAIN HERO CONTAINER --- */
 .hero {
   position: relative;
-  min-height: 10vh;
+  min-height: 100vh; /* Keeps it tall and centered on big screens */
   display: flex;
   align-items: center;
   padding-top: 80px;
@@ -311,7 +312,18 @@
 
 /* ── MOBILE FIXES ── */
 @media (max-width: 480px) {
-  .hero__inner { padding-top: 20px; padding-bottom: 60px; gap: 32px; }
+  
+  /* OVERRIDE ADDED HERE */
+  .hero {
+    min-height: auto; /* Drops the 100vh requirement on small screens */
+    padding-top: 130px; /* Pushes content down safely below the navbar */
+    padding-bottom: 60px; /* Adds breathing room at the bottom */
+    align-items: flex-start; /* Stops the grid from centering vertically */
+  }
+
+  /* Zeroed out inner padding so it doesn't add to the 130px above */
+  .hero__inner { padding-top: 0; padding-bottom: 0; gap: 32px; } 
+  
   .hero__title { font-size: 2.1rem; }
   .hero__desc { font-size: 0.95rem; }
   .hero__langs { gap: 8px; }
