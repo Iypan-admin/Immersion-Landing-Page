@@ -64,7 +64,7 @@ const counselors = [
   {
     initials: 'PR',
     name: 'Poornima Rajaram',
-    role: 'Founder & Senior Language Trainer',
+    role: 'Senior Language Trainer',
     org: 'ISML',
     color: '#7c5cbf',
     badge: 'Since 2014',

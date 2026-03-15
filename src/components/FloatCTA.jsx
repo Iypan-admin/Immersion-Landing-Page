@@ -21,7 +21,6 @@ export default function FloatCTA() {
   return (
     <div className={`float-cta ${visible ? 'float-cta--visible' : ''}`}>
       {/* Close */}
-      <button className="float-cta__close" onClick={handleDismiss} aria-label="Close">×</button>
 
       {/* Header */}
       <div className="float-cta__body">
