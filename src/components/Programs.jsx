@@ -5,31 +5,40 @@ import slLogo from '../assets/success-learning-logo.png'
 
 const programs = [
   {
-    lang: 'French', flag: '🇫🇷', destination: 'France / Canada',
-    color: '#4f6ef7', glow: 'rgba(79,110,247,0.25)',
-    batches: [
-      { level: 'A1 → B2', duration: '9 Months', sessions: '3x / week', tag: 'Complete Track' },
-      { level: 'A1 → B1', duration: '6 Months', sessions: '3x / week', tag: 'Foundation' },
-    ],
+    lang: 'French',
+    flag: '🇫🇷',
+    destination: 'France / Canada',
+    color: '#4f6ef7',
+    glow: 'rgba(79,110,247,0.22)',
     desc: 'From bonjour to fluent. Get B1/B2 ready for admission to top French universities and grandes écoles.',
+    batches: [
+      { level: 'A1 → B1', duration: '5 Months', mode: 'Online', type: 'Immersion', fullFee: '₹48,676', monthly: '₹9,735', tag: 'Foundation' },
+      { level: 'A1 → B2', duration: '6 Months', mode: 'Online', type: 'Immersion', fullFee: '₹58,675', monthly: '₹9,779', tag: 'Complete Track' },
+    ],
   },
   {
-    lang: 'German', flag: '🇩🇪', destination: 'Germany / Austria',
-    color: '#e8c96a', glow: 'rgba(232,201,106,0.2)',
-    batches: [
-      { level: 'A1 → B2', duration: '9 Months', sessions: '3x / week', tag: 'Complete Track' },
-      { level: 'A1 → B1', duration: '6 Months', sessions: '3x / week', tag: 'Foundation' },
-    ],
+    lang: 'German',
+    flag: '🇩🇪',
+    destination: 'Germany / Austria',
+    color: '#e8c96a',
+    glow: 'rgba(232,201,106,0.18)',
     desc: 'Germany requires B1/B2 for most universities. Our immersion method gets you there with confidence.',
+    batches: [
+      { level: 'A1 → B1', duration: '5 Months', mode: 'Online', type: 'Immersion', fullFee: '₹48,676', monthly: '₹9,735', tag: 'Foundation' },
+      { level: 'A1 → B2', duration: '6 Months', mode: 'Online', type: 'Immersion', fullFee: '₹58,675', monthly: '₹9,779', tag: 'Complete Track' },
+    ],
   },
   {
-    lang: 'Japanese', flag: '🇯🇵', destination: 'Japan',
-    color: '#e86a9e', glow: 'rgba(232,106,158,0.2)',
+    lang: 'Japanese',
+    flag: '🇯🇵',
+    destination: 'Japan',
+    color: '#e86a9e',
+    glow: 'rgba(232,106,158,0.18)',
+    desc: "JLPT N3 is the gateway to Japan's top universities. Start at zero and reach exam-ready fast.",
     batches: [
-      { level: 'N5 → N3', duration: '10 Months', sessions: '4x / week', tag: 'Advanced Track' },
-      { level: 'N5 → N4', duration: '6 Months',  sessions: '3x / week', tag: 'Foundation' },
+      { level: 'N5 → N4', duration: '4 Months', mode: 'Online', type: 'Immersion', fullFee: '₹29,682', monthly: '₹9,894', tag: 'Foundation' },
+      { level: 'N5 → N3', duration: '6 Months', mode: 'Online', type: 'Immersion', fullFee: '₹58,675', monthly: '₹9,779', tag: 'Advanced Track' },
     ],
-    desc: 'JLPT N3 is the gateway to Japan\'s top universities. Start at zero and reach exam-ready fast.',
   },
 ]
 
@@ -62,7 +71,7 @@ export default function Programs() {
           </p>
         </div>
 
-        {/* ── Partnership banner ── */}
+        {/* Partnership banner */}
         <div className="programs__partnership reveal">
           <div className="programs__partnership-left">
             <div className="programs__partner-logo-wrap">
@@ -84,7 +93,7 @@ export default function Programs() {
           </div>
         </div>
 
-        {/* Tabs */}
+        {/* Language tabs */}
         <div className="programs__tabs reveal">
           {programs.map((p, i) => (
             <button
@@ -100,14 +109,18 @@ export default function Programs() {
         </div>
 
         {/* Program panel */}
-        <div className="programs__panel reveal" key={active}
-          style={{ '--panel-glow': prog.glow, '--panel-color': prog.color }}>
+        <div
+          className="programs__panel reveal"
+          key={active}
+          style={{ '--panel-glow': prog.glow, '--panel-color': prog.color }}
+        >
+          {/* Left: overview */}
           <div className="programs__panel-left">
             <div className="programs__panel-header">
               <span className="programs__flag">{prog.flag}</span>
               <div>
                 <h3 className="programs__lang-title">{prog.lang} Immersion</h3>
-                <p className="programs__destination">📍 Study Destination: {prog.destination}</p>
+                <p className="programs__destination">📍 {prog.destination}</p>
               </div>
             </div>
             <p className="programs__panel-desc">{prog.desc}</p>
@@ -127,26 +140,48 @@ export default function Programs() {
             </a>
           </div>
 
+          {/* Right: fee cards */}
           <div className="programs__panel-right">
             {prog.batches.map(b => (
               <div key={b.level} className="batch-card">
-                <div className="batch-card__top">
-                  <span className="batch-card__tag">{b.tag}</span>
-                  <span className="batch-card__level">{b.level}</span>
-                </div>
-                <div className="batch-card__details">
-                  <div className="batch-detail">
-                    <span className="batch-detail__icon">⏱</span>
-                    <span className="batch-detail__label">Duration</span>
-                    <span className="batch-detail__val">{b.duration}</span>
-                  </div>
-                  <div className="batch-detail">
-                    <span className="batch-detail__icon">📅</span>
-                    <span className="batch-detail__label">Sessions</span>
-                    <span className="batch-detail__val">{b.sessions}</span>
+                {/* Card header */}
+                <div className="batch-card__header">
+                  <div className="batch-card__top">
+                    <span className="batch-card__tag">{b.tag}</span>
+                    <span className="batch-card__level">{prog.flag} {b.level}</span>
                   </div>
                 </div>
-                <a href="#enquire" className="batch-card__btn">Apply for this batch →</a>
+
+                {/* Meta row */}
+                <div className="batch-card__meta">
+                  <div className="batch-meta-pill">
+                    <span className="batch-meta-pill__icon">⏱</span>
+                    <span>{b.duration}</span>
+                  </div>
+                  <div className="batch-meta-pill">
+                    <span className="batch-meta-pill__icon">💻</span>
+                    <span>{b.mode}</span>
+                  </div>
+                  <div className="batch-meta-pill">
+                    <span className="batch-meta-pill__icon">🎯</span>
+                    <span>{b.type}</span>
+                  </div>
+                </div>
+
+                {/* Fee section */}
+                <div className="batch-card__fees">
+                  <div className="batch-fee batch-fee--full">
+                    <span className="batch-fee__label">Full Fee</span>
+                    <span className="batch-fee__amount">{b.fullFee}</span>
+                  </div>
+                  <div className="batch-fee-divider" />
+                  <div className="batch-fee batch-fee--emi">
+                    <span className="batch-fee__label">Monthly EMI</span>
+                    <span className="batch-fee__amount batch-fee__amount--emi">{b.monthly}<span className="batch-fee__mo">/mo</span></span>
+                  </div>
+                </div>
+
+                <a href="#enquire" className="batch-card__cta">Apply for this batch →</a>
               </div>
             ))}
           </div>

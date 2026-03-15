@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react'
 import './FloatCTA.css'
 
 export default function FloatCTA() {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible]     = useState(false)
   const [dismissed, setDismissed] = useState(false)
 
-  // Show after scrolling 300px, hide if user dismissed
   useEffect(() => {
     const onScroll = () => {
       if (!dismissed) setVisible(window.scrollY > 300)
@@ -14,10 +13,6 @@ export default function FloatCTA() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [dismissed])
 
-  const handleCTA = () => {
-    document.getElementById('enquire')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
   const handleDismiss = () => {
     setDismissed(true)
     setVisible(false)
@@ -25,17 +20,34 @@ export default function FloatCTA() {
 
   return (
     <div className={`float-cta ${visible ? 'float-cta--visible' : ''}`}>
+      {/* Close */}
       <button className="float-cta__close" onClick={handleDismiss} aria-label="Close">×</button>
+
+      {/* Header */}
       <div className="float-cta__body">
         <div className="float-cta__icon">🎓</div>
         <div className="float-cta__text">
-          <p className="float-cta__title">Free Language Counseling</p>
-          <p className="float-cta__sub">Talk to our expert — no commitment needed</p>
+          <p className="float-cta__title">Talk to an Expert</p>
+          <p className="float-cta__sub">Free counseling — no commitment needed</p>
         </div>
       </div>
-      <button className="float-cta__btn" onClick={handleCTA}>
-        Get Free Guidance →
-      </button>
+
+      {/* Action buttons */}
+      <div className="float-cta__actions">
+        <a href="tel:+91XXXXXXXXXX" className="float-cta__btn float-cta__btn--call">
+          <span className="float-cta__btn-icon">📞</span>
+          <span>Call an Expert</span>
+        </a>
+        <a
+          href="https://wa.me/91XXXXXXXXXX"
+          target="_blank"
+          rel="noreferrer"
+          className="float-cta__btn float-cta__btn--wa"
+        >
+          <span className="float-cta__btn-icon">💬</span>
+          <span>Chat on WhatsApp</span>
+        </a>
+      </div>
     </div>
   )
 }
