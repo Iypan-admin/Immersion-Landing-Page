@@ -232,5 +232,13 @@
   .about__journey    { padding: 20px 16px; }
   .journey__dot      { width: 40px; height: 40px; }
   .journey__indicator { width: 40px; margin-right: 14px; }
-  .journey__sublabel  { display: none; }
+  
+  /* Fix: Adjust font sizes instead of hiding the text */
+  .journey__label    { font-size: 0.9rem; }
+  .journey__sublabel { 
+    display: block; 
+    font-size: 0.72rem; 
+    line-height: 1.3; 
+    margin-top: 2px;
+  }
 }
