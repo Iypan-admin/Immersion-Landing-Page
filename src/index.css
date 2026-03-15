@@ -116,11 +116,13 @@ ul { list-style: none; }
   margin: 0 auto;
   padding: 0 24px;
 }
+
+/* ── TIGHTENED SECTION SPACING ── */
 .section {
-  padding: 96px 0;
+  padding: 72px 0;
 }
 .section-sm {
-  padding: 64px 0;
+  padding: 48px 0;
 }
 .text-center { text-align: center; }
 
@@ -137,7 +139,7 @@ ul { list-style: none; }
   text-transform: uppercase;
   padding: 6px 14px;
   border-radius: 100px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .section-title {
@@ -146,7 +148,7 @@ ul { list-style: none; }
   font-weight: 700;
   color: var(--white);
   line-height: 1.2;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 .section-title span {
   background: linear-gradient(135deg, var(--gold), var(--purple-300));
@@ -158,7 +160,7 @@ ul { list-style: none; }
   font-size: 1.05rem;
   color: var(--text-muted);
   max-width: 540px;
-  margin: 0 auto 48px;
+  margin: 0 auto 36px;
 }
 
 /* ── Noise texture overlay ───────────────────────────────────── */
@@ -174,23 +176,19 @@ body::before {
 
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .section { padding: 64px 0; }
-  .section-sm { padding: 48px 0; }
-}
-
-/* ── Global mobile touch improvements ─────────── */
-@media (max-width: 768px) {
+  .section { padding: 52px 0; }
+  .section-sm { padding: 36px 0; }
   html { font-size: 15px; }
   .container { padding: 0 18px; }
-  .section { padding: 64px 0; }
-  .badge { font-size: 0.7rem; }
+  .badge { font-size: 0.7rem; margin-bottom: 12px; }
   .section-title { font-size: clamp(1.7rem, 6vw, 2.4rem); }
-  .section-subtitle { font-size: 0.9rem; margin-bottom: 36px; }
+  .section-subtitle { font-size: 0.9rem; margin-bottom: 28px; }
 }
 @media (max-width: 480px) {
   html { font-size: 14px; }
   .container { padding: 0 16px; }
-  .section { padding: 52px 0; }
+  .section { padding: 44px 0; }
+  .section-sm { padding: 28px 0; }
 }
 
 /* Safety net: never let .reveal block critical UI */

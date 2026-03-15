@@ -1,12 +1,11 @@
-/* ── PREMIUM FOOTER UPGRADE ── */
+/* ── FOOTER ── */
 .footer {
   background: linear-gradient(180deg, var(--purple-950) 0%, #06020d 100%);
   position: relative;
   overflow: hidden;
-  border-top: none; /* Removed the harsh solid border */
+  border-top: none;
 }
 
-/* Glowing horizon line at the top */
 .footer::before {
   content: '';
   position: absolute;
@@ -16,7 +15,6 @@
   opacity: 0.8;
 }
 
-/* Massive soft glow pouring down into the footer */
 .footer::after {
   content: '';
   position: absolute;
@@ -30,28 +28,25 @@
 .footer__inner {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1.2fr;
-  gap: 48px;
-  
-  /* This FORCES a ~1.5cm gap at the top, overriding anything else */
-  padding-top: 60px !important; 
-  
-  padding-bottom: 48px;
+  gap: 36px;
+  padding-top: 44px;
+  padding-bottom: 36px;
 }
 
-/* ── ISML Brand Section (Left Column) ── */
+/* ── ISML Brand Section ── */
 .footer__logos {
   display: flex;
   align-items: center;
-  gap: 14px; /* Slightly wider gap */
-  margin-bottom: 24px; /* Pushed tagline further down */
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .footer__logo-isml-wrap {
-  width: 54px; height: 54px; /* Made the badge slightly larger */
+  width: 54px; height: 54px;
   border-radius: 50%;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0 0 0 2px rgba(232,201,106,0.3), 0 8px 16px rgba(0,0,0,0.2); /* Added a drop shadow for depth */
+  box-shadow: 0 0 0 2px rgba(232,201,106,0.3), 0 8px 16px rgba(0,0,0,0.2);
   flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
 }
@@ -65,7 +60,7 @@
 }
 
 .footer__logo-brand-text {
-  display: flex; flex-direction: column; gap: 4px;
+  display: flex; flex-direction: column; gap: 3px;
 }
 
 .footer__logo-name {
@@ -82,37 +77,37 @@
 
 /* ── Typography & Contact ── */
 .footer__tagline {
-  font-size: 0.95rem;
-  color: var(--purple-200); /* Softened from standard muted text */
-  line-height: 1.8; /* Increased line height to reduce congestion */
-  margin-bottom: 32px; /* Huge space before contact info to create distinct sections */
+  font-size: 0.9rem;
+  color: var(--purple-200);
+  line-height: 1.7;
+  margin-bottom: 20px;
   max-width: 340px;
 }
 
 .footer__contact {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Spaced out the phone and email */
+  gap: 12px;
 }
 
 .footer__contact-link {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--text-body);
   transition: all var(--transition);
 }
 
 .footer__contact-link:hover { 
   color: var(--gold); 
-  transform: translateX(4px); /* Premium slide effect */
+  transform: translateX(4px);
 }
 
-/* ── Success Learning Partner Card (Premium Look) ── */
+/* ── Partner Card ── */
 .footer__partner-card {
-  margin-top: 40px; /* Pushed far away from the contact info */
-  padding: 20px 24px; /* Much more interior breathing room */
+  margin-top: 24px;
+  padding: 16px 20px;
   background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -123,35 +118,35 @@
 }
 
 .footer__partner-label {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   display: block;
 }
 
 .footer__partner-sl {
   display: flex;
   align-items: center;
-  gap: 16px; /* Spaced the logo away from the text */
+  gap: 14px;
 }
 
 .footer__partner-sl-logo {
   background: #fff;
   border-radius: 6px;
-  padding: 6px 8px;
+  padding: 5px 7px;
   display: flex; align-items: center;
   flex-shrink: 0;
 }
 
 .footer__partner-sl-logo img {
-  height: 24px; width: auto; display: block;
+  height: 22px; width: auto; display: block;
 }
 
 .footer__partner-sl-desc {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
   line-height: 1.5;
   margin: 0;
@@ -160,24 +155,24 @@
 /* ── Link Columns ── */
 .footer__col-title {
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   background: linear-gradient(135deg, var(--white), var(--purple-300));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 .footer__list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .footer__list a {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
   transition: all var(--transition);
   display: inline-block;
@@ -190,24 +185,24 @@
 
 /* ── Connect Buttons ── */
 .footer__connect-text {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .footer__expert-btns {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .footer__expert-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 20px;
+  padding: 10px 18px;
   border-radius: var(--radius-sm);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   transition: transform var(--transition), box-shadow var(--transition);
   border: 1px solid;
@@ -229,30 +224,40 @@
 
 /* ── Bottom Bar ── */
 .footer__bottom {
-  border-top: 1px solid rgba(255,255,255,0.05); /* Extremely subtle line */
-  padding: 24px 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 18px 0;
 }
 
 .footer__bottom-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .footer__inner {
     grid-template-columns: 1fr 1fr;
-    gap: 48px 32px;
+    gap: 36px 28px;
+    padding-top: 36px;
+    padding-bottom: 28px;
   }
   .footer__brand { grid-column: span 2; }
 }
 
 @media (max-width: 480px) {
-  .footer__inner { grid-template-columns: 1fr; padding-top: 48px; }
+  .footer__inner {
+    grid-template-columns: 1fr;
+    padding-top: 32px;
+    padding-bottom: 24px;
+    gap: 28px;
+  }
   .footer__brand { grid-column: span 1; }
+  .footer__tagline { font-size: 0.85rem; margin-bottom: 14px; }
+  .footer__logos { margin-bottom: 12px; }
+  .footer__partner-card { margin-top: 18px; }
 }

@@ -1,7 +1,7 @@
 /* --- MAIN HERO CONTAINER --- */
 .hero {
   position: relative;
-  min-height: 100vh; /* Keeps it tall and centered on big screens */
+  min-height: 100vh;
   display: flex;
   align-items: center;
   padding-top: 80px;
@@ -54,7 +54,7 @@
   gap: 64px;
   align-items: center;
   padding-top: 40px;
-  padding-bottom: 80px;
+  padding-bottom: 72px;
 }
 
 /* Content */
@@ -65,7 +65,7 @@
   color: var(--white);
   line-height: 1.1;
   letter-spacing: -0.02em;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 .hero__title-highlight {
   background: linear-gradient(135deg, var(--gold) 0%, #f0b8ff 100%);
@@ -77,10 +77,10 @@
 }
 
 .hero__desc {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--text-body);
   line-height: 1.7;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   max-width: 480px;
 }
 
@@ -88,8 +88,8 @@
 .hero__langs {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 36px;
+  gap: 8px;
+  margin-bottom: 28px;
 }
 .lang-pill {
   display: flex;
@@ -98,21 +98,21 @@
   background: rgba(30,15,64,0.8);
   border: 1px solid rgba(90,53,176,0.35);
   border-radius: 100px;
-  padding: 8px 16px;
+  padding: 7px 14px;
   transition: border-color var(--transition), transform var(--transition);
 }
 .lang-pill:hover {
   border-color: var(--purple-400);
   transform: translateY(-2px);
 }
-.lang-pill__flag { font-size: 1.1rem; }
+.lang-pill__flag { font-size: 1.05rem; }
 .lang-pill__name {
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--white);
 }
 .lang-pill__level {
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   color: var(--gold);
   font-weight: 500;
 }
@@ -120,8 +120,8 @@
 /* CTAs */
 .hero__ctas {
   display: flex;
-  gap: 14px;
-  margin-bottom: 48px;
+  gap: 12px;
+  margin-bottom: 40px;
   flex-wrap: wrap;
 }
 
@@ -158,7 +158,7 @@
 /* Stats */
 .hero__stats {
   display: flex;
-  gap: 32px;
+  gap: 28px;
   flex-wrap: wrap;
 }
 .hero__stat {
@@ -167,13 +167,13 @@
 }
 .hero__stat-num {
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--white);
   line-height: 1;
 }
 .hero__stat-label {
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   color: var(--text-muted);
   margin-top: 4px;
   letter-spacing: 0.04em;
@@ -262,7 +262,7 @@
 /* Scroll indicator */
 .hero__scroll {
   position: absolute;
-  bottom: 32px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -295,13 +295,13 @@
   .hero__inner {
     grid-template-columns: 1fr;
     text-align: center;
-    gap: 48px;
+    gap: 40px;
   }
   .hero__langs { justify-content: center; }
   .hero__ctas  { justify-content: center; }
   .hero__stats { justify-content: center; }
   .hero__desc  { margin-left: auto; margin-right: auto; }
-  .hero__visual { height: 320px; }
+  .hero__visual { height: 300px; }
   .hero__card-stack { transform: scale(0.85); }
 }
 
@@ -312,24 +312,22 @@
 
 /* ── MOBILE FIXES ── */
 @media (max-width: 480px) {
-  
-  /* OVERRIDE ADDED HERE */
   .hero {
-    min-height: auto; /* Drops the 100vh requirement on small screens */
-    padding-top: 130px; /* Pushes content down safely below the navbar */
-    padding-bottom: 60px; /* Adds breathing room at the bottom */
-    align-items: flex-start; /* Stops the grid from centering vertically */
+    min-height: auto;
+    padding-top: 120px;
+    padding-bottom: 48px;
+    align-items: flex-start;
   }
 
-  /* Zeroed out inner padding so it doesn't add to the 130px above */
-  .hero__inner { padding-top: 0; padding-bottom: 0; gap: 32px; } 
+  .hero__inner { padding-top: 0; padding-bottom: 0; gap: 24px; } 
   
-  .hero__title { font-size: 2.1rem; }
-  .hero__desc { font-size: 0.95rem; }
-  .hero__langs { gap: 8px; }
-  .lang-pill { padding: 6px 12px; }
-  .lang-pill__name { font-size: 0.8rem; }
-  .btn { padding: 12px 20px; font-size: 0.88rem; }
-  .hero__stats { gap: 20px; }
-  .hero__stat-num { font-size: 1.3rem; }
+  .hero__title { font-size: 2rem; margin-bottom: 12px; }
+  .hero__desc { font-size: 0.92rem; margin-bottom: 20px; }
+  .hero__langs { gap: 7px; margin-bottom: 22px; }
+  .lang-pill { padding: 6px 11px; }
+  .lang-pill__name { font-size: 0.78rem; }
+  .btn { padding: 11px 18px; font-size: 0.86rem; }
+  .hero__ctas { gap: 10px; margin-bottom: 28px; }
+  .hero__stats { gap: 18px; }
+  .hero__stat-num { font-size: 1.25rem; }
 }

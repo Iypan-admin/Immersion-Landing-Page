@@ -6,16 +6,16 @@
 .about__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 36px;
-  margin-bottom: 36px;
+  gap: 10px;
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
 
 .about__card {
   background: rgba(30,15,64,0.55);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 18px 14px 20px;
+  padding: 16px 14px 18px;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -23,10 +23,10 @@
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .about__card:active { transform: scale(0.97); }
-.about__card-top    { margin-bottom: 8px; }
-.about__card-icon   { font-size: 1.75rem; line-height: 1; display: block; }
-.about__card-title  { font-size: 0.85rem; font-weight: 700; color: var(--white); margin-bottom: 6px; line-height: 1.3; }
-.about__card-desc   { font-size: 0.76rem; color: var(--text-muted); line-height: 1.6; flex: 1; }
+.about__card-top    { margin-bottom: 6px; }
+.about__card-icon   { font-size: 1.6rem; line-height: 1; display: block; }
+.about__card-title  { font-size: 0.82rem; font-weight: 700; color: var(--white); margin-bottom: 5px; line-height: 1.3; }
+.about__card-desc   { font-size: 0.74rem; color: var(--text-muted); line-height: 1.55; flex: 1; }
 .about__card-glow   {
   position: absolute; inset: 0;
   background: radial-gradient(ellipse at top left, rgba(90,53,176,0.1), transparent 65%);
@@ -38,7 +38,7 @@
   background: rgba(30,15,64,0.55);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 28px 22px;
+  padding: 22px 18px;
   margin-top: 0;
 }
 
@@ -56,14 +56,14 @@
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
-  width: 50px;
-  margin-right: 16px;
+  width: 46px;
+  margin-right: 14px;
 }
 
 /* ── Dot ── */
 .journey__dot {
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: rgba(30,15,64,0.9);
   border: 2px solid var(--border);
@@ -79,13 +79,13 @@
               box-shadow 0.4s ease;
 }
 .journey__dot-num {
-  font-size: 1rem; font-weight: 800;
+  font-size: 0.95rem; font-weight: 800;
   color: var(--text-muted);
   position: absolute;
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 .journey__dot-icon {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   position: absolute;
   opacity: 0;
   transform: scale(0.4) rotate(-20deg);
@@ -113,7 +113,7 @@
 .journey__line {
   width: 2px;
   flex: 1;
-  min-height: 28px;
+  min-height: 24px;
   background: var(--border);
   margin: 3px 0;
   border-radius: 2px;
@@ -138,7 +138,7 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
-  padding: 10px 0 28px; /* bottom padding = gap to next step */
+  padding: 8px 0 22px;
   opacity: 0;
   transform: translateX(-6px);
   transition: opacity 0.4s ease, transform 0.4s ease;
@@ -148,35 +148,35 @@
 /* Last step — no bottom padding */
 .journey__step:last-child .journey__text { padding-bottom: 0; }
 
-.journey__label    { font-size: 0.95rem; font-weight: 700; color: var(--white); line-height: 1.2; }
-.journey__sublabel { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+.journey__label    { font-size: 0.92rem; font-weight: 700; color: var(--white); line-height: 1.2; }
+.journey__sublabel { font-size: 0.76rem; color: var(--text-muted); line-height: 1.5; }
 
 /* ═══════════════════════════════════════════════════════════
    TABLET 768px+
 ═══════════════════════════════════════════════════════════ */
 @media (min-width: 768px) {
-  .about__grid  { gap: 16px; margin-top: 44px; margin-bottom: 44px; }
-  .about__card  { padding: 24px 18px 26px; border-radius: 18px; }
-  .about__card-icon  { font-size: 2rem; }
-  .about__card-title { font-size: 0.92rem; }
-  .about__card-desc  { font-size: 0.82rem; }
+  .about__grid  { gap: 14px; margin-top: 32px; margin-bottom: 32px; }
+  .about__card  { padding: 22px 18px 24px; border-radius: 18px; }
+  .about__card-icon  { font-size: 1.9rem; }
+  .about__card-title { font-size: 0.9rem; }
+  .about__card-desc  { font-size: 0.8rem; }
   .about__card:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 32px rgba(90,53,176,0.22);
     border-color: var(--purple-500);
   }
-  .about__journey { padding: 32px 30px; }
-  .journey__text  { padding-bottom: 32px; }
+  .about__journey { padding: 28px 26px; }
+  .journey__text  { padding-bottom: 28px; }
 }
 
 /* ═══════════════════════════════════════════════════════════
    DESKTOP 1024px+ — 4 cards + HORIZONTAL journey
 ═══════════════════════════════════════════════════════════ */
 @media (min-width: 1024px) {
-  .about__grid { grid-template-columns: repeat(4,1fr); gap: 20px; }
-  .about__card { padding: 28px 22px 30px; }
-  .about__card-title { font-size: 1rem; }
-  .about__card-desc  { font-size: 0.88rem; }
+  .about__grid { grid-template-columns: repeat(4,1fr); gap: 18px; }
+  .about__card { padding: 24px 20px 26px; }
+  .about__card-title { font-size: 0.95rem; }
+  .about__card-desc  { font-size: 0.85rem; }
   .about__card:hover { transform: translateY(-6px); }
 
   /* Horizontal journey */
@@ -184,7 +184,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 36px 40px;
+    padding: 30px 36px;
   }
 
   .journey__step {
@@ -199,7 +199,7 @@
     align-items: center;
     width: 100%;
     margin-right: 0;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   /* Horizontal line */
@@ -228,28 +228,26 @@
   }
   .is-active .journey__text { transform: translateY(0); }
 
-  .journey__label    { font-size: 0.9rem; }
-  .journey__sublabel { font-size: 0.75rem; }
+  .journey__label    { font-size: 0.88rem; }
+  .journey__sublabel { font-size: 0.73rem; }
 }
 
 /* ═══════════════════════════════════════════════════════════
    SMALL PHONES 380px and below
 ═══════════════════════════════════════════════════════════ */
 @media (max-width: 380px) {
-  .about__grid  { gap: 10px; margin-top: 28px; margin-bottom: 28px; }
-  .about__card  { padding: 14px 12px 16px; border-radius: 14px; }
-  .about__card-icon  { font-size: 1.5rem; }
-  .about__card-title { font-size: 0.8rem; }
-  .about__card-desc  { font-size: 0.72rem; }
-  .about__journey    { padding: 20px 16px; }
-  .journey__dot      { width: 40px; height: 40px; }
-  .journey__indicator { width: 40px; margin-right: 14px; }
-  
-  /* Fix: Adjust font sizes instead of hiding the text */
-  .journey__label    { font-size: 0.9rem; }
+  .about__grid  { gap: 8px; margin-top: 20px; margin-bottom: 20px; }
+  .about__card  { padding: 12px 10px 14px; border-radius: 14px; }
+  .about__card-icon  { font-size: 1.4rem; }
+  .about__card-title { font-size: 0.78rem; }
+  .about__card-desc  { font-size: 0.7rem; }
+  .about__journey    { padding: 16px 14px; }
+  .journey__dot      { width: 38px; height: 38px; }
+  .journey__indicator { width: 38px; margin-right: 12px; }
+  .journey__label    { font-size: 0.88rem; }
   .journey__sublabel { 
     display: block; 
-    font-size: 0.72rem; 
+    font-size: 0.7rem; 
     line-height: 1.3; 
     margin-top: 2px;
   }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import './Testimonials.css'
 
 const testimonials = [
@@ -61,12 +61,19 @@ const testimonials = [
 ]
 
 export default function Testimonials() {
-  const [active, setActive] = useState(0)
-  const [auto, setAuto]     = useState(true)
+  const [active, setActive]   = useState(0)
+  const [auto, setAuto]       = useState(true)
   const [animKey, setAnimKey] = useState(0)
-  const ref = useRef(null)
+  const ref     = useRef(null)
 
-  // Auto-cycle
+  // ── Swipe state ──
+  const trackRef    = useRef(null)
+  const touchStartX = useRef(null)
+  const touchStartY = useRef(null)
+  const isDragging  = useRef(false)
+  const dragDelta   = useRef(0)
+
+  // Auto-cycle (desktop)
   useEffect(() => {
     if (!auto) return
     const t = setInterval(() => {
@@ -86,7 +93,61 @@ export default function Testimonials() {
     return () => observer.disconnect()
   }, [])
 
-  const goTo = (i) => { setActive(i); setAnimKey(k => k + 1); setAuto(false) }
+  const goTo = (i) => {
+    setActive(i)
+    setAnimKey(k => k + 1)
+    setAuto(false)
+  }
+
+  // ── Keep track position in sync ──
+  useEffect(() => {
+    if (trackRef.current) {
+      trackRef.current.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      trackRef.current.style.transform  = `translateX(-${active * 100}%)`
+    }
+  }, [active])
+
+  // ── Touch handlers ──
+  const onTouchStart = useCallback((e) => {
+    touchStartX.current = e.touches[0].clientX
+    touchStartY.current = e.touches[0].clientY
+    isDragging.current  = true
+    dragDelta.current   = 0
+    if (trackRef.current) {
+      trackRef.current.style.transition = 'none'
+    }
+  }, [])
+
+  const onTouchMove = useCallback((e) => {
+    if (!isDragging.current) return
+    const dx = e.touches[0].clientX - touchStartX.current
+    const dy = e.touches[0].clientY - touchStartY.current
+    // If scrolling vertically more than horizontally, don't intercept
+    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dragDelta.current) < 5) return
+    dragDelta.current = dx
+    const base = -active * 100
+    const pct  = (dx / (trackRef.current?.offsetWidth || window.innerWidth)) * 100
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translateX(calc(${base}% + ${dx}px))`
+    }
+  }, [active])
+
+  const onTouchEnd = useCallback(() => {
+    if (!isDragging.current) return
+    isDragging.current = false
+    const threshold = 50
+    if (dragDelta.current < -threshold && active < testimonials.length - 1) {
+      goTo(active + 1)
+    } else if (dragDelta.current > threshold && active > 0) {
+      goTo(active - 1)
+    } else {
+      // Snap back
+      if (trackRef.current) {
+        trackRef.current.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        trackRef.current.style.transform  = `translateX(-${active * 100}%)`
+      }
+    }
+  }, [active])
 
   const t = testimonials[active]
 
@@ -103,7 +164,7 @@ export default function Testimonials() {
           </p>
         </div>
 
-        {/* Main card */}
+        {/* ── DESKTOP: single animated card ── */}
         <div className="testi__main reveal">
           <div className="testi__card" key={animKey}>
             <div className="testi__quote-icon">"</div>
@@ -126,7 +187,6 @@ export default function Testimonials() {
             </div>
           </div>
 
-          {/* Dots */}
           <div className="testi__dots">
             {testimonials.map((_, i) => (
               <button
@@ -138,21 +198,67 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* Thumbnail row */}
-        <div className="testi__thumbs reveal">
-          {testimonials.map((t, i) => (
+        {/* ── MOBILE: swipe slider (no name tags) ── */}
+        <div
+          className="testi__slider reveal"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          <div className="testi__track" ref={trackRef}>
+            {testimonials.map((item, i) => (
+              <div className="testi__slide" key={i}>
+                <div className="testi__slide-card">
+                  <span className="testi__slide-quote">"</span>
+                  <p className="testi__slide-text">{item.text}</p>
+                  <div className="testi__slide-author">
+                    <div
+                      className="testi__slide-avatar"
+                      style={{
+                        background: `linear-gradient(135deg, ${item.color}33, ${item.color}66)`,
+                        borderColor: item.color + '55'
+                      }}
+                    >
+                      {item.avatar}
+                    </div>
+                    <div>
+                      <p className="testi__slide-name">{item.name}</p>
+                      <p className="testi__slide-meta">{item.language}</p>
+                      <p className="testi__slide-stars">⭐⭐⭐⭐⭐</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile dots */}
+        <div className="testi__slider-dots reveal">
+          {testimonials.map((_, i) => (
             <button
-              key={t.name + i}
+              key={i}
+              className={`testi__slider-dot ${active === i ? 'testi__slider-dot--active' : ''}`}
+              onClick={() => goTo(i)}
+            />
+          ))}
+        </div>
+
+        {/* Desktop thumbnails */}
+        <div className="testi__thumbs reveal">
+          {testimonials.map((item, i) => (
+            <button
+              key={item.name + i}
               className={`testi__thumb ${active === i ? 'testi__thumb--active' : ''}`}
               onClick={() => goTo(i)}
             >
               <div
                 className="testi__thumb-avatar"
-                style={{ background: t.color + '33', borderColor: t.color + '66' }}
+                style={{ background: item.color + '33', borderColor: item.color + '66' }}
               >
-                {t.avatar}
+                {item.avatar}
               </div>
-              <span className="testi__thumb-name">{t.name.split(' ')[0]}</span>
+              <span className="testi__thumb-name">{item.name.split(' ')[0]}</span>
             </button>
           ))}
         </div>
