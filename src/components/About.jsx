@@ -20,6 +20,7 @@ export default function About() {
   const [journeyVisible, setJourneyVisible] = useState(false)
   const [activeStep, setActiveStep]         = useState(-1)
 
+  // Scroll-reveal for all .reveal elements
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
@@ -27,6 +28,7 @@ export default function About() {
     )
     ref.current?.querySelectorAll('.reveal').forEach(el => observer.observe(el))
 
+    // Separate observer for journey — fires step animation
     const journeyEl = ref.current?.querySelector('.about__journey')
     const journeyObserver = new IntersectionObserver(
       entries => {
@@ -41,6 +43,7 @@ export default function About() {
     return () => { observer.disconnect(); journeyObserver.disconnect() }
   }, [])
 
+  // Stagger each step: 0ms, 480ms, 960ms, 1440ms
   useEffect(() => {
     if (!journeyVisible) return
     journeySteps.forEach((_, i) => {
@@ -52,6 +55,7 @@ export default function About() {
     <section className="section about" ref={ref} id="about">
       <div className="container">
 
+        {/* Header */}
         <div className="text-center">
           <div className="badge reveal">✦ What Is Immersion Learning</div>
           <h2 className="section-title reveal">
@@ -63,6 +67,7 @@ export default function About() {
           </p>
         </div>
 
+        {/* 2×2 feature cards on mobile, 4-col on desktop */}
         <div className="about__grid">
           {features.map((f, i) => (
             <div key={f.title} className={`about__card reveal delay-${i + 1}`}>
@@ -76,16 +81,25 @@ export default function About() {
           ))}
         </div>
 
+        {/* Journey — vertical on mobile, horizontal on desktop */}
         <div className="about__journey reveal">
           {journeySteps.map((step, i) => (
-            <div key={step.num} className={`journey__step ${activeStep >= i ? 'is-active' : ''}`}>
+            <div
+              key={step.num}
+              className={`journey__step ${activeStep >= i ? 'is-active' : ''}`}
+            >
+              {/* Left: dot + line (line hidden on last step) */}
               <div className="journey__indicator">
                 <div className={`journey__dot ${step.gold ? 'journey__dot--gold' : ''}`}>
                   <span className="journey__dot-num">{step.num}</span>
                   <span className="journey__dot-icon">{step.icon}</span>
                 </div>
-                {i < journeySteps.length - 1 && <div className="journey__line" />}
+                {i < journeySteps.length - 1 && (
+                  <div className="journey__line" />
+                )}
               </div>
+
+              {/* Right: label + description */}
               <div className="journey__text">
                 <span className="journey__label">{step.label}</span>
                 <span className="journey__sublabel">{step.desc}</span>

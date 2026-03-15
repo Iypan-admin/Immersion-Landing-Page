@@ -1,48 +1,34 @@
-/* --- MAIN LEAD FORM SECTION --- */
-
-/* Sets the background gradient for the entire lead form area */
 .lead-form {
   background: linear-gradient(180deg, var(--purple-950) 0%, var(--purple-900) 100%);
   position: relative;
-  overflow: hidden; /* Keeps the glowing orb (below) from spilling out */
+  overflow: hidden;
 }
-
-/* Creates a soft glowing purple circle in the bottom right corner */
 .lead-form::before {
   content: '';
   position: absolute;
   bottom: -100px; right: -100px;
   width: 500px; height: 500px;
   background: radial-gradient(circle, rgba(90,53,176,0.18) 0%, transparent 70%);
-  pointer-events: none; /* Ensures the glow doesn't block you from clicking the form */
+  pointer-events: none;
 }
-
-/* Creates a 2-column layout: Text/Info on the left, Form on the right */
 .lead-form__inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
-  align-items: start; /* Aligns both columns to the top */
+  align-items: start;
 }
-
-/* Styles the description paragraph above the promises */
 .lead-form__info-desc {
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.7;
   margin-bottom: 32px;
 }
-
-/* --- PROMISES / BENEFITS LIST --- */
-/* Container for the list of benefits (e.g., "Free Counseling", "Visa Assistance") */
 .lead-form__promises {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-bottom: 32px;
 }
-
-/* Individual list item styling */
 .promise {
   display: flex;
   align-items: center;
@@ -50,13 +36,7 @@
   font-size: 0.875rem;
   color: var(--text-body);
 }
-
-/* Prevents the icon from squishing if the text gets too long */
 .promise__icon { font-size: 1rem; flex-shrink: 0; }
-
-
-/* --- COUNSELOR PROFILE CARD --- */
-/* The small floating card showing the assigned expert/counselor */
 .counselor-card {
   display: flex;
   align-items: center;
@@ -66,8 +46,6 @@
   border-radius: var(--radius-md);
   padding: 18px 20px;
 }
-
-/* The circular profile picture / initials badge */
 .counselor-card__avatar {
   width: 48px; height: 48px;
   border-radius: 50%;
@@ -80,25 +58,16 @@
   color: var(--white);
   flex-shrink: 0;
 }
-
-/* Text styles inside the counselor card */
 .counselor-card__name { font-weight: 700; color: var(--white); font-size: 0.95rem; }
 .counselor-card__role { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
-.counselor-card__note { font-size: 0.78rem; color: #6ae8a0; margin-top: 4px; } /* Bright green for availability status */
-
-
-/* --- THE FORM ITSELF --- */
+.counselor-card__note { font-size: 0.78rem; color: #6ae8a0; margin-top: 4px; }
 .lead-form__form-wrap { position: relative; }
-
-/* The main box holding all the inputs */
 .lead-form__form {
-  background: rgba(61, 37, 114, 0.85);
+  background: rgba(19,8,43,0.85);
   border: 1px solid rgba(90,53,176,0.3);
   border-radius: var(--radius-xl);
   padding: 40px;
 }
-
-/* Form Titles */
 .lead-form__form-title {
   font-family: var(--font-display);
   font-size: 1.4rem;
@@ -107,14 +76,8 @@
   margin-bottom: 4px;
 }
 .lead-form__form-sub { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 28px; }
-
-/* Groups a label and its input together */
 .form-group { margin-bottom: 18px; display: flex; flex-direction: column; gap: 6px; }
-
-/* The text label above an input (e.g., "First Name") */
 .form-label { font-size: 0.8rem; font-weight: 600; color: var(--purple-200); letter-spacing: 0.04em; }
-
-/* Base styles for text inputs and dropdown selects */
 .form-input,
 .form-select {
   width: 100%;
@@ -125,44 +88,27 @@
   font-size: 0.9rem;
   font-family: var(--font-body);
   padding: 11px 14px;
-  outline: none; /* Removes the ugly default browser outline */
+  outline: none;
   transition: border-color var(--transition), box-shadow var(--transition);
-  appearance: none; /* Hides default browser styling (important for the select dropdown) */
   -webkit-appearance: none;
 }
-
-/* Fades the placeholder text so it doesn't look like typed input */
 .form-input::placeholder { color: var(--text-muted); }
-
-/* Adds a glowing purple border and shadow when you click inside an input */
 .form-input:focus, .form-select:focus {
   border-color: var(--purple-500);
   box-shadow: 0 0 0 3px rgba(90,53,176,0.2);
 }
-
-/* Turns the border red if the user makes a mistake */
 .form-input--error { border-color: #e86a6a !important; }
-
-/* Custom styling for the dropdown menu */
 .form-select {
   cursor: pointer;
-  /* This complex URL injects a custom SVG down-arrow icon directly into the CSS so you don't need an image file */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239b8ab8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 12px center; /* Positions the arrow on the right */
-  padding-right: 36px; /* Prevents text from overlapping the arrow */
+  background-position: right 12px center;
+  padding-right: 36px;
 }
-/* Styles the dropdown options list */
 .form-select option { background: var(--purple-900); color: var(--white); }
 .form-select:disabled { opacity: 0.5; cursor: not-allowed; }
-
-/* Red error text below an input */
 .form-error { font-size: 0.75rem; color: #e86a6a; }
-
-/* Places two form groups side-by-side (e.g., First Name and Last Name) */
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-/* --- SUBMIT BUTTON --- */
 .form-submit {
   width: 100%;
   display: flex;
@@ -178,12 +124,8 @@
   margin-top: 8px;
   transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
 }
-
-/* Hover effect, but only if the button is NOT disabled */
 .form-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(90,53,176,0.5); }
 .form-submit:disabled { opacity: 0.7; cursor: not-allowed; }
-
-/* The little loading circle that appears when the form is submitting */
 .spinner {
   width: 16px; height: 16px;
   border: 2px solid rgba(255,255,255,0.3);
@@ -192,31 +134,24 @@
   animation: spin-slow 0.6s linear infinite;
   display: inline-block;
 }
-
-/* Error message if the server fails to process the form */
 .form-api-error { text-align: center; font-size: 0.8rem; color: #e86a6a; margin-top: 10px; }
 
-
-/* --- SUCCESS STATE (Shows after form is submitted) --- */
+/* SUCCESS STATE — always fully visible, no opacity tricks */
 .success-state {
   max-width: 600px;
   margin: 0 auto;
   text-align: center;
   padding: 48px 24px 64px;
-  animation: fadeUp 0.5s ease both; /* Slides up and fades in */
+  animation: fadeUp 0.5s ease both;
   opacity: 1 !important;
   transform: none !important;
 }
-
-/* The floating party popper emoji */
 .success-state__confetti {
   font-size: 4rem;
   margin-bottom: 20px;
   display: block;
   animation: float 3s ease-in-out infinite;
 }
-
-/* Success Typography */
 .success-state__title {
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 4vw, 2.2rem);
@@ -225,23 +160,19 @@
   margin-bottom: 14px;
 }
 .success-state__desc { font-size: 1rem; color: var(--text-body); line-height: 1.7; margin-bottom: 32px; }
-.success-state__desc strong { color: var(--gold); } /* Highlights specific words in gold */
-
-/* Creates the horizontal line with text in the middle (e.g., "---- OR ----") */
+.success-state__desc strong { color: var(--gold); }
 .success-divider {
   display: flex;
   align-items: center;
   gap: 16px;
   margin-bottom: 28px;
 }
-/* The actual lines on the left and right of the text */
 .success-divider::before, .success-divider::after {
   content: '';
-  flex: 1; /* Makes the lines stretch to fill space */
+  flex: 1;
   height: 1px;
   background: var(--border);
 }
-/* The text in the middle of the divider */
 .success-divider span {
   font-size: 0.78rem;
   color: var(--text-muted);
@@ -249,9 +180,6 @@
   text-transform: uppercase;
   white-space: nowrap;
 }
-
-/* --- DIRECT CONTACT BUTTONS (Call / WhatsApp) --- */
-/* Container for the big buttons shown after submission */
 .success-state__btns {
   display: flex;
   gap: 16px;
@@ -259,8 +187,6 @@
   flex-wrap: wrap;
   margin-bottom: 28px;
 }
-
-/* Base styles for the big contact buttons */
 .expert-btn {
   display: flex;
   align-items: center;
@@ -269,51 +195,31 @@
   border-radius: var(--radius-md);
   border: 1px solid;
   min-width: 220px;
-  flex: 1; /* Makes buttons grow equally to fill space */
+  flex: 1;
   max-width: 280px;
   transition: transform var(--transition), box-shadow var(--transition);
   text-align: left;
 }
-
 .expert-btn:hover { transform: translateY(-3px); }
-
-/* Purple Call Button Styling */
 .expert-btn--call { background: rgba(90,53,176,0.2); border-color: rgba(90,53,176,0.5); }
 .expert-btn--call:hover { box-shadow: 0 8px 24px rgba(90,53,176,0.4); }
-
-/* Green WhatsApp Button Styling */
 .expert-btn--whatsapp { background: rgba(37,211,102,0.1); border-color: rgba(37,211,102,0.4); }
 .expert-btn--whatsapp:hover { box-shadow: 0 8px 24px rgba(37,211,102,0.2); }
-
-/* Internal text formatting for the contact buttons */
 .expert-btn__icon { font-size: 1.8rem; flex-shrink: 0; }
 .expert-btn__text { display: flex; flex-direction: column; gap: 3px; }
 .expert-btn__label { display: block; font-weight: 700; color: var(--white); font-size: 0.95rem; }
 .expert-btn__sub { display: block; font-size: 0.75rem; color: var(--text-muted); }
-
-/* The small "Submit another response" link at the very bottom */
 .success-state__reset { font-size: 0.82rem; color: var(--text-muted); transition: color var(--transition); padding: 8px; }
 .success-state__reset:hover { color: var(--white); }
 
-
-/* --- RESPONSIVE LAYOUTS --- */
-
-/* Tablet (Under 900px) */
+/* RESPONSIVE */
 @media (max-width: 900px) {
-  /* Changes the main form area from 2 side-by-side columns to stacked top-to-bottom */
   .lead-form__inner { grid-template-columns: 1fr; gap: 40px; }
 }
-
-/* Mobile Phones (Under 600px) */
 @media (max-width: 600px) {
-  .lead-form__form { padding: 24px 18px; } /* Shrinks padding inside the form box */
-  
-  /* Stacks side-by-side inputs (like First/Last name) vertically so they fit on a narrow screen */
-  .form-row { grid-template-columns: 1fr; } 
-  
+  .lead-form__form { padding: 24px 18px; }
+  .form-row { grid-template-columns: 1fr; }
   .success-state { padding: 32px 8px 48px; }
-  
-  /* Forces the big Call/WhatsApp buttons to stack vertically and stretch full-width */
   .success-state__btns { flex-direction: column; align-items: stretch; }
   .expert-btn { max-width: 100%; min-width: unset; justify-content: center; }
 }

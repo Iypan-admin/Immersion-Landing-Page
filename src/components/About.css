@@ -22,12 +22,12 @@
   flex-direction: column;
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
-.about__card:active   { transform: scale(0.97); }
-.about__card-top      { margin-bottom: 8px; }
-.about__card-icon     { font-size: 1.75rem; line-height: 1; display: block; }
-.about__card-title    { font-size: 0.85rem; font-weight: 700; color: var(--white); margin-bottom: 6px; line-height: 1.3; }
-.about__card-desc     { font-size: 0.76rem; color: var(--text-muted); line-height: 1.6; flex: 1; }
-.about__card-glow     {
+.about__card:active { transform: scale(0.97); }
+.about__card-top    { margin-bottom: 8px; }
+.about__card-icon   { font-size: 1.75rem; line-height: 1; display: block; }
+.about__card-title  { font-size: 0.85rem; font-weight: 700; color: var(--white); margin-bottom: 6px; line-height: 1.3; }
+.about__card-desc   { font-size: 0.76rem; color: var(--text-muted); line-height: 1.6; flex: 1; }
+.about__card-glow   {
   position: absolute; inset: 0;
   background: radial-gradient(ellipse at top left, rgba(90,53,176,0.1), transparent 65%);
   pointer-events: none;
@@ -39,8 +39,10 @@
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 28px 22px;
+  margin-top: 0;
 }
 
+/* Each step = row: [dot+line] on left, text on right */
 .journey__step {
   display: flex;
   flex-direction: row;
@@ -48,7 +50,7 @@
   position: relative;
 }
 
-/* Left column: dot + line */
+/* Left column: dot + connector line stacked vertically */
 .journey__indicator {
   display: flex;
   flex-direction: column;
@@ -100,14 +102,14 @@
 .is-active .journey__dot-num  { opacity: 0; transform: scale(0.5); }
 .is-active .journey__dot-icon { opacity: 1; transform: scale(1) rotate(0deg); }
 
-/* Gold dot */
+/* Gold dot — step 4 */
 .journey__dot--gold { background: linear-gradient(135deg,#b8860b,#e8c96a); border-color: #e8c96a; }
 .journey__dot--gold .journey__dot-num { color: #1a0800; }
 .is-active .journey__dot--gold {
   box-shadow: 0 0 0 5px rgba(232,201,106,0.2), 0 0 22px rgba(232,201,106,0.5);
 }
 
-/* ── Vertical connector line ── */
+/* ── Vertical connector line (between dots) ── */
 .journey__line {
   width: 2px;
   flex: 1;
@@ -118,6 +120,7 @@
   position: relative;
   overflow: hidden;
 }
+/* Animated fill using ::after */
 .journey__line::after {
   content: '';
   position: absolute;
@@ -130,18 +133,19 @@
 }
 .is-active .journey__line::after { height: 100%; }
 
-/* ── Text ── */
+/* ── Text beside dot ── */
 .journey__text {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  padding: 10px 0 28px;
+  padding: 10px 0 28px; /* bottom padding = gap to next step */
   opacity: 0;
   transform: translateX(-6px);
   transition: opacity 0.4s ease, transform 0.4s ease;
   flex: 1;
 }
-.is-active .journey__text            { opacity: 1; transform: translateX(0); }
+.is-active .journey__text  { opacity: 1; transform: translateX(0); }
+/* Last step — no bottom padding */
 .journey__step:last-child .journey__text { padding-bottom: 0; }
 
 .journey__label    { font-size: 0.95rem; font-weight: 700; color: var(--white); line-height: 1.2; }
@@ -166,7 +170,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   DESKTOP 1024px+ — 4 cards + horizontal journey
+   DESKTOP 1024px+ — 4 cards + HORIZONTAL journey
 ═══════════════════════════════════════════════════════════ */
 @media (min-width: 1024px) {
   .about__grid { grid-template-columns: repeat(4,1fr); gap: 20px; }
@@ -175,17 +179,21 @@
   .about__card-desc  { font-size: 0.88rem; }
   .about__card:hover { transform: translateY(-6px); }
 
+  /* Horizontal journey */
   .about__journey {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 36px 40px;
   }
+
   .journey__step {
     flex: 1;
     flex-direction: column;
     align-items: center;
   }
+
+  /* Indicator row: dot + horizontal line */
   .journey__indicator {
     flex-direction: row;
     align-items: center;
@@ -193,6 +201,8 @@
     margin-right: 0;
     margin-bottom: 16px;
   }
+
+  /* Horizontal line */
   .journey__line {
     flex: 1;
     min-height: unset;
@@ -209,6 +219,7 @@
   }
   .is-active .journey__line::after { width: 100%; height: 100%; }
 
+  /* Text centered below */
   .journey__text {
     align-items: center;
     text-align: center;
@@ -216,6 +227,7 @@
     transform: translateY(8px);
   }
   .is-active .journey__text { transform: translateY(0); }
+
   .journey__label    { font-size: 0.9rem; }
   .journey__sublabel { font-size: 0.75rem; }
 }

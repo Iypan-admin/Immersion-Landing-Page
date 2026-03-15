@@ -1,24 +1,45 @@
 import './Footer.css'
+import ismlLogo from '../assets/isml-logo.webp'
+import slLogo from '../assets/success-learning-logo.png'
 
 export default function Footer() {
   return (
     <footer className="footer">
       <div className="container footer__inner">
-        {/* Brand */}
+
+        {/* Brand — ISML primary */}
         <div className="footer__brand">
-          <a href="#" className="navbar__logo footer__logo">
-            <span style={{color:'var(--gold)', fontSize:'1.1rem'}}>✦</span>
-            <span style={{fontFamily:'var(--font-display)', fontSize:'1.1rem', fontWeight:700, color:'var(--white)'}}>
-              Success<span style={{color:'var(--gold)'}}>Learning</span>
-            </span>
-          </a>
+          <div className="footer__logos">
+            {/* ISML */}
+            <div className="footer__logo-isml-wrap">
+              <img src={ismlLogo} alt="ISML" className="footer__logo-isml" />
+            </div>
+            <div className="footer__logo-brand-text">
+              <span className="footer__logo-name">ISML</span>
+              <span className="footer__logo-sub">Foundation</span>
+            </div>
+          </div>
           <p className="footer__tagline">
-            Helping students reach their language goals<br />
-            and study abroad with confidence.
+            India's premier immersion language institute.<br />
+            Helping students master French, German &amp; Japanese<br />
+            for study abroad success.
           </p>
           <div className="footer__contact">
             <a href="tel:+91XXXXXXXXXX" className="footer__contact-link">📞 +91-XXXX-XXXXXX</a>
-            <a href="mailto:info@successlearning.in" className="footer__contact-link">✉️ info@successlearning.in</a>
+            <a href="mailto:info@isml.in" className="footer__contact-link">✉️ info@isml.in</a>
+          </div>
+
+          {/* Success Learning partner card */}
+          <div className="footer__partner-card">
+            <p className="footer__partner-label">Study Abroad Partner</p>
+            <div className="footer__partner-sl">
+              <div className="footer__partner-sl-logo">
+                <img src={slLogo} alt="Success Learning" />
+              </div>
+              <p className="footer__partner-sl-desc">
+                University admissions &amp; visa guidance
+              </p>
+            </div>
           </div>
         </div>
 
@@ -49,12 +70,13 @@ export default function Footer() {
         {/* Connect */}
         <div className="footer__col">
           <h4 className="footer__col-title">Connect</h4>
-          <p className="footer__connect-text">Talk to Poornima Mam directly:</p>
+          <p className="footer__connect-text">Talk to our counselor directly:</p>
           <div className="footer__expert-btns">
             <a href="tel:+91XXXXXXXXXX" className="footer__expert-btn footer__expert-btn--call">
               📞 Call Now
             </a>
-            <a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noreferrer" className="footer__expert-btn footer__expert-btn--wa">
+            <a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noreferrer"
+              className="footer__expert-btn footer__expert-btn--wa">
               💬 WhatsApp
             </a>
           </div>
@@ -63,9 +85,9 @@ export default function Footer() {
 
       <div className="footer__bottom">
         <div className="container footer__bottom-inner">
-          <p>© {new Date().getFullYear()} Success Learning. All rights reserved.</p>
-          <p style={{color:'var(--purple-600)', fontSize:'0.75rem'}}>
-            Immersion Language Programs · Study Abroad Counseling
+          <p>© {new Date().getFullYear()} ISML Foundation. All rights reserved.</p>
+          <p style={{ color: 'var(--purple-400)', fontSize: '0.75rem' }}>
+            In partnership with Success Learning · Study Abroad Counseling
           </p>
         </div>
       </div>

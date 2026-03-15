@@ -5,72 +5,68 @@
   padding: 14px 0;
   transition: var(--transition);
 }
-
 .navbar--scrolled {
-  background: rgba(13, 6, 24, 0.95);
+  background: rgba(13,6,24,0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   padding: 10px 0;
   border-bottom: 1px solid var(--border);
 }
-
 .navbar__inner {
   display: flex;
   align-items: center;
   gap: 24px;
 }
 
-/* ── Logo group ── */
+/* ── Logo ── */
 .navbar__logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-shrink: 0;
   margin-right: auto;
   text-decoration: none;
   min-width: 0;
 }
 
-/* ISML — Perfect Circle */
-.navbar__logo-isml-wrap{
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  overflow:hidden;
-  background:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.navbar__logo-isml{
-  height:60px;
-  width:auto;
-}
-
-/* Divider */
-.navbar__logo-divider {
-  width: 1px;
-  height: 26px;
-  background: rgba(255,255,255,0.2);
+/* Circle crop for ISML badge */
+.navbar__logo-isml-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
   flex-shrink: 0;
-}
-
-/* Success Learning wrapper — Square Box */
-.navbar__logo-sl-wrap {
-  background: #ffffff;
-  border-radius: 4px; /* Reduced radius for a sharper, squarish box */
-  padding: 6px 10px; /* Even box padding */
   display: flex;
   align-items: center;
-  flex-shrink: 0;
+  justify-content: center;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.15);
 }
-.navbar__logo-sl {
-  height: 22px;
-  width: auto;
-  max-width: 108px;
-  object-fit: contain;
-  display: block;
+.navbar__logo-isml {
+  width: 56px;
+  height: auto;
+}
+
+/* Text beside logo */
+.navbar__logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1;
+}
+.navbar__logo-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: 0.04em;
+}
+.navbar__logo-sub {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 /* ── Links ── */
@@ -79,8 +75,7 @@
   align-items: center;
   gap: 32px;
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
 }
 .navbar__link {
   font-size: 0.88rem;
@@ -139,8 +134,7 @@
 }
 .navbar__hamburger span {
   display: block;
-  width: 22px;
-  height: 2px;
+  width: 22px; height: 2px;
   background: var(--white);
   border-radius: 2px;
   transition: var(--transition);
@@ -154,22 +148,20 @@
   display: none;
   flex-direction: column;
   gap: 0;
-  padding: 0 20px; /* Removed vertical padding when closed */
+  padding: 0 20px;
   background: rgba(10,4,22,0.98);
-  border-top: 1px solid transparent; /* Hide border when closed */
+  border-top: 1px solid transparent;
   max-height: 0;
-  opacity: 0; /* Make it completely invisible when closed */
+  opacity: 0;
   overflow: hidden;
-  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease, border-color 0.4s ease;
+  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
 }
-
-.navbar__mobile--open { 
-  max-height: 420px; 
-  opacity: 1; /* Fade in */
-  padding: 10px 20px 24px; /* Add vertical padding back only when open */
+.navbar__mobile--open {
+  max-height: 420px;
+  opacity: 1;
+  padding: 10px 20px 24px;
   border-top: 1px solid var(--border);
 }
-
 .navbar__mobile-link {
   padding: 14px 0;
   font-size: 0.95rem;
@@ -181,7 +173,6 @@
   text-decoration: none;
 }
 .navbar__mobile-link:hover { color: var(--white); padding-left: 6px; }
-
 .navbar__cta--mobile {
   margin-top: 20px;
   text-align: center;
@@ -190,21 +181,16 @@
   font-size: 0.95rem;
 }
 
-/* ── Breakpoints ── */
+/* ── Responsive ── */
 @media (max-width: 768px) {
   .navbar__links { display: none; }
   .navbar__cta:not(.navbar__cta--mobile) { display: none; }
   .navbar__hamburger { display: flex; }
   .navbar__mobile { display: flex; }
 }
-
-/* Very small phones — shrink logos to fit */
 @media (max-width: 380px) {
-  .navbar__logo-isml { 
-    height: 36px; 
-    width: 36px; 
-    padding: 0; /* Ensure padding stays 0 on mobile */
-  }
-  .navbar__logo-sl   { height: 20px; max-width: 88px; }
-  .navbar__logo-divider { display: none; }
+  .navbar__logo-isml-wrap { width: 36px; height: 36px; }
+  .navbar__logo-isml      { width: 48px; }
+  .navbar__logo-name      { font-size: 1rem; }
+  .navbar__logo-sub       { font-size: 0.62rem; }
 }

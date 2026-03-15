@@ -1,52 +1,39 @@
-/* --- MAIN TESTIMONIALS SECTION --- */
-
-/* Sets the main background with a smooth purple gradient */
 .testimonials {
   background: linear-gradient(180deg, var(--purple-950) 0%, var(--purple-900) 50%, var(--purple-950) 100%);
   position: relative;
-  overflow: hidden; /* Prevents the glowing background orb from creating a horizontal scrollbar */
+  overflow: hidden;
 }
-
-/* Creates a large, soft purple glowing circle perfectly centered behind the testimonial card */
 .testimonials::before {
   content: '';
   position: absolute;
   top: 50%; left: 50%;
-  transform: translate(-50%, -50%); /* The trick to perfectly center an absolute element */
+  transform: translate(-50%, -50%);
   width: 600px; height: 600px;
   background: radial-gradient(circle, rgba(90,53,176,0.12) 0%, transparent 70%);
-  pointer-events: none; /* Stops the glow from blocking clicks */
+  pointer-events: none;
 }
 
-/* --- MAIN CARD WRAPPER --- */
-/* Restricts how wide the testimonial card can get on big screens and centers it */
 .testi__main {
   max-width: 760px;
-  margin: 0 auto 40px; /* '0 auto' centers it horizontally, '40px' adds bottom spacing */
+  margin: 0 auto 40px;
 }
 
-/* --- THE TESTIMONIAL CARD --- */
-/* The dark box holding the actual quote and author details */
 .testi__card {
   background: rgba(19,8,43,0.8);
   border: 1px solid rgba(90,53,176,0.25);
   border-radius: var(--radius-xl);
   padding: 48px;
   position: relative;
-  animation: fadeUp 0.4s ease both; /* Slides up smoothly when the card appears */
+  animation: fadeUp 0.4s ease both;
 }
-
-/* The giant decorative quotation mark at the top of the card */
 .testi__quote-icon {
   font-family: var(--font-display);
-  font-size: 6rem; /* Makes it massive */
-  line-height: 0.6; /* Squishes it closer to the text below it */
+  font-size: 6rem;
+  line-height: 0.6;
   color: var(--purple-700);
   margin-bottom: 24px;
   display: block;
 }
-
-/* The actual review text */
 .testi__text {
   font-size: 1.08rem;
   color: var(--text-body);
@@ -54,16 +41,11 @@
   font-style: italic;
   margin-bottom: 32px;
 }
-
-/* --- AUTHOR DETAILS --- */
-/* Groups the author's picture and text side-by-side */
 .testi__author {
   display: flex;
   align-items: center;
   gap: 16px;
 }
-
-/* The circular profile picture or initials badge for the author */
 .testi__avatar {
   width: 52px; height: 52px;
   border-radius: 50%;
@@ -74,80 +56,60 @@
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--white);
-  flex-shrink: 0; /* Prevents the circle from squishing if the name is too long */
+  flex-shrink: 0;
 }
-
-/* Author text styles */
 .testi__name {
   font-weight: 700;
   color: var(--white);
   font-size: 0.95rem;
 }
-
-/* The author's achieved level or program (e.g., "N3 Certified") */
 .testi__meta {
   font-size: 0.8rem;
   color: var(--gold);
   margin-top: 2px;
 }
-
-/* The author's location (e.g., "Studying in Tokyo") */
 .testi__country {
   font-size: 0.78rem;
   color: var(--text-muted);
   margin-top: 2px;
 }
 
-/* --- CAROUSEL NAVIGATION DOTS --- */
-/* The container for the little dots below the main card */
+/* Dots */
 .testi__dots {
   display: flex;
   justify-content: center;
   gap: 8px;
   margin-top: 24px;
 }
-
-/* Standard inactive dot */
 .testi__dot {
   width: 8px; height: 8px;
   border-radius: 50%;
   background: var(--purple-700);
-  transition: all var(--transition); /* Smoothly animates the width change when clicked */
+  transition: all var(--transition);
 }
-
-/* The dot for the currently visible review */
 .testi__dot--active {
   background: var(--purple-400);
-  width: 24px; /* Stretches the dot into a pill shape */
-  border-radius: 4px; /* Squares off the edges slightly to match the stretch */
+  width: 24px;
+  border-radius: 4px;
 }
 
-/* --- CAROUSEL THUMBNAILS (Alternative to dots) --- */
-/* Container for the clickable author avatars below the main card */
+/* Thumbnails */
 .testi__thumbs {
   display: flex;
   justify-content: center;
   gap: 12px;
-  flex-wrap: wrap; /* Allows them to wrap on small screens */
+  flex-wrap: wrap;
 }
-
-/* An individual clickable thumbnail */
 .testi__thumb {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  opacity: 0.5; /* Fades out inactive thumbnails */
+  opacity: 0.5;
   transition: opacity var(--transition), transform var(--transition);
 }
-
-/* Bumps up the thumbnail slightly and brightens it when hovered */
 .testi__thumb:hover { opacity: 0.8; transform: translateY(-2px); }
-
-/* The currently selected thumbnail */
-.testi__thumb--active { opacity: 1; } /* Fully bright */
-
-/* Thumbnail image/initials styling */
+.testi__thumb--active { opacity: 1; }
 .testi__thumb-avatar {
   width: 44px; height: 44px;
   border-radius: 50%;
@@ -159,32 +121,22 @@
   font-weight: 700;
   color: var(--white);
 }
-
-/* The small name label under the thumbnail */
 .testi__thumb-name {
   font-size: 0.72rem;
   color: var(--text-muted);
 }
 
-/* --- RESPONSIVE LAYOUTS --- */
-
-/* Tablet (Screens under 600px) */
 @media (max-width: 600px) {
-  .testi__card { padding: 28px 24px; } /* Shrinks padding inside the main card */
-  .testi__text { font-size: 0.95rem; } /* Shrinks the review text slightly */
+  .testi__card { padding: 28px 24px; }
+  .testi__text { font-size: 0.95rem; }
 }
 
-/* ── MOBILE FIXES (Screens under 480px) ── */
+/* ── MOBILE FIXES ── */
 @media (max-width: 480px) {
-  .testi__card { padding: 24px 18px; } /* Shrinks padding even further for small phones */
-  
-  /* Shrinks the giant quotation mark so it doesn't overwhelm the screen */
+  .testi__card { padding: 24px 18px; }
   .testi__quote-icon { font-size: 4rem; margin-bottom: 16px; }
-  
   .testi__text { font-size: 0.9rem; }
-  
-  /* Adjusts the thumbnail navigation to fit on phone screens */
   .testi__thumbs { gap: 8px; }
-  .testi__thumb-avatar { width: 36px; height: 36px; font-size: 0.65rem; } /* Smaller avatars */
-  .testi__thumb-name { font-size: 0.65rem; } /* Smaller names */
+  .testi__thumb-avatar { width: 36px; height: 36px; font-size: 0.65rem; }
+  .testi__thumb-name { font-size: 0.65rem; }
 }

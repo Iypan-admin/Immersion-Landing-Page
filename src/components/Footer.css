@@ -1,64 +1,49 @@
-/* Sets the main background color for the footer and gives it a subtle top border */
 .footer {
   background: var(--purple-900);
   border-top: 1px solid var(--border);
-  position: relative; /* Allows the ::before pseudo-element to be positioned absolutely inside it */
-  overflow: hidden; /* Prevents anything inside the footer from spilling out of its edges */
+  position: relative;
+  overflow: hidden;
 }
-
-/* Creates a decorative glowing purple line right at the very top edge of the footer */
 .footer::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--purple-600), transparent); /* Fades in at the middle and fades out at the edges */
+  background: linear-gradient(90deg, transparent, var(--purple-600), transparent);
 }
 
-/* Creates a 4-column layout for the footer content using CSS Grid */
 .footer__inner {
   display: grid;
-  /* Columns are sized dynamically: the first is widest (2fr), the middle two are normal (1fr), the last is slightly wider (1.2fr) */
   grid-template-columns: 2fr 1fr 1fr 1.2fr;
-  gap: 48px; /* Adds space between the columns */
-  padding-top: 645px;
+  gap: 48px;
+  padding-top: 64px;
   padding-bottom: 48px;
 }
 
-/* Aligns the logo icon and text horizontally */
 .footer__logo {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 16px;
 }
-
-/* Styles the descriptive text right beneath the logo */
 .footer__tagline {
   font-size: 0.875rem;
   color: var(--text-muted);
   line-height: 1.65;
   margin-bottom: 20px;
 }
-
-/* Stacks contact details (like email or address) vertically */
 .footer__contact {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-
-/* Sets the base color and font size for contact links */
 .footer__contact-link {
   font-size: 0.85rem;
   color: var(--text-body);
   transition: color var(--transition);
 }
-
-/* Brightens the contact link when you hover over it */
 .footer__contact-link:hover { color: var(--white); }
 
-/* Styles the small, uppercase headings above each column of links (e.g., "Company", "Resources") */
 .footer__col-title {
   font-size: 0.8rem;
   font-weight: 700;
@@ -67,39 +52,28 @@
   color: var(--purple-300);
   margin-bottom: 16px;
 }
-
-/* Stacks the individual links in each column vertically */
 .footer__list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-
-/* Styles the actual clickable links inside the column lists */
 .footer__list a {
   font-size: 0.875rem;
   color: var(--text-muted);
   transition: color var(--transition);
 }
-
-/* Brightens the list links on hover */
 .footer__list a:hover { color: var(--white); }
 
-/* Styles the small helper text (e.g., "Speak to an expert") above the buttons */
 .footer__connect-text {
   font-size: 0.82rem;
   color: var(--text-muted);
   margin-bottom: 14px;
 }
-
-/* Stacks the "Call" and "WhatsApp" buttons vertically */
 .footer__expert-btns {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-
-/* Base styles for the contact buttons: aligns icons/text and sets up the hover bounce animation */
 .footer__expert-btn {
   display: inline-flex;
   align-items: center;
@@ -111,58 +85,109 @@
   transition: transform var(--transition), box-shadow var(--transition);
   border: 1px solid;
 }
-
-/* Makes the buttons float up slightly when hovered */
 .footer__expert-btn:hover { transform: translateY(-2px); }
-
-/* Applies a specific purple tint to the "Call" button */
 .footer__expert-btn--call {
   background: rgba(90,53,176,0.15);
   border-color: rgba(90,53,176,0.4);
   color: var(--white);
 }
-
-/* Applies a specific WhatsApp-green tint to the "WhatsApp" button */
 .footer__expert-btn--wa {
   background: rgba(37,211,102,0.08);
   border-color: rgba(37,211,102,0.35);
   color: var(--white);
 }
 
-/* Styles the very bottom strip of the footer (usually for copyright text) with a thin top border */
 .footer__bottom {
   border-top: 1px solid var(--border);
   padding: 20px 0;
 }
-
-/* Spaces out the copyright text and any legal links horizontally across the bottom strip */
 .footer__bottom-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 0.8rem;
   color: var(--text-muted);
-  flex-wrap: wrap; /* Allows text to drop to a new line on small screens */
+  flex-wrap: wrap;
   gap: 8px;
 }
 
-/* Tablet Layout (Screens smaller than 900px) */
 @media (max-width: 900px) {
   .footer__inner {
-    grid-template-columns: 1fr 1fr; /* Changes from 4 columns to 2 columns */
+    grid-template-columns: 1fr 1fr;
     gap: 32px;
   }
-  .footer__brand { 
-    grid-column: span 2; /* Forces the brand/logo section to stretch entirely across the top of the 2 columns */
-  }
+  .footer__brand { grid-column: span 2; }
+}
+@media (max-width: 480px) {
+  .footer__inner { grid-template-columns: 1fr; }
+  .footer__brand { grid-column: span 1; }
 }
 
-/* Mobile Layout (Screens smaller than 480px) */
-@media (max-width: 480px) {
-  .footer__inner { 
-    grid-template-columns: 1fr; /* Stacks everything into a single vertical column */
-  }
-  .footer__brand { 
-    grid-column: span 1; /* Resets the brand section to take up just the 1 available column */
-  }
+/* ── ISML logo in footer ── */
+.footer__logos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.footer__logo-isml-wrap {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.footer__logo-isml { width: 60px; height: auto; }
+.footer__logo-brand-text {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.footer__logo-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 800;
+  color: var(--white); letter-spacing: 0.04em;
+}
+.footer__logo-sub {
+  font-size: 0.65rem; font-weight: 600;
+  color: var(--gold); letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ── Success Learning partner card ── */
+.footer__partner-card {
+  margin-top: 20px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(232,201,106,0.15);
+  border-radius: 10px;
+  display: inline-block;
+}
+.footer__partner-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.footer__partner-sl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer__partner-sl-logo {
+  background: #fff;
+  border-radius: 5px;
+  padding: 3px 6px;
+  display: flex; align-items: center;
+  flex-shrink: 0;
+}
+.footer__partner-sl-logo img {
+  height: 20px; width: auto; display: block;
+}
+.footer__partner-sl-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
 }

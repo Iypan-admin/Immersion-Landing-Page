@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import './Navbar.css'
 import ismlLogo from '../assets/isml-logo.webp'
-import slLogo from '../assets/success-learning-logo.png'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -24,15 +23,14 @@ export default function Navbar() {
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="container navbar__inner">
 
+        {/* ISML logo + name only */}
         <a href="#" className="navbar__logo">
-          {/* ISML — rectangular white bg, no circle crop */}
-          <img src={ismlLogo} alt="ISML" className="navbar__logo-isml" />
-
-          <div className="navbar__logo-divider" />
-
-          {/* Success Learning — white bg wrapper so colours show */}
-          <div className="navbar__logo-sl-wrap">
-            <img src={slLogo} alt="Success Learning" className="navbar__logo-sl" />
+          <div className="navbar__logo-isml-wrap">
+            <img src={ismlLogo} alt="ISML" className="navbar__logo-isml" />
+          </div>
+          <div className="navbar__logo-text">
+            <span className="navbar__logo-name">ISML</span>
+            <span className="navbar__logo-sub">Foundation</span>
           </div>
         </a>
 
