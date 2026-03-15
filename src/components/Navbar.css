@@ -42,9 +42,14 @@
   justify-content: center;
   box-shadow: 0 0 0 2px rgba(255,255,255,0.15);
 }
+
+/* Make logo fill circle properly */
 .navbar__logo-isml {
-  width: 60px;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* ensures it fills the circle */
+  object-position: center; /* keep logo centered */
+  transform: scale(1.15);  /* slight zoom to remove inner padding */
 }
 
 /* Text beside logo */
@@ -189,8 +194,22 @@
   .navbar__mobile { display: flex; }
 }
 @media (max-width: 380px) {
-  .navbar__logo-isml-wrap { width: 36px; height: 36px; }
-  .navbar__logo-isml      { width: 48px; }
-  .navbar__logo-name      { font-size: 1rem; }
-  .navbar__logo-sub       { font-size: 0.62rem; }
+  .navbar__logo-isml-wrap {
+    width: 36px;
+    height: 36px;
+  }
+
+  .navbar__logo-isml {
+    width: 100%;
+    height: 100%;
+    transform: scale(1.15);
+  }
+
+  .navbar__logo-name {
+    font-size: 1rem;
+  }
+
+  .navbar__logo-sub {
+    font-size: 0.62rem;
+  }
 }
