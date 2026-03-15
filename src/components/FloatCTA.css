@@ -1,22 +1,25 @@
+/* --- MAIN FLOATING BUBBLE --- */
 .float-cta {
   position: fixed;
-  bottom: 28px;
+  bottom: 24px;
   right: 24px;
   z-index: 200;
-  width: 300px;
-  background: linear-gradient(135deg, rgba(30,15,64,0.97), rgba(20,8,48,0.97));
-  border: 1px solid rgba(90,53,176,0.45);
-  border-radius: 18px;
-  padding: 18px 18px 16px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(90,53,176,0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  width: 270px; /* Slimmer footprint */
+  /* Extra transparent for a better glass effect */
+  background: linear-gradient(135deg, rgba(30,15,64,0.85), rgba(15,6,36,0.95));
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 24px; /* Large radius removes the "boxy" feel */
+  padding: 16px;
+  /* Premium floating shadow */
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 30px rgba(139,92,246,0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 
-  /* Hidden by default — slides up from below */
+  /* Hidden by default */
   opacity: 0;
-  transform: translateY(24px) scale(0.96);
+  transform: translateY(20px) scale(0.95);
   pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Super smooth bounce */
 }
 
 /* Visible state */
@@ -26,116 +29,123 @@
   pointer-events: all;
 }
 
-/* Close button */
+/* --- CLOSE BUTTON --- */
 .float-cta__close {
   position: absolute;
-  top: 10px; right: 12px;
+  top: 12px; right: 14px;
   background: none;
   border: none;
-  color: rgba(255,255,255,0.35);
-  font-size: 1.2rem;
+  color: rgba(255,255,255,0.4);
+  font-size: 1.3rem;
   line-height: 1;
   cursor: pointer;
-  padding: 2px 4px;
-  transition: color 0.2s ease;
+  padding: 0;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
-.float-cta__close:hover { color: rgba(255,255,255,0.75); }
+.float-cta__close:hover { 
+  color: var(--white); 
+  transform: scale(1.1);
+}
 
-/* Body row */
+/* --- BODY (Icon + Text) --- */
 .float-cta__body {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-  padding-right: 16px; /* space for close btn */
+  gap: 14px;
+  margin-bottom: 16px;
+  padding-right: 12px; 
 }
 
-/* Icon */
+/* Premium Rounded Icon Container */
 .float-cta__icon {
-  font-size: 1.8rem;
+  width: 42px; 
+  height: 42px;
+  background: rgba(139, 92, 246, 0.15); /* Soft purple circle */
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
   flex-shrink: 0;
   animation: float-bob 3s ease-in-out infinite;
 }
+
 @keyframes float-bob {
   0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-4px); }
+  50%      { transform: translateY(-4px); }
 }
 
-/* Text */
+/* Text Formatting */
 .float-cta__text { flex: 1; min-width: 0; }
 .float-cta__title {
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #fff;
-  margin-bottom: 3px;
-  line-height: 1.3;
+  margin: 0 0 2px 0;
+  line-height: 1.2;
 }
 .float-cta__sub {
-  font-size: 0.74rem;
-  color: rgba(200,184,224,0.7);
-  line-height: 1.4;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.35;
 }
 
-/* CTA button */
+/* --- SLEEK PILL BUTTON --- */
 .float-cta__btn {
   width: 100%;
-  padding: 11px;
-  background: linear-gradient(135deg, var(--purple-600, #7c3aed), var(--purple-500, #8b5cf6));
+  padding: 10px;
+  background: linear-gradient(135deg, var(--purple-600), var(--purple-500));
   color: #fff;
   font-size: 0.85rem;
   font-weight: 700;
   border: none;
-  border-radius: 10px;
+  border-radius: 100px; /* Perfect pill shape */
   cursor: pointer;
   font-family: inherit;
-  letter-spacing: 0.02em;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
-  overflow: hidden;
 }
-.float-cta__btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
+
 .float-cta__btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(90,53,176,0.55);
+  box-shadow: 0 6px 20px rgba(90,53,176,0.6);
 }
-.float-cta__btn:hover::after { opacity: 1; }
 .float-cta__btn:active { transform: scale(0.97); }
 
-/* Pulse ring on the button */
+/* Pulse ring around the button */
 .float-cta__btn::before {
   content: '';
   position: absolute;
-  inset: -3px;
-  border-radius: 13px;
-  border: 2px solid rgba(139,92,246,0.5);
+  inset: -4px;
+  border-radius: 100px; /* Matches the button's pill shape */
+  border: 1px solid rgba(139,92,246,0.6);
   animation: pulse-ring 2.5s ease-out infinite;
   pointer-events: none;
 }
+
 @keyframes pulse-ring {
-  0%   { opacity: 0.7; transform: scale(1); }
-  100% { opacity: 0;   transform: scale(1.06); }
+  0%   { opacity: 0.8; transform: scale(1); }
+  100% { opacity: 0;   transform: scale(1.05); }
 }
 
-/* Mobile — full width at bottom */
+/* --- MOBILE UPGRADE --- */
 @media (max-width: 480px) {
   .float-cta {
-    bottom: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-    border-radius: 18px 18px 0 0;
-    padding: 16px 20px 24px;
-    border-bottom: none;
-    transform: translateY(100%);
+    /* Instead of a blocky bottom-sheet, it floats in the bottom center */
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    width: auto; 
+    max-width: 320px;
+    margin: 0 auto;
+    border-radius: 24px; 
+    padding: 16px;
+    transform: translateY(120%); /* Hides it below the screen */
   }
+  
   .float-cta--visible {
-    transform: translateY(0);
+    transform: translateY(0); /* Pops up */
   }
 }
