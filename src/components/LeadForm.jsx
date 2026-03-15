@@ -30,16 +30,27 @@ export default function LeadForm() {
   const [status, setStatus] = useState('idle') // idle | loading | success | error
   const ref = useRef(null)
 
+  // ── FIXED OBSERVER (Now re-runs when status changes) ──
   useEffect(() => {
+    if (status === 'success') return // Don't run on the success screen
+
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
       { threshold: 0.1 }
     )
-    ref.current?.querySelectorAll('.reveal').forEach(el => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+    
+    // Tiny delay to ensure React has put the form back on the screen
+    const timer = setTimeout(() => {
+      ref.current?.querySelectorAll('.reveal').forEach(el => observer.observe(el))
+    }, 50)
 
-  // Scroll to section when success state appears
+    return () => {
+      observer.disconnect()
+      clearTimeout(timer)
+    }
+  }, [status]) // <--- This is the magic fix that makes it work again!
+
+  // ── SCROLL EFFECT (Unchanged) ──
   useEffect(() => {
     if (status !== 'success') return
     setTimeout(() => {
