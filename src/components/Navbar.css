@@ -32,17 +32,21 @@
 }
 
 /* ISML — Perfect Circle */
-.navbar__logo-isml {
-  height: 44px; /* Slightly increased to make it pop */
-  width: 44px;
-  object-fit: cover; /* ← This forces the image to fill the circle to the edges */
-  background: #ffffff;
-  border-radius: 50%; 
-  padding: 0; /* ← Removed padding so there is no extra gap */
-  flex-shrink: 0;
-  transition: transform 0.3s ease;
+.navbar__logo-isml-wrap{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  overflow:hidden;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.navbar__logo-isml:hover { transform: scale(1.05); }
+
+.navbar__logo-isml{
+  height:60px;
+  width:auto;
+}
 
 /* Divider */
 .navbar__logo-divider {
