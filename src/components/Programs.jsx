@@ -6,38 +6,38 @@ import slLogo from '../assets/success-learning-logo.png'
 const programs = [
   {
     lang: 'French',
-    flag: '🇫🇷',
+    flagUrl: 'https://flagcdn.com/w80/fr.png', // Replaced emoji with image URL
     destination: 'France / Canada',
     color: '#4f6ef7',
     glow: 'rgba(79,110,247,0.22)',
     desc: 'From bonjour to fluent. Get B1/B2 ready for admission to top French universities and grandes écoles.',
     batches: [
-      { level: 'A1 → B1', duration: '5 Months', mode: 'Online', type: 'Immersion', fullFee: '₹48,676', monthly: '₹9,735', tag: 'Foundation' },
-      { level: 'A1 → B2', duration: '6 Months', mode: 'Online', type: 'Immersion', fullFee: '₹58,675', monthly: '₹9,779', tag: 'Complete Track' },
+      { level: 'A1 → B1', duration: '5 Months', mode: 'Online', type: 'Immersion', fullFee: '₹48,676', monthly: '₹9,735', tag: 'Intermediate' },
+      { level: 'A1 → B2', duration: '6 Months', mode: 'Online', type: 'Immersion', fullFee: '₹58,675', monthly: '₹9,779', tag: 'Advance' },
     ],
   },
   {
     lang: 'German',
-    flag: '🇩🇪',
+    flagUrl: 'https://flagcdn.com/w80/de.png', // Replaced emoji with image URL
     destination: 'Germany',
     color: '#e8c96a',
     glow: 'rgba(232,201,106,0.18)',
     desc: 'Germany requires B1/B2 for most universities. Our immersion method gets you there with confidence.',
     batches: [
-      { level: 'A1 → B1', duration: '5 Months', mode: 'Online', type: 'Immersion', fullFee: '₹48,676', monthly: '₹9,735', tag: 'Foundation' },
-      { level: 'A1 → B2', duration: '6 Months', mode: 'Online', type: 'Immersion', fullFee: '₹58,675', monthly: '₹9,779', tag: 'Complete Track' },
+      { level: 'A1 → B1', duration: '5 Months', mode: 'Online', type: 'Immersion', fullFee: '₹48,676', monthly: '₹9,735', tag: 'Intermediate' },
+      { level: 'A1 → B2', duration: '6 Months', mode: 'Online', type: 'Immersion', fullFee: '₹58,675', monthly: '₹9,779', tag: 'Advance' },
     ],
   },
   {
     lang: 'Japanese',
-    flag: '🇯🇵',
+    flagUrl: 'https://flagcdn.com/w80/jp.png', // Replaced emoji with image URL
     destination: 'Japan',
     color: '#e86a9e',
     glow: 'rgba(232,106,158,0.18)',
     desc: "JLPT N3 is the gateway to Japan's top universities. Start at zero and reach exam-ready fast.",
     batches: [
-      { level: 'N5 → N4', duration: '4 Months', mode: 'Online', type: 'Immersion', fullFee: '₹29,682', monthly: '₹9,894', tag: 'Foundation' },
-      { level: 'N5 → N3', duration: '6 Months', mode: 'Online', type: 'Immersion', fullFee: '₹58,675', monthly: '₹9,779', tag: 'Advanced Track' },
+      { level: 'N5 → N4', duration: '4 Months', mode: 'Online', type: 'Immersion', fullFee: '₹29,682', monthly: '₹9,894', tag: 'Intermediate' },
+      { level: 'N5 → N3', duration: '6 Months', mode: 'Online', type: 'Immersion', fullFee: '₹58,675', monthly: '₹9,779', tag: 'Advance' },
     ],
   },
 ]
@@ -46,14 +46,20 @@ export default function Programs() {
   const [active, setActive] = useState(0)
   const ref = useRef(null)
 
+  // FIXED OBSERVER: Now properly re-runs when 'active' tab changes
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
-      { threshold: 0.1 }
+      { threshold: 0.05 }
     )
-    ref.current?.querySelectorAll('.reveal').forEach(el => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+    const timer = setTimeout(() => {
+      ref.current?.querySelectorAll('.reveal').forEach(el => observer.observe(el))
+    }, 50)
+    return () => {
+      observer.disconnect()
+      clearTimeout(timer)
+    }
+  }, [active])
 
   const prog = programs[active]
 
@@ -102,7 +108,8 @@ export default function Programs() {
               onClick={() => setActive(i)}
               style={active === i ? { '--tab-color': p.color } : {}}
             >
-              <span>{p.flag}</span>
+              {/* IMAGE FLAG INSTEAD OF TEXT */}
+              <img src={p.flagUrl} alt={p.lang} className="tab-flag-img" />
               <span>{p.lang}</span>
             </button>
           ))}
@@ -117,7 +124,8 @@ export default function Programs() {
           {/* Left: overview */}
           <div className="programs__panel-left">
             <div className="programs__panel-header">
-              <span className="programs__flag">{prog.flag}</span>
+              {/* BIG IMAGE FLAG INSTEAD OF TEXT */}
+              <img src={prog.flagUrl} alt={prog.lang} className="programs__flag-img" />
               <div>
                 <h3 className="programs__lang-title">{prog.lang} Immersion</h3>
                 <p className="programs__destination">📍 {prog.destination}</p>
@@ -148,7 +156,11 @@ export default function Programs() {
                 <div className="batch-card__header">
                   <div className="batch-card__top">
                     <span className="batch-card__tag">{b.tag}</span>
-                    <span className="batch-card__level">{prog.flag} {b.level}</span>
+                    <span className="batch-card__level">
+                      {/* SMALL IMAGE FLAG INSTEAD OF TEXT */}
+                      <img src={prog.flagUrl} alt="" className="batch-flag-img" /> 
+                      {b.level}
+                    </span>
                   </div>
                 </div>
 

@@ -295,12 +295,38 @@
 }
 .programs__partnership-desc strong { color: var(--white); }
 
+/* ── FLAG IMAGES ── */
+.tab-flag-img {
+  width: 20px;
+  height: auto;
+  border-radius: 2px;
+}
+
+.programs__flag-img {
+  width: 48px;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2); /* Gives it a premium little shadow */
+}
+
+.batch-flag-img {
+  width: 22px;
+  height: auto;
+  border-radius: 2px;
+  margin-right: 8px;
+  vertical-align: middle;
+  transform: translateY(-2px); /* Lifts it slightly so it aligns perfectly with the text */
+}
+
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .programs__panel { grid-template-columns: 1fr; padding: 28px 24px; gap: 24px; }
 }
 @media (max-width: 600px) {
   .programs__tabs { gap: 7px; }
+  .programs__flag-img {
+    width: 36px;
+  }
   .programs__tab { padding: 8px 15px; font-size: 0.82rem; }
   .programs__panel { padding: 20px 16px; gap: 20px; }
   .programs__flag { font-size: 2.2rem; }
