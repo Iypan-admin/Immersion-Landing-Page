@@ -163,7 +163,7 @@ body::before {
 }
 
 @media (max-width: 768px) {
-  .section { padding: 56px 0; }
+  .section { padding: 1px 0; }
   .section-sm { padding: 36px 0; }
   html { font-size: 15px; }
   .container { padding: 0 18px; }

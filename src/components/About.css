@@ -1,7 +1,10 @@
 /* ═══════════════════════════════════════════════════════════
    ABOUT — mobile-first
 ═══════════════════════════════════════════════════════════ */
-
+/* ADD THIS NEW BLOCK RIGHT HERE */
+.about {
+  padding-bottom: 1px !important; /* Forces the bottom gap to shrink */
+}
 /* ── Feature cards ─────────────────────────────────────────── */
 .about__grid {
   display: grid;

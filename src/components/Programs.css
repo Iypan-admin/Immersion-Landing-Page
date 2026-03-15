@@ -1,5 +1,6 @@
 .programs {
   position: relative;
+  padding-bottom: 1px !important;
 }
 .programs::before {
   content: '';

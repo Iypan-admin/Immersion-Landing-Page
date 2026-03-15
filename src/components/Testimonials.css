@@ -2,6 +2,7 @@
   background: linear-gradient(180deg, var(--purple-950) 0%, var(--purple-900) 50%, var(--purple-950) 100%);
   position: relative;
   overflow: hidden;
+  padding-bottom: 1px !important;
 }
 .testimonials::before {
   content: '';

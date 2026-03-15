@@ -32,17 +32,9 @@ const steps = [
   },
 ]
 
-const reasons = [
-  { icon: '🎓', title: 'Expert Instructors',    desc: 'Certified language experts with real study-abroad experience.' },
-  { icon: '⚡', title: 'Fast-Track Results',     desc: 'Reach your required language level in months with intensive immersion.' },
-  { icon: '🗺️', title: 'Abroad-Specific Prep',  desc: 'Curriculum tailored to admission requirements of target countries.' },
-  { icon: '🤝', title: 'Personal Counseling',    desc: 'One-on-one guidance from Poornima Mam — your dedicated advisor.' },
-  { icon: '📱', title: 'Live Online Classes',    desc: 'Join from anywhere. All sessions are live, interactive, and recorded.' },
-  { icon: '🏆', title: 'Proven Track Record',    desc: '500+ students placed in universities across Europe & Japan.' },
-]
-
 export default function WhyUs() {
   const ref = useRef(null)
+  
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
@@ -80,22 +72,6 @@ export default function WhyUs() {
               <h3 className="whyus__step-title">{s.title}</h3>
               <p className="whyus__step-desc">{s.desc}</p>
               {i < steps.length - 1 && <div className="whyus__step-arrow">→</div>}
-            </div>
-          ))}
-        </div>
-
-        {/* ── Divider label ── */}
-        <div className="whyus__divider reveal">
-          <span>Why Choose ISML</span>
-        </div>
-
-        {/* ── 6 reason cards (2-col mobile, 3-col desktop) ── */}
-        <div className="whyus__grid">
-          {reasons.map((r, i) => (
-            <div key={r.title} className={`whyus__card reveal delay-${(i % 3) + 1}`}>
-              <div className="whyus__icon">{r.icon}</div>
-              <h3 className="whyus__title">{r.title}</h3>
-              <p className="whyus__desc">{r.desc}</p>
             </div>
           ))}
         </div>

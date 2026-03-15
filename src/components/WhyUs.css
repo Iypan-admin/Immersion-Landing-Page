@@ -1,11 +1,13 @@
+/* --- MAIN WHY US SECTION --- */
 .why-us {
   background: linear-gradient(180deg, var(--purple-950) 0%, var(--purple-900) 100%);
+  padding-bottom: 1px !important;
 }
 
-/* ── 4-step journey ── */
+/* ── 4-STEP JOURNEY ── */
 .whyus__steps {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr); /* 4 columns for desktop */
   gap: 0;
   margin-bottom: 52px;
   position: relative;
@@ -24,6 +26,7 @@
   z-index: 0;
 }
 
+/* Individual step card */
 .whyus__step {
   background: rgba(19,8,43,0.6);
   border: 1px solid rgba(255,255,255,0.06);
@@ -31,17 +34,19 @@
   padding: 28px 20px 24px;
   position: relative;
   text-align: center;
-  z-index: 1;
+  z-index: 1; /* Keeps the card above the connecting line */
   transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
   margin: 0 6px;
 }
+
+/* Step hover effect */
 .whyus__step:hover {
   transform: translateY(-5px);
   border-color: var(--step-color, var(--purple-500));
   box-shadow: 0 16px 40px rgba(0,0,0,0.25), 0 0 24px color-mix(in srgb, var(--step-color, var(--purple-500)) 20%, transparent);
 }
 
-/* Step number badge */
+/* Step number badge (e.g., "01", "02") */
 .whyus__step-num {
   position: absolute;
   top: -14px;
@@ -83,74 +88,8 @@
   display: none;
 }
 
-/* ── Divider label ── */
-.whyus__divider {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 28px;
-}
-.whyus__divider::before,
-.whyus__divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-.whyus__divider span {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
 
-/* ── 6 reason cards ── */
-.whyus__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin-bottom: 40px;
-}
-
-.whyus__card {
-  background: rgba(19,8,43,0.7);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 22px 18px;
-  position: relative;
-  overflow: hidden;
-  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
-}
-.whyus__card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(90,53,176,0.07) 0%, transparent 60%);
-  pointer-events: none;
-}
-.whyus__card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(90,53,176,0.4);
-  box-shadow: 0 14px 40px rgba(0,0,0,0.25);
-}
-
-.whyus__icon { font-size: 1.75rem; margin-bottom: 10px; }
-.whyus__title {
-  font-family: var(--font-display);
-  font-size: 0.98rem;
-  font-weight: 600;
-  color: var(--white);
-  margin-bottom: 7px;
-}
-.whyus__desc {
-  font-size: 0.83rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-}
-
-/* ── CTA banner ── */
+/* ── CTA BANNER ── */
 .whyus__banner {
   display: flex;
   align-items: center;
@@ -163,6 +102,8 @@
   position: relative;
   overflow: hidden;
 }
+
+/* Banner background glow */
 .whyus__banner::before {
   content: '';
   position: absolute;
@@ -171,6 +112,7 @@
   background: radial-gradient(circle, rgba(232,201,106,0.1), transparent 70%);
   pointer-events: none;
 }
+
 .whyus__banner-content h3 {
   font-family: var(--font-display);
   font-size: 1.3rem;
@@ -178,32 +120,39 @@
   color: var(--white);
   margin-bottom: 6px;
 }
-.whyus__banner-content p { font-size: 0.88rem; color: var(--purple-200); }
-.whyus__banner .btn { flex-shrink: 0; }
 
-/* ── Responsive ── */
+.whyus__banner-content p { 
+  font-size: 0.88rem; 
+  color: var(--purple-200); 
+}
+
+.whyus__banner .btn { 
+  flex-shrink: 0; 
+}
+
+
+/* ── RESPONSIVE LAYOUTS ── */
+
+/* Small Desktop / Tablet Landscape */
 @media (max-width: 1024px) {
-  .whyus__steps { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; }
-  .whyus__steps::before { display: none; }
+  .whyus__steps { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; } /* Changes from 4 columns to 2 columns */
+  .whyus__steps::before { display: none; } /* Hides the connecting line */
   .whyus__step { margin: 0; }
 }
 
+/* Tablet Portrait */
 @media (max-width: 768px) {
-  .whyus__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .whyus__banner { flex-direction: column; text-align: center; padding: 26px 22px; gap: 18px; }
 }
 
+/* Mobile Phones */
 @media (max-width: 480px) {
   .whyus__steps { grid-template-columns: repeat(2, 1fr); gap: 18px 10px; margin-bottom: 36px; }
   .whyus__step { padding: 24px 14px 18px; }
   .whyus__step-icon { font-size: 1.6rem; margin-bottom: 8px; }
   .whyus__step-title { font-size: 0.88rem; }
   .whyus__step-desc { font-size: 0.75rem; }
-  .whyus__grid { gap: 10px; margin-bottom: 28px; }
-  .whyus__card { padding: 18px 14px; }
-  .whyus__icon { font-size: 1.5rem; margin-bottom: 8px; }
-  .whyus__title { font-size: 0.88rem; }
-  .whyus__desc { font-size: 0.78rem; }
+  
   .whyus__banner { padding: 22px 16px; }
   .whyus__banner-content h3 { font-size: 1.1rem; }
 }
