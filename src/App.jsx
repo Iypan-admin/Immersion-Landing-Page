@@ -7,6 +7,7 @@ import Testimonials from './components/Testimonials'
 import LeadForm     from './components/LeadForm'
 import Footer       from './components/Footer'
 import Admin        from './components/Admin'
+import FloatCTA from './components/FloatCTA' 
 
 // If URL is /admin → show admin dashboard
 const isAdmin = window.location.pathname === '/admin'
@@ -25,8 +26,8 @@ export default function App() {
         <Testimonials />
         <LeadForm />
       </main>
-      
       <Footer />
+      <FloatCTA /> 
     </>
   )
 }
