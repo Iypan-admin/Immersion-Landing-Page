@@ -165,17 +165,14 @@ export default function LeadForm() {
             <h2 className="section-title">
               Start Your Journey<br /><span>Today</span>
             </h2>
-            <p className="lf__subtitle">
-              Fill in your details and our expert counselor will get back to you
-              with a personalized program recommendation.
-            </p>
           </div>
 
           {/* Form card */}
           <div className="lf__form-card reveal">
             <div className="lf__form-head">
               <h3 className="lf__form-title">Enquiry Form</h3>
-              <p className="lf__form-sub">All fields are required · Takes 60 seconds</p>
+              <p className="lf__form-sub">Fill in your details and our expert counselor will get back to you
+              with a personalized program recommendation.</p>
             </div>
 
             <div className="form-group">
