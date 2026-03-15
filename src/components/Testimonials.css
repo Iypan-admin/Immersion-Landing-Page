@@ -352,7 +352,6 @@
   }
   .testi__slide-name  { font-weight: 700; color: var(--white); font-size: 0.88rem; line-height: 1.2; }
   .testi__slide-meta  { font-size: 0.75rem; color: var(--gold); margin-top: 2px; }
-  .testi__slide-stars { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
 
   .testi__slider-dots { display: flex; justify-content: center; gap: 7px; }
   .testi__slider-dot {

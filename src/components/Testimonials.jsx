@@ -237,7 +237,6 @@ export default function Testimonials() {
                     <div>
                       <p className="testi__slide-name">{item.name}</p>
                       <p className="testi__slide-meta">{item.language}</p>
-                      <p className="testi__slide-stars">⭐⭐⭐⭐⭐</p>
                     </div>
                   </div>
                 </div>

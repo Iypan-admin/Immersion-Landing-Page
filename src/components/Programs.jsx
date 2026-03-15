@@ -19,7 +19,7 @@ const programs = [
   {
     lang: 'German',
     flag: '🇩🇪',
-    destination: 'Germany / Austria',
+    destination: 'Germany',
     color: '#e8c96a',
     glow: 'rgba(232,201,106,0.18)',
     desc: 'Germany requires B1/B2 for most universities. Our immersion method gets you there with confidence.',
