@@ -33,12 +33,12 @@
 
 /* ISML — Perfect Circle */
 .navbar__logo-isml {
-  height: 42px;
-  width: 42px; /* Explicit width to match height makes it a perfect square */
-  object-fit: contain;
+  height: 44px; /* Slightly increased to make it pop */
+  width: 44px;
+  object-fit: cover; /* ← This forces the image to fill the circle to the edges */
   background: #ffffff;
-  border-radius: 50%; /* This makes it a perfect circle */
-  padding: 6px; /* Space inside the circle */
+  border-radius: 50%; 
+  padding: 0; /* ← Removed padding so there is no extra gap */
   flex-shrink: 0;
   transition: transform 0.3s ease;
 }
@@ -196,7 +196,11 @@
 
 /* Very small phones — shrink logos to fit */
 @media (max-width: 380px) {
-  .navbar__logo-isml { height: 34px; width: 34px; padding: 4px; }
+  .navbar__logo-isml { 
+    height: 36px; 
+    width: 36px; 
+    padding: 0; /* Ensure padding stays 0 on mobile */
+  }
   .navbar__logo-sl   { height: 20px; max-width: 88px; }
   .navbar__logo-divider { display: none; }
 }
