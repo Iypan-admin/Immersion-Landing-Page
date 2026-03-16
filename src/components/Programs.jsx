@@ -6,7 +6,7 @@ import slLogo from '../assets/success-learning-logo.png'
 const programs = [
   {
     lang: 'French',
-    flagUrl: 'https://flagcdn.com/w80/fr.png', // Replaced emoji with image URL
+    flagUrl: 'https://flagcdn.com/w80/fr.png', 
     destination: 'France / Canada',
     color: '#4f6ef7',
     glow: 'rgba(79,110,247,0.22)',
@@ -18,7 +18,7 @@ const programs = [
   },
   {
     lang: 'German',
-    flagUrl: 'https://flagcdn.com/w80/de.png', // Replaced emoji with image URL
+    flagUrl: 'https://flagcdn.com/w80/de.png', 
     destination: 'Germany',
     color: '#e8c96a',
     glow: 'rgba(232,201,106,0.18)',
@@ -30,7 +30,7 @@ const programs = [
   },
   {
     lang: 'Japanese',
-    flagUrl: 'https://flagcdn.com/w80/jp.png', // Replaced emoji with image URL
+    flagUrl: 'https://flagcdn.com/w80/jp.png', 
     destination: 'Japan',
     color: '#e86a9e',
     glow: 'rgba(232,106,158,0.18)',
@@ -196,6 +196,18 @@ export default function Programs() {
                 <a href="#enquire" className="batch-card__cta">Apply for this batch →</a>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* ── IMPORTANT FAQ BOX ── */}
+        <div className="programs__faq reveal">
+          <div className="programs__faq-icon">💡</div>
+          <div className="programs__faq-content">
+            <h4 className="programs__faq-q">Important Enrollment & Fee Information</h4>
+            <p className="programs__faq-a">
+              <strong>Fee Coverage:</strong> The program fee strictly covers language tuition and is non-refundable. Study abroad counseling, university admissions, and visa guidance are provided as separate services. <br/>
+              <strong>Batch Sizes:</strong> To guarantee personalized attention, batches require a minimum of 5 students to commence and are strictly capped at 10 students.
+            </p>
           </div>
         </div>
 

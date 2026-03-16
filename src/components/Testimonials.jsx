@@ -72,14 +72,14 @@ const counselors = [
     bio: "At ISML, learning a language is about creating new opportunities. Since 2014, our programs have helped thousands of students build real speaking confidence and prepare for international exams like DELF and Goethe — through a practical, immersive teaching approach.",
   },
   {
-    initials: 'RM',
-    name: 'Ramesh',
-    role: 'Senior Study Abroad Counselor',
+    initials: 'RG',
+    name: 'Ramesh Ganesan',
+    role: 'Senior Global Education Advisor',
     org: 'Success Learning',
     color: '#4f6ef7',
-    badge: '500+ Placements',
-    tags: ['University Admissions', 'Visa Guidance', 'Scholarships'],
-    bio: "From application to arrival, Ramesh helps language-ready students find the right university in Germany, France, or Japan — with complete support on admissions, scholarships, education loans, and visa processing.",
+    badge: 'Expert Counselor', 
+    tags: ['University Selection', 'Visa & Loans', 'SOP Support'],
+    bio: "Ramesh provides comprehensive guidance for Undergraduate, Postgraduate, and PhD programs. From university selection and SOP documentation to visa, loan, and accommodation assistance, he ensures students confidently achieve their global education dreams.",
   },
 ]
 
