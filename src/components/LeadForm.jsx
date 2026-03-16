@@ -115,7 +115,7 @@ export default function LeadForm() {
             </div>
 
             <div className="lf__success-btns">
-              <a href="tel:+91XXXXXXXXXX" className="expert-btn expert-btn--call">
+              <a href="tel:+917338880186" className="expert-btn expert-btn--call">
                 <span className="expert-btn__icon">📞</span>
                 <div className="expert-btn__text">
                   <span className="expert-btn__label">Call Our Expert</span>
@@ -123,7 +123,7 @@ export default function LeadForm() {
                 </div>
               </a>
               <a
-                href="https://wa.me/91XXXXXXXXXX"
+                href="https://wa.me/917338880186"
                 target="_blank"
                 rel="noreferrer"
                 className="expert-btn expert-btn--whatsapp"

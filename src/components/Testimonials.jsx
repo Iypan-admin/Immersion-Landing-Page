@@ -3,6 +3,20 @@ import './Testimonials.css'
 
 const testimonials = [
   {
+    name: 'Mathurabashene',
+    language: 'German B2 · Universität zu Kiel',
+    avatar: 'MB',
+    color: '#4fc4f7', // A nice bright blue
+    text: "I'm taking German classes here, and the coach Mr. Arjun is incredibly supportive and approachable. My coach is particularly helpful, clarifying my doubts patiently and no matter how many times I ask. I had a great learning session. Thank you!",
+  },
+  {
+    name: 'Cris Joy',
+    language: 'German B2 · Hochschule Bonn-Rhein-Sieg',
+    avatar: 'CJ',
+    color: '#c96ae8',
+    text: "Spending six months in the German class has been undoubtedly the best experience of my life. Even though Arjun sir was quite young, he was extremely knowledgeable and astonishingly patient with us. He made it so easy and enjoyable to learn. The teaching method at this institute was also very effective, and they explained even the hardest grammar rules in a way that you learned it as a five-year-old. The class times were very flexible, scheduled around our free time, which was nice and easy. Also, I could not have asked for or imagined better classmates. Everyone was super helpful, friendly and fun. I would say it was worth every penny, and I do highly recommend this to anyone wanting to, or consider, learning German in a positive and warm environment!",
+  },
+  {
     name: 'Sumitha Magesh',
     language: 'French Conversation',
     avatar: 'SM',
@@ -29,13 +43,6 @@ const testimonials = [
     avatar: 'SV',
     color: '#6ae8c9',
     text: "I joined ISML, and trust me — this is the best institute to learn a foreign language. My trainer, Mr. Claude, is the best teacher because he has so much patience. Even if we didn't understand the topic well, he would reteach it without hesitation. The best part about this institution is their constant support — no matter what the doubt is, they always take time to clarify. I'm truly happy to have joined.",
-  },
-  {
-    name: 'Cris Joy',
-    language: 'German',
-    avatar: 'CJ',
-    color: '#c96ae8',
-    text: "Spending six months in the German class was one of the best experiences of my life. Arjun Sir, though young, was incredibly patient and knowledgeable — his simple, effective methods made even complex grammar easy to grasp. The flexible timings fit our schedules perfectly, and the friendly, supportive classmates made learning even more enjoyable. It was totally worth it! I highly recommend this institute to anyone wanting to learn German in a warm, positive setting.",
   },
   {
     name: 'Sheik Mohamed',

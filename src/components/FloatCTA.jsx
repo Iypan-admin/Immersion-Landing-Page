@@ -33,12 +33,12 @@ export default function FloatCTA() {
 
       {/* Action buttons */}
       <div className="float-cta__actions">
-        <a href="tel:+91XXXXXXXXXX" className="float-cta__btn float-cta__btn--call">
+        <a href="tel:+917338880186" className="float-cta__btn float-cta__btn--call">
           <span className="float-cta__btn-icon">📞</span>
           <span>Call an Expert</span>
         </a>
         <a
-          href="https://wa.me/91XXXXXXXXXX"
+          href="https://wa.me/917338880186"
           target="_blank"
           rel="noreferrer"
           className="float-cta__btn float-cta__btn--wa"

@@ -24,8 +24,8 @@ export default function Footer() {
             for study abroad success.
           </p>
           <div className="footer__contact">
-            <a href="tel:+91XXXXXXXXXX" className="footer__contact-link">📞 +91-XXXX-XXXXXX</a>
-            <a href="mailto:info@isml.in" className="footer__contact-link">✉️ info@isml.in</a>
+            <a href="tel:+917338880186" className="footer__contact-link">📞 +91-7338-880186</a>
+            <a href="mailto:enquiry.isml@gmail.com" className="footer__contact-link">✉️enquiry.isml@gmail.com</a>
           </div>
 
           {/* Success Learning partner card */}
@@ -71,10 +71,10 @@ export default function Footer() {
           <h4 className="footer__col-title">Connect</h4>
           <p className="footer__connect-text">Talk to our counselor directly:</p>
           <div className="footer__expert-btns">
-            <a href="tel:+91XXXXXXXXXX" className="footer__expert-btn footer__expert-btn--call">
+            <a href="tel:+917338880186" className="footer__expert-btn footer__expert-btn--call">
               📞 Call Now
             </a>
-            <a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noreferrer"
+            <a href="https://wa.me/917338880186" target="_blank" rel="noreferrer"
               className="footer__expert-btn footer__expert-btn--wa">
               💬 WhatsApp
             </a>
