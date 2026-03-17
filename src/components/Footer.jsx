@@ -19,7 +19,7 @@ export default function Footer() {
             </div>
           </div>
           <p className="footer__tagline">
-            India's premier immersion language institute.<br />
+            India's premier immersion language learning institute.<br />
             Helping students master French, German &amp; Japanese<br />
             for study abroad success.
           </p>

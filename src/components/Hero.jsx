@@ -30,9 +30,9 @@ export default function Hero() {
           {/* Language pills */}
           <div className="hero__langs animate-fade-up delay-4">
             {[
-              { flag: '🇫🇷', lang: 'French',  levels: 'A1 → B2' },
-              { flag: '🇩🇪', lang: 'German',  levels: 'A1 → B2' },
-              { flag: '🇯🇵', lang: 'Japanese', levels: 'N5 → N3' },
+              { flag: '🇫🇷', lang: 'French',  levels: 'A1 → B1/B2' },
+              { flag: '🇩🇪', lang: 'German',  levels: 'A1 → B1/B2' },
+              { flag: '🇯🇵', lang: 'Japanese', levels: 'N5 → N4/N3' },
             ].map(l => (
               <div key={l.lang} className="lang-pill">
                 <span className="lang-pill__flag">{l.flag}</span>

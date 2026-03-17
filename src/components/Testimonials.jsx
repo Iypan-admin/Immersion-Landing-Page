@@ -72,7 +72,7 @@ const counselors = [
     initials: 'PR',
     name: 'Poornima Rajaram',
     role: 'Senior Language Trainer',
-    org: 'ISML',
+    org: 'Indian School for Modern Languages',
     color: '#7c5cbf',
     badge: 'Since 2014',
     tags: ['French', 'German', 'DELF Prep', 'Goethe Exam'],
