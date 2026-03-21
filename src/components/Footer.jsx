@@ -84,7 +84,7 @@ export default function Footer() {
 
       <div className="footer__bottom">
         <div className="container footer__bottom-inner">
-          <p>© {new Date().getFullYear()} ISML Foundation. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} IYPAN Educational Centre Private Limited- All Rights Reserved.</p>
           <p style={{ color: 'var(--purple-400)', fontSize: '0.75rem' }}>
             In partnership with Success Learning · Study Abroad Counseling
           </p>
