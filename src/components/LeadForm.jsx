@@ -3,9 +3,9 @@ import './LeadForm.css'
 
 const LANGUAGES = ['French', 'German', 'Japanese']
 const LEVELS = {
-  French:   ['A1 → B1 (Foundation)', 'A1 → B2 (Complete)'],
-  German:   ['A1 → B1 (Foundation)', 'A1 → B2 (Complete)'],
-  Japanese: ['N5 → N4 (Foundation)', 'N5 → N3 (Advanced)'],
+  French:   ['A1 → B1 (Intermediate)', 'A1 → B2 (Advance)'],
+  German:   ['A1 → B1 (Intermediate)', 'A1 → B2 (Advance)'],
+  Japanese: ['N5 → N4 (Intermediate)', 'N5 → N3 (Advance)'],
 }
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
