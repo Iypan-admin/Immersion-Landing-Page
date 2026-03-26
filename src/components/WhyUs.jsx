@@ -80,7 +80,7 @@ export default function WhyUs() {
         <div className="whyus__banner reveal">
           <div className="whyus__banner-content">
             <h3>Ready to Begin Your Language Journey?</h3>
-            <p>Talk to Poornima Mam — our expert counselor will guide you to the perfect program.</p>
+            <p>Talk to Purnima Mam — our expert counselor will guide you to the perfect program.</p>
           </div>
           <a href="#enquire" className="btn btn--primary">
             Get Free Counseling
