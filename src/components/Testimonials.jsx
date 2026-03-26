@@ -70,7 +70,7 @@ const testimonials = [
 const counselors = [
   {
     initials: 'PR',
-    name: 'Poornima Rajaram',
+    name: 'Purnima Rajaram',
     role: 'Senior Language Trainer',
     org: 'Indian School for Modern Languages',
     color: '#7c5cbf',
