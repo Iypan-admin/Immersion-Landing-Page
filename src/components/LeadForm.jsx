@@ -8,7 +8,7 @@ const LEVELS = {
   Japanese: ['N5 → N4 (Intermediate)', 'N5 → N3 (Advance)'],
 }
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000' || 'https://immersion-landing-page-backend-production.up.railway.app/'
 
 async function submitLead(data) {
   const res = await fetch(`${BACKEND_URL}/api/leads`, {
