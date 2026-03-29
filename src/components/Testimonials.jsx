@@ -6,7 +6,7 @@ const testimonials = [
     name: 'Mathurabashene',
     language: 'German B2 · Universität zu Kiel',
     avatar: 'MB',
-    color: '#4fc4f7', // A nice bright blue
+    color: '#4fc4f7',
     text: "I'm taking German classes here, and the coach Mr. Arjun is incredibly supportive and approachable. My coach is particularly helpful, clarifying my doubts patiently and no matter how many times I ask. I had a great learning session. Thank you!",
   },
   {
@@ -84,23 +84,55 @@ const counselors = [
     role: 'Senior Global Education Advisor',
     org: 'Success Learning',
     color: '#4f6ef7',
-    badge: 'Expert Counselor', 
+    badge: 'Expert Counselor',
     tags: ['University Selection', 'Visa & Loans', 'SOP Support'],
     bio: "Ramesh provides comprehensive guidance for Undergraduate, Postgraduate, and PhD programs. From university selection and SOP documentation to visa, loan, and accommodation assistance, he ensures students confidently achieve their global education dreams.",
   },
 ]
 
 export default function Testimonials() {
-  const [active, setActive]   = useState(0)
-  const [auto, setAuto]       = useState(true)
-  const [animKey, setAnimKey] = useState(0)
-  const ref = useRef(null)
-
-  const trackRef    = useRef(null)
+  const [active, setActive]     = useState(0)
+  const [auto, setAuto]         = useState(true)
+  const [animKey, setAnimKey]   = useState(0)
+  const [sliderH, setSliderH]   = useState(null) // dynamic height for mobile slider
+  const ref        = useRef(null)
+  const trackRef   = useRef(null)
+  const sliderRef  = useRef(null)
+  const slideRefs  = useRef([])
   const touchStartX = useRef(null)
   const touchStartY = useRef(null)
   const isDragging  = useRef(false)
   const dragDelta   = useRef(0)
+
+  // ── Sync track position ──
+  const syncTrack = useCallback((idx, animate = true) => {
+    if (!trackRef.current) return
+    trackRef.current.style.transition = animate
+      ? 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      : 'none'
+    trackRef.current.style.transform = `translateX(-${idx * 100}%)`
+  }, [])
+
+  // ── Update slider container height to match current slide ──
+  const updateHeight = useCallback((idx) => {
+    const el = slideRefs.current[idx]
+    if (el) setSliderH(el.offsetHeight)
+  }, [])
+
+  useEffect(() => { syncTrack(active) }, [active, syncTrack])
+
+  // Update height whenever active changes, after paint
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => updateHeight(active))
+    return () => cancelAnimationFrame(frame)
+  }, [active, updateHeight])
+
+  // Also update on resize (font reflow can change heights)
+  useEffect(() => {
+    const ro = new ResizeObserver(() => updateHeight(active))
+    if (sliderRef.current) ro.observe(sliderRef.current)
+    return () => ro.disconnect()
+  }, [active, updateHeight])
 
   // Auto-cycle
   useEffect(() => {
@@ -123,14 +155,6 @@ export default function Testimonials() {
   }, [])
 
   const goTo = (i) => { setActive(i); setAnimKey(k => k + 1); setAuto(false) }
-
-  // Keep track in sync
-  useEffect(() => {
-    if (trackRef.current) {
-      trackRef.current.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-      trackRef.current.style.transform  = `translateX(-${active * 100}%)`
-    }
-  }, [active])
 
   const onTouchStart = useCallback((e) => {
     touchStartX.current = e.touches[0].clientX
@@ -160,12 +184,9 @@ export default function Testimonials() {
     } else if (dragDelta.current > threshold && active > 0) {
       goTo(active - 1)
     } else {
-      if (trackRef.current) {
-        trackRef.current.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-        trackRef.current.style.transform  = `translateX(-${active * 100}%)`
-      }
+      syncTrack(active)
     }
-  }, [active])
+  }, [active, syncTrack])
 
   const t = testimonials[active]
 
@@ -194,7 +215,7 @@ export default function Testimonials() {
                 className="testi__avatar"
                 style={{
                   background: `linear-gradient(135deg, ${t.color}33, ${t.color}66)`,
-                  borderColor: t.color + '55'
+                  borderColor: t.color + '55',
                 }}
               >
                 {t.avatar}
@@ -206,7 +227,6 @@ export default function Testimonials() {
               </div>
             </div>
           </div>
-
           <div className="testi__dots">
             {testimonials.map((_, i) => (
               <button
@@ -218,16 +238,25 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* ── MOBILE: swipe slider ── */}
+        {/* ── MOBILE: swipe slider ──
+            The outer wrapper gets an explicit height that matches the
+            current slide so there is zero dead space below short cards. ── */}
         <div
           className="testi__slider reveal"
+          ref={sliderRef}
+          style={sliderH ? { height: sliderH } : undefined}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
+          {/* track sits absolutely so it doesn't contribute to flow height */}
           <div className="testi__track" ref={trackRef}>
             {testimonials.map((item, i) => (
-              <div className="testi__slide" key={i}>
+              <div
+                className="testi__slide"
+                key={i}
+                ref={el => { slideRefs.current[i] = el }}
+              >
                 <div className="testi__slide-card">
                   <span className="testi__slide-quote">"</span>
                   <p className="testi__slide-text">{item.text}</p>
@@ -236,7 +265,7 @@ export default function Testimonials() {
                       className="testi__slide-avatar"
                       style={{
                         background: `linear-gradient(135deg, ${item.color}33, ${item.color}66)`,
-                        borderColor: item.color + '55'
+                        borderColor: item.color + '55',
                       }}
                     >
                       {item.avatar}
@@ -282,15 +311,11 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* ══════════════════════════════════════════
-            COUNSELOR PROFILE CARDS
-        ══════════════════════════════════════════ */}
+        {/* ── Counselor profile cards ── */}
         <div className="testi__counselors-wrap reveal">
-          {/* Section divider label */}
           <div className="testi__counselors-divider">
             <span>Meet Your Expert Counselors</span>
           </div>
-
           <div className="testi__counselors-grid">
             {counselors.map(c => (
               <div
@@ -298,13 +323,10 @@ export default function Testimonials() {
                 className="testi__counselor-card"
                 style={{ '--c-color': c.color }}
               >
-                {/* Top gradient accent bar */}
                 <div
                   className="testi__counselor-bar"
                   style={{ background: `linear-gradient(90deg, ${c.color}cc, ${c.color}33, transparent)` }}
                 />
-
-                {/* Header: avatar + name + status */}
                 <div className="testi__counselor-header">
                   <div
                     className="testi__counselor-avatar"
@@ -325,19 +347,12 @@ export default function Testimonials() {
                       </span>
                     </p>
                     <div className="testi__counselor-status">
-                      <span
-                        className="testi__counselor-dot"
-                        style={{ background: c.color }}
-                      />
+                      <span className="testi__counselor-dot" style={{ background: c.color }} />
                       <span className="testi__counselor-badge-text">{c.badge}</span>
                     </div>
                   </div>
                 </div>
-
-                {/* Bio */}
                 <p className="testi__counselor-bio">{c.bio}</p>
-
-                {/* Expertise tags */}
                 <div className="testi__counselor-tags">
                   {c.tags.map(tag => (
                     <span
@@ -349,8 +364,6 @@ export default function Testimonials() {
                     </span>
                   ))}
                 </div>
-
-                {/* CTA link */}
                 <a href="#enquire" className="testi__counselor-cta">
                   <span>Talk to {c.name.split(' ')[0]}</span>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

@@ -29,7 +29,7 @@ export default function Navbar() {
             <img src={ismlLogo} alt="ISML" className="navbar__logo-isml" />
           </div>
           <div className="navbar__logo-text">
-            <span className="navbar__logo-name">ISML</span>
+            <span className="navbar__logo-name">Indian School for Modern Languages</span>
           </div>
         </a>
 
