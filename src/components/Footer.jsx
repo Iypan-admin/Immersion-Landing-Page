@@ -10,7 +10,6 @@ export default function Footer() {
         {/* Brand — ISML primary */}
         <div className="footer__brand">
           <div className="footer__logos">
-            {/* ISML */}
             <div className="footer__logo-isml-wrap">
               <img src={ismlLogo} alt="ISML" className="footer__logo-isml" />
             </div>
@@ -25,7 +24,7 @@ export default function Footer() {
           </p>
           <div className="footer__contact">
             <a href="tel:+917338880186" className="footer__contact-link">📞 +91-7338-880186</a>
-            <a href="mailto:enquiry.isml@gmail.com" className="footer__contact-link">✉️enquiry.isml@gmail.com</a>
+            <a href="mailto:enquiry.isml@gmail.com" className="footer__contact-link">✉️ enquiry.isml@gmail.com</a>
           </div>
 
           {/* Success Learning partner card */}
@@ -84,8 +83,34 @@ export default function Footer() {
 
       <div className="footer__bottom">
         <div className="container footer__bottom-inner">
-          <p>© {new Date().getFullYear()} IYPAN Educational Centre Private Limited- All Rights Reserved.</p>
-          <p style={{ color: 'var(--purple-400)', fontSize: '0.75rem' }}>
+          {/* Left: copyright */}
+          <p>© {new Date().getFullYear()} IYPAN Educational Centre Private Limited. All Rights Reserved.</p>
+
+          {/* Center/right: legal links */}
+          <div className="footer__legal">
+            <a
+              href="https://www.indianschoolformodernlanguages.com/privacy"
+              target="_blank"
+              rel="noreferrer"
+              className="footer__legal-link"
+            >
+              Privacy Policy
+            </a>
+            <span className="footer__legal-sep">·</span>
+            <a
+              href="https://www.indianschoolformodernlanguages.com/terms"
+              target="_blank"
+              rel="noreferrer"
+              className="footer__legal-link"
+            >
+              Terms &amp; Conditions
+            </a>
+          </div>
+        </div>
+
+        {/* Partnership line */}
+        <div className="container">
+          <p className="footer__partner-note">
             In partnership with Success Learning · Study Abroad Counseling
           </p>
         </div>

@@ -3,12 +3,12 @@ import './LeadForm.css'
 
 const LANGUAGES = ['French', 'German', 'Japanese']
 const LEVELS = {
-  French:   ['A1 → B1 (Intermediate)', 'A1 → B2 (Advance)'],
-  German:   ['A1 → B1 (Intermediate)', 'A1 → B2 (Advance)'],
-  Japanese: ['N5 → N4 (Intermediate)', 'N5 → N3 (Advance)'],
+  French:   ['A1 → B1 (Foundation)', 'A1 → B2 (Complete)'],
+  German:   ['A1 → B1 (Foundation)', 'A1 → B2 (Complete)'],
+  Japanese: ['N5 → N4 (Foundation)', 'N5 → N3 (Advanced)'],
 }
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000' || 'https://immersion-landing-page-backend-production.up.railway.app/'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
 
 async function submitLead(data) {
   const res = await fetch(`${BACKEND_URL}/api/leads`, {
@@ -115,7 +115,7 @@ export default function LeadForm() {
             </div>
 
             <div className="lf__success-btns">
-              <a href="tel:+917338880186" className="expert-btn expert-btn--call">
+              <a href="tel:+91XXXXXXXXXX" className="expert-btn expert-btn--call">
                 <span className="expert-btn__icon">📞</span>
                 <div className="expert-btn__text">
                   <span className="expert-btn__label">Call Our Expert</span>
@@ -123,7 +123,7 @@ export default function LeadForm() {
                 </div>
               </a>
               <a
-                href="https://wa.me/917338880186"
+                href="https://wa.me/91XXXXXXXXXX"
                 target="_blank"
                 rel="noreferrer"
                 className="expert-btn expert-btn--whatsapp"
@@ -165,14 +165,17 @@ export default function LeadForm() {
             <h2 className="section-title">
               Start Your Journey<br /><span>Today</span>
             </h2>
+            <p className="lf__subtitle">
+              Fill in your details and our expert counselor will get back to you
+              with a personalized program recommendation.
+            </p>
           </div>
 
           {/* Form card */}
           <div className="lf__form-card reveal">
             <div className="lf__form-head">
               <h3 className="lf__form-title">Enquiry Form</h3>
-              <p className="lf__form-sub">Fill in your details and our expert counselor will get back to you
-              with a personalized program recommendation.</p>
+              <p className="lf__form-sub">All fields are required · Takes 60 seconds</p>
             </div>
 
             <div className="form-group">
@@ -250,6 +253,29 @@ export default function LeadForm() {
                 : <>Submit Enquiry <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></>
               }
             </button>
+
+            {/* Consent line */}
+            <p className="lf__consent">
+              By proceeding, you agree to our{' '}
+              <a
+                href="https://www.indianschoolformodernlanguages.com/privacy"
+                target="_blank"
+                rel="noreferrer"
+                className="lf__consent-link"
+              >
+                Privacy Policy
+              </a>
+              {' '}and{' '}
+              <a
+                href="https://www.indianschoolformodernlanguages.com/terms"
+                target="_blank"
+                rel="noreferrer"
+                className="lf__consent-link"
+              >
+                Terms &amp; Conditions
+              </a>
+              .
+            </p>
 
             {status === 'error' && (
               <p className="form-api-error">Something went wrong. Please try again.</p>

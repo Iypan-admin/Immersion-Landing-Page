@@ -124,7 +124,6 @@
 }
 .float-cta__btn:hover { transform: translateY(-2px); }
 .float-cta__btn:active { transform: scale(0.97); }
-
 .float-cta__btn-icon { font-size: 1rem; flex-shrink: 0; }
 
 /* Call button */
