@@ -10,6 +10,18 @@ const LEVELS = {
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
 
+// ── Read ?ref= from URL once, persist in sessionStorage so it
+//    survives in-page navigation but clears when the tab closes ──
+function getRefCode() {
+  const params = new URLSearchParams(window.location.search)
+  const urlRef = params.get('ref')
+  if (urlRef) {
+    sessionStorage.setItem('isml_ref', urlRef)
+    return urlRef
+  }
+  return sessionStorage.getItem('isml_ref') || ''
+}
+
 async function submitLead(data) {
   const res = await fetch(`${BACKEND_URL}/api/leads`, {
     method: 'POST',
@@ -32,12 +44,15 @@ const trustSignals = [
 ]
 
 export default function LeadForm() {
+  // ── Capture ref code on mount ──────────────────────────────
+  const [refCode] = useState(() => getRefCode())
+
   const [form, setForm]     = useState({ name: '', email: '', phone: '', language: '', level: '' })
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle | loading | success | error
   const ref = useRef(null)
 
-  // IntersectionObserver — re-runs when status changes (fixes re-mount reveal)
+  // IntersectionObserver — re-runs when status changes
   useEffect(() => {
     if (status === 'success') return
     const observer = new IntersectionObserver(
@@ -78,14 +93,15 @@ export default function LeadForm() {
     if (Object.keys(e).length) { setErrors(e); return }
     setStatus('loading')
     try {
-      await submitLead(form)
+      // ── THE FIX: always attach referral to the payload ──
+      await submitLead({ ...form, referral: refCode || null })
       setStatus('success')
     } catch {
       setStatus('error')
     }
   }
 
-  // ── SUCCESS STATE ────────────────────────────────────────────
+  // ── SUCCESS STATE ──────────────────────────────────────────
   if (status === 'success') {
     return (
       <section className="section lead-form" id="enquire" ref={ref}>
@@ -115,7 +131,7 @@ export default function LeadForm() {
             </div>
 
             <div className="lf__success-btns">
-              <a href="tel:+91XXXXXXXXXX" className="expert-btn expert-btn--call">
+              <a href="tel:+917338880186" className="expert-btn expert-btn--call">
                 <span className="expert-btn__icon">📞</span>
                 <div className="expert-btn__text">
                   <span className="expert-btn__label">Call Our Expert</span>
@@ -123,7 +139,7 @@ export default function LeadForm() {
                 </div>
               </a>
               <a
-                href="https://wa.me/91XXXXXXXXXX"
+                href="https://wa.me/917338880186"
                 target="_blank"
                 rel="noreferrer"
                 className="expert-btn expert-btn--whatsapp"
@@ -151,7 +167,7 @@ export default function LeadForm() {
     )
   }
 
-  // ── FORM STATE ───────────────────────────────────────────────
+  // ── FORM STATE ─────────────────────────────────────────────
   return (
     <section className="section lead-form" id="enquire" ref={ref}>
       <div className="lead-form__glow" aria-hidden="true" />
@@ -170,6 +186,16 @@ export default function LeadForm() {
               with a personalized program recommendation.
             </p>
           </div>
+
+          {/* Referral notice — only shown when a ref code is present */}
+          {refCode && (
+            <div className="lf__ref-notice reveal">
+              <span className="lf__ref-icon">🎁</span>
+              <span>
+                You were referred by a partner — your code <strong>{refCode}</strong> is applied.
+              </span>
+            </div>
+          )}
 
           {/* Form card */}
           <div className="lf__form-card reveal">

@@ -55,10 +55,10 @@ const S = {
   loginSub:  { color: "#9ca3af", fontSize: 14, margin: "0 0 28px" },
 
   modalOverlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.35)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: 20 },
-  modalBox:     { background: "#fff", border: "1px solid #e5e7eb", borderRadius: 16, padding: 28, width: "100%", maxWidth: 480, boxShadow: "0 20px 60px rgba(0,0,0,0.15)" },
+  modalBox:     { background: "#fff", border: "1px solid #e5e7eb", borderRadius: 16, padding: 28, width: "100%", maxWidth: 520, boxShadow: "0 20px 60px rgba(0,0,0,0.15)", maxHeight: "90vh", overflowY: "auto" },
 };
 
-// ─── Small components ─────────────────────────────────────────────────────────
+// ─── Small helpers ────────────────────────────────────────────────────────────
 function StatCard({ label, value, accent }) {
   return (
     <div style={S.statCard(accent)}>
@@ -146,6 +146,15 @@ function DateCell({ v }) {
   return <span style={{ color: "#6b7280" }}>{new Date(v).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</span>;
 }
 
+function CodeChip({ value, color = "#4f46e5", bg = "#eef2ff" }) {
+  if (!value) return <span style={{ color: "#d1d5db" }}>—</span>;
+  return (
+    <span style={{ fontFamily: "monospace", color, background: bg, padding: "2px 8px", borderRadius: 4, fontSize: 12, fontWeight: 700 }}>
+      {value}
+    </span>
+  );
+}
+
 // ─── LEADS TAB ────────────────────────────────────────────────────────────────
 function LeadsTab({ password }) {
   const [rows, setRows]             = useState([]);
@@ -199,9 +208,10 @@ function LeadsTab({ password }) {
     { key: "phone",    label: "Phone" },
     { key: "language", label: "Language", render: v => <LangBadge lang={v} /> },
     { key: "level",    label: "Level",    render: v => <span style={{ color: "#6b7280", fontSize: 12 }}>{v}</span> },
+    // ── Referral column: shows code, highlights when present ──
     { key: "referral", label: "Ref Code", render: v => v
-      ? <span style={{ fontFamily: "monospace", color: "#4f46e5", background: "#eef2ff", padding: "2px 8px", borderRadius: 4, fontSize: 12 }}>{v}</span>
-      : <span style={{ color: "#d1d5db" }}>—</span>
+      ? <CodeChip value={v} />
+      : <span style={{ color: "#d1d5db", fontSize: 12 }}>No ref</span>
     },
     { key: "created_at", label: "Date", render: v => <DateCell v={v} /> },
   ];
@@ -250,9 +260,18 @@ function AffiliatesTab({ password }) {
   const [loading, setLoading]     = useState(false);
   const [loaded, setLoaded]       = useState(false);
   const [search, setSearch]       = useState("");
-  const [form, setForm]           = useState({ name: "", email: "", phone: "", referred_by: "", referred_by_name: "" });
+
+  // ── Create form — now has ame_code + ap_code instead of referred_by fields ──
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    ame_code: "",       // Internal employee who is hiring this affiliate
+    ap_code: "",        // Existing affiliate who recommended this new person
+  });
   const [creating, setCreating]   = useState(false);
   const [generatedLink, setGeneratedLink] = useState("");
+  const [generatedCode, setGeneratedCode] = useState("");
   const [copied, setCopied]       = useState(false);
   const [editRow, setEditRow]     = useState(null);
   const [editForm, setEditForm]   = useState({});
@@ -277,12 +296,21 @@ function AffiliatesTab({ password }) {
     try {
       const res = await fetch(`${BACKEND_URL}/admin/create-affiliate`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password, ...form })
+        body: JSON.stringify({
+          password,
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          // Map to backend field names
+          ame_code: form.ame_code || null,       // employee who hired this affiliate
+          referred_by: form.ap_code || null,     // existing affiliate who referred this person
+        })
       });
       const data = await res.json();
       if (!res.ok) { alert(data.error); setCreating(false); return; }
       setGeneratedLink(data.link);
-      setForm({ name: "", email: "", phone: "", referred_by: "", referred_by_name: "" });
+      setGeneratedCode(data.ref_code);
+      setForm({ name: "", email: "", phone: "", ame_code: "", ap_code: "" });
       if (loaded) load();
     } catch { alert("Error creating"); }
     setCreating(false);
@@ -290,7 +318,13 @@ function AffiliatesTab({ password }) {
 
   const openEdit = row => {
     setEditRow(row);
-    setEditForm({ name: row.name, email: row.email, phone: row.phone, referred_by: row.referred_by || "", referred_by_name: row.referred_by_name || "" });
+    setEditForm({
+      name: row.name,
+      email: row.email,
+      phone: row.phone,
+      ame_code: row.ame_code || "",
+      ap_code: row.referred_by || "",
+    });
   };
 
   const saveEdit = async () => {
@@ -298,7 +332,15 @@ function AffiliatesTab({ password }) {
     try {
       const res = await fetch(`${BACKEND_URL}/admin/edit-affiliate`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password, ref_code: editRow.ref_code, ...editForm })
+        body: JSON.stringify({
+          password,
+          ref_code: editRow.ref_code,
+          name: editForm.name,
+          email: editForm.email,
+          phone: editForm.phone,
+          ame_code: editForm.ame_code || null,
+          referred_by: editForm.ap_code || null,
+        })
       });
       if (!res.ok) { alert("Save failed"); setSaving(false); return; }
       setEditRow(null); load();
@@ -315,14 +357,12 @@ function AffiliatesTab({ password }) {
   const totalPaid    = rows.reduce((s, r) => s + parseFloat(r.paid_payout || 0), 0);
 
   const columns = [
-    { key: "ref_code", label: "Ref Code",    render: v => <span style={{ fontFamily: "monospace", color: "#4f46e5", fontWeight: 700, fontSize: 12, background: "#eef2ff", padding: "2px 8px", borderRadius: 4 }}>{v}</span> },
-    { key: "name",     label: "Name",         render: v => <span style={{ fontWeight: 600, color: "#111827" }}>{v}</span> },
-    { key: "email",    label: "Email",        render: v => <span style={{ color: "#6b7280" }}>{v}</span> },
-    { key: "phone",    label: "Phone" },
-    { key: "referred_by", label: "Referred By", render: v => v
-      ? <span style={{ fontFamily: "monospace", color: "#7c3aed", fontSize: 12, background: "#faf5ff", padding: "2px 8px", borderRadius: 4 }}>{v}</span>
-      : <span style={{ color: "#d1d5db" }}>—</span>
-    },
+    { key: "ref_code",  label: "AP Ref Code", render: v => <CodeChip value={v} /> },
+    { key: "name",      label: "Name",         render: v => <span style={{ fontWeight: 600, color: "#111827" }}>{v}</span> },
+    { key: "email",     label: "Email",        render: v => <span style={{ color: "#6b7280" }}>{v}</span> },
+    { key: "phone",     label: "Phone" },
+    { key: "ame_code",  label: "AME Code",     render: v => <CodeChip value={v} color="#7c3aed" bg="#faf5ff" /> },
+    { key: "referred_by", label: "Referred By (AP)", render: v => <CodeChip value={v} color="#0891b2" bg="#ecfeff" /> },
     { key: "success",        label: "Sales",   render: v => <span style={{ color: "#16a34a", fontWeight: 700 }}>{v || 0}</span> },
     { key: "pending_payout", label: "Pending", render: v => <span style={{ color: "#d97706", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
     { key: "paid_payout",    label: "Paid",    render: v => <span style={{ color: "#16a34a", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
@@ -332,10 +372,13 @@ function AffiliatesTab({ password }) {
 
   return (
     <div>
+      {/* ── Create affiliate card ── */}
       <div style={S.card}>
-        <div style={{ color: "#9ca3af", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 14 }}>➕ Add New Affiliate</div>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end" }}>
-          {[["Name *","name",150],["Email *","email",200],["Phone *","phone",140]].map(([lbl,key,w]) => (
+        <div style={{ color: "#9ca3af", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 16 }}>➕ Add New Affiliate</div>
+
+        {/* Row 1: basic info */}
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 12 }}>
+          {[["Name *","name",160],["Email *","email",210],["Phone *","phone",150]].map(([lbl,key,w]) => (
             <div key={key}>
               <div style={S.label}>{lbl}</div>
               <input placeholder={lbl.replace(" *","")} value={form[key]}
@@ -343,33 +386,76 @@ function AffiliatesTab({ password }) {
                 style={{ ...S.input, width: w }} />
             </div>
           ))}
+        </div>
+
+        {/* Row 2: code fields with explanations */}
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 14 }}>
           <div>
-            <div style={S.label}>Referred By (Code)</div>
-            <input placeholder="Optional" value={form.referred_by}
-              onChange={e => setForm(f => ({ ...f, referred_by: e.target.value }))}
-              style={{ ...S.input, width: 140 }} />
+            <div style={S.label}>
+              AME Code
+              <span style={{ fontWeight: 400, color: "#9ca3af", marginLeft: 6, fontSize: 11 }}>
+                — Internal employee who is hiring this affiliate
+              </span>
+            </div>
+            <input
+              placeholder="e.g. AME001"
+              value={form.ame_code}
+              onChange={e => setForm(f => ({ ...f, ame_code: e.target.value }))}
+              style={{ ...S.input, width: 160, fontFamily: "monospace" }}
+            />
           </div>
+
           <div>
-            <div style={S.label}>Referred By (Name)</div>
-            <input placeholder="Optional" value={form.referred_by_name}
-              onChange={e => setForm(f => ({ ...f, referred_by_name: e.target.value }))}
-              style={{ ...S.input, width: 150 }} />
+            <div style={S.label}>
+              AP Code
+              <span style={{ fontWeight: 400, color: "#9ca3af", marginLeft: 6, fontSize: 11 }}>
+                — Existing affiliate who recommended this new person
+              </span>
+            </div>
+            <input
+              placeholder="e.g. RAJ456"
+              value={form.ap_code}
+              onChange={e => setForm(f => ({ ...f, ap_code: e.target.value }))}
+              style={{ ...S.input, width: 160, fontFamily: "monospace" }}
+            />
           </div>
-          <button onClick={createAffiliate} disabled={creating} style={{ ...S.btnPrimary, alignSelf: "flex-end" }}>
+
+          <button onClick={createAffiliate} disabled={creating}
+            style={{ ...S.btnPrimary, alignSelf: "flex-end", paddingTop: 9, paddingBottom: 9 }}>
             {creating ? "Creating..." : "+ Generate Link"}
           </button>
         </div>
+
+        {/* Code legend */}
+        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", padding: "10px 14px", background: "#f9fafb", borderRadius: 8, fontSize: 12, color: "#6b7280" }}>
+          <span>
+            <strong style={{ color: "#7c3aed" }}>AME Code</strong> — "Account Manager Employee": the internal staff member who onboarded this affiliate.
+          </span>
+          <span>
+            <strong style={{ color: "#0891b2" }}>AP Code</strong> — "Affiliate Partner": an existing affiliate who referred/recommended this new affiliate.
+          </span>
+        </div>
+
+        {/* Generated link display */}
         {generatedLink && (
-          <div style={{ marginTop: 14, background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 8, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-            <span style={{ color: "#16a34a", fontSize: 12, fontWeight: 700 }}>✓ LINK GENERATED</span>
-            <span style={{ color: "#374151", fontSize: 12, fontFamily: "monospace", flex: 1, wordBreak: "break-all" }}>{generatedLink}</span>
-            <button onClick={() => { navigator.clipboard.writeText(generatedLink); setCopied(true); setTimeout(() => setCopied(false), 2000); }} style={S.btnSecondary}>
-              {copied ? "✓ Copied!" : "Copy"}
-            </button>
+          <div style={{ marginTop: 14, background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 8, padding: "12px 14px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+              <span style={{ color: "#16a34a", fontSize: 12, fontWeight: 700 }}>✓ AFFILIATE CREATED</span>
+              <span style={{ background: "#dcfce7", color: "#16a34a", fontFamily: "monospace", fontSize: 13, fontWeight: 700, padding: "2px 10px", borderRadius: 6 }}>
+                {generatedCode}
+              </span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <span style={{ color: "#374151", fontSize: 12, fontFamily: "monospace", flex: 1, wordBreak: "break-all" }}>{generatedLink}</span>
+              <button onClick={() => { navigator.clipboard.writeText(generatedLink); setCopied(true); setTimeout(() => setCopied(false), 2000); }} style={S.btnSecondary}>
+                {copied ? "✓ Copied!" : "Copy Link"}
+              </button>
+            </div>
           </div>
         )}
       </div>
 
+      {/* ── Affiliates table ── */}
       {!loaded ? (
         <div style={{ textAlign: "center", paddingTop: 20 }}>
           <button onClick={load} disabled={loading} style={S.btnPrimary}>{loading ? "Loading..." : "Load Affiliates"}</button>
@@ -395,6 +481,7 @@ function AffiliatesTab({ password }) {
         </>
       )}
 
+      {/* ── Edit modal ── */}
       {editRow && (
         <Modal title={`Edit — ${editRow.name} (${editRow.ref_code})`} onClose={() => setEditRow(null)}>
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -404,21 +491,25 @@ function AffiliatesTab({ password }) {
                 <input value={editForm[key]} onChange={e => setEditForm(f => ({ ...f, [key]: e.target.value }))} style={S.inputFull} />
               </div>
             ))}
+
             <div style={{ background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 8, padding: 14 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>Referral Chain</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>Code Fields</div>
               <div style={{ display: "flex", gap: 10 }}>
                 <div style={{ flex: 1 }}>
-                  <label style={S.label}>Referred By Code</label>
-                  <input value={editForm.referred_by} placeholder="Blank to remove"
-                    onChange={e => setEditForm(f => ({ ...f, referred_by: e.target.value }))} style={S.inputFull} />
+                  <label style={S.label}>AME Code <span style={{ fontWeight: 400, color: "#9ca3af" }}>(employee)</span></label>
+                  <input value={editForm.ame_code} placeholder="Blank to clear"
+                    onChange={e => setEditForm(f => ({ ...f, ame_code: e.target.value }))}
+                    style={{ ...S.inputFull, fontFamily: "monospace" }} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <label style={S.label}>Referred By Name</label>
-                  <input value={editForm.referred_by_name}
-                    onChange={e => setEditForm(f => ({ ...f, referred_by_name: e.target.value }))} style={S.inputFull} />
+                  <label style={S.label}>AP Code <span style={{ fontWeight: 400, color: "#9ca3af" }}>(referring affiliate)</span></label>
+                  <input value={editForm.ap_code}
+                    onChange={e => setEditForm(f => ({ ...f, ap_code: e.target.value }))}
+                    style={{ ...S.inputFull, fontFamily: "monospace" }} />
                 </div>
               </div>
             </div>
+
             <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 8 }}>
               <button onClick={() => setEditRow(null)} style={S.btnSecondary}>Cancel</button>
               <button onClick={saveEdit} disabled={saving} style={S.btnPrimary}>{saving ? "Saving..." : "Save Changes"}</button>
@@ -438,15 +529,13 @@ function PayoutsTab({ password }) {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [search, setSearch]           = useState("");
 
-  // Manual payout modal
-  const [payModal, setPayModal]       = useState(null); // { row } | null
+  const [payModal, setPayModal]       = useState(null);
   const [payAmount, setPayAmount]     = useState("");
   const [payNote, setPayNote]         = useState("");
   const [paying, setPaying]           = useState(false);
 
-  // Bulk settle modal
-  const [bulkModal, setBulkModal]     = useState(null); // { ref_code, name, rows[] } | null
-  const [bulkAmounts, setBulkAmounts] = useState({});   // { [payout_id]: amount }
+  const [bulkModal, setBulkModal]     = useState(null);
+  const [bulkAmounts, setBulkAmounts] = useState({});
   const [bulkPaying, setBulkPaying]   = useState(false);
 
   const load = useCallback(async () => {
@@ -462,7 +551,6 @@ function PayoutsTab({ password }) {
     setLoading(false);
   }, [password]);
 
-  // Mark single payout paid with admin-entered amount
   const openPayModal = (row) => {
     setPayModal(row);
     setPayAmount(String(row.amount || ""));
@@ -470,9 +558,7 @@ function PayoutsTab({ password }) {
   };
 
   const confirmPay = async () => {
-    if (!payAmount || isNaN(payAmount) || parseFloat(payAmount) < 0) {
-      alert("Enter a valid amount"); return;
-    }
+    if (!payAmount || isNaN(payAmount) || parseFloat(payAmount) < 0) { alert("Enter a valid amount"); return; }
     setPaying(true);
     try {
       const res = await fetch(`${BACKEND_URL}/admin/mark-payout-paid`, {
@@ -485,7 +571,6 @@ function PayoutsTab({ password }) {
     setPaying(false);
   };
 
-  // Open bulk settle — pre-fill amounts from DB
   const openBulkModal = (ref_code) => {
     const aff = pendingByAffiliate[ref_code];
     const amounts = {};
@@ -527,7 +612,6 @@ function PayoutsTab({ password }) {
   const totalPending = rows.filter(r => r.status === "PENDING").reduce((s, r) => s + parseFloat(r.amount || 0), 0);
   const totalPaid    = rows.filter(r => r.status === "PAID").reduce((s, r) => s + parseFloat(r.amount || 0), 0);
 
-  // Group pending by affiliate, keep rows for bulk modal
   const pendingByAffiliate = rows.filter(r => r.status === "PENDING").reduce((acc, r) => {
     if (!acc[r.influencer_ref_code]) acc[r.influencer_ref_code] = { name: r.influencer_name, ref_code: r.influencer_ref_code, total: 0, count: 0, rows: [] };
     acc[r.influencer_ref_code].total += parseFloat(r.amount || 0);
@@ -544,9 +628,7 @@ function PayoutsTab({ password }) {
       </div>
     )},
     { key: "level", label: "Level", render: v => (
-      <span style={{ background: v == 1 ? "#eef2ff" : "#faf5ff", color: v == 1 ? "#4f46e5" : "#7c3aed", padding: "3px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
-        L{v}
-      </span>
+      <span style={{ background: v == 1 ? "#eef2ff" : "#faf5ff", color: v == 1 ? "#4f46e5" : "#7c3aed", padding: "3px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>L{v}</span>
     )},
     { key: "customer_name", label: "Lead", render: (v, row) => (
       <div>
@@ -554,8 +636,8 @@ function PayoutsTab({ password }) {
         <div style={{ color: "#9ca3af", fontSize: 11 }}>{row.customer_email}</div>
       </div>
     )},
-    { key: "amount", label: "Amount", render: v => <span style={{ fontWeight: 700, color: "#111827" }}>₹{parseFloat(v).toLocaleString()}</span> },
-    { key: "status", label: "Status", render: v => <StatusPill status={v} /> },
+    { key: "amount",     label: "Amount", render: v => <span style={{ fontWeight: 700, color: "#111827" }}>₹{parseFloat(v).toLocaleString()}</span> },
+    { key: "status",     label: "Status", render: v => <StatusPill status={v} /> },
     { key: "created_at", label: "Date",    render: v => <DateCell v={v} /> },
     { key: "paid_at",    label: "Paid On", render: v => v ? <DateCell v={v} /> : <span style={{ color: "#d1d5db" }}>—</span> },
     { key: "_action", label: "", render: (_, row) => row.status === "PENDING"
@@ -575,12 +657,11 @@ function PayoutsTab({ password }) {
   return (
     <div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
-        <StatCard label="Total Payouts" value={rows.length}                             accent="#4f46e5" />
-        <StatCard label="Pending"       value={`₹${totalPending.toLocaleString()}`}     accent="#d97706" />
-        <StatCard label="Paid Out"      value={`₹${totalPaid.toLocaleString()}`}        accent="#16a34a" />
+        <StatCard label="Total Payouts" value={rows.length}                         accent="#4f46e5" />
+        <StatCard label="Pending"       value={`₹${totalPending.toLocaleString()}`} accent="#d97706" />
+        <StatCard label="Paid Out"      value={`₹${totalPaid.toLocaleString()}`}    accent="#16a34a" />
       </div>
 
-      {/* Quick Settle cards */}
       {Object.keys(pendingByAffiliate).length > 0 && (
         <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 12, padding: 16, marginBottom: 20 }}>
           <div style={{ color: "#92400e", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 12 }}>⚡ Pending — Quick Settle</div>
@@ -592,9 +673,7 @@ function PayoutsTab({ password }) {
                   <div style={{ fontSize: 11, color: "#9ca3af" }}>{aff.ref_code} · {aff.count} payout{aff.count > 1 ? "s" : ""}</div>
                 </div>
                 <span style={{ fontWeight: 700, color: "#d97706" }}>₹{aff.total.toLocaleString()}</span>
-                <button onClick={() => openBulkModal(aff.ref_code)} style={S.btnWarning}>
-                  Settle All
-                </button>
+                <button onClick={() => openBulkModal(aff.ref_code)} style={S.btnWarning}>Settle All</button>
               </div>
             ))}
           </div>
@@ -620,7 +699,6 @@ function PayoutsTab({ password }) {
         <Table columns={columns} rows={filtered} emptyMsg="No payouts yet" />
       </div>
 
-      {/* ── Single Payout Modal ── */}
       {payModal && (
         <Modal title="Mark Payout as Paid" onClose={() => setPayModal(null)}>
           <div style={{ marginBottom: 16, background: "#f9fafb", borderRadius: 8, padding: "12px 14px" }}>
@@ -631,33 +709,21 @@ function PayoutsTab({ password }) {
               Lead: {payModal.customer_name} · {payModal.customer_email}
             </div>
           </div>
-
           <div style={{ marginBottom: 16 }}>
             <label style={S.label}>Payout Amount (₹)</label>
-            <input
-              type="number"
-              min="0"
-              value={payAmount}
+            <input type="number" min="0" value={payAmount}
               onChange={e => setPayAmount(e.target.value)}
               style={{ ...S.inputFull, fontSize: 18, fontWeight: 700, padding: "10px 14px" }}
-              placeholder="Enter amount"
-              autoFocus
-            />
+              placeholder="Enter amount" autoFocus />
             <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 5 }}>
-              Default from DB: ₹{payModal.amount} — edit if the actual payout differs
+              Default from DB: ₹{payModal.amount} — edit if actual payout differs
             </div>
           </div>
-
           <div style={{ marginBottom: 20 }}>
             <label style={S.label}>Note (optional)</label>
-            <input
-              value={payNote}
-              onChange={e => setPayNote(e.target.value)}
-              style={S.inputFull}
-              placeholder="e.g. Paid via UPI on 12 Mar"
-            />
+            <input value={payNote} onChange={e => setPayNote(e.target.value)}
+              style={S.inputFull} placeholder="e.g. Paid via UPI on 12 Mar" />
           </div>
-
           <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
             <button onClick={() => setPayModal(null)} style={S.btnSecondary}>Cancel</button>
             <button onClick={confirmPay} disabled={paying} style={S.btnSuccess}>
@@ -667,7 +733,6 @@ function PayoutsTab({ password }) {
         </Modal>
       )}
 
-      {/* ── Bulk Settle Modal ── */}
       {bulkModal && (
         <Modal title={`Settle All — ${bulkModal.name} (${bulkModal.ref_code})`} onClose={() => setBulkModal(null)}>
           <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 16 }}>
@@ -682,13 +747,10 @@ function PayoutsTab({ password }) {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                   <span style={{ fontSize: 13, color: "#374151" }}>₹</span>
-                  <input
-                    type="number"
-                    min="0"
+                  <input type="number" min="0"
                     value={bulkAmounts[r.id] ?? r.amount}
                     onChange={e => setBulkAmounts(a => ({ ...a, [r.id]: e.target.value }))}
-                    style={{ ...S.input, width: 90, fontWeight: 700, textAlign: "right" }}
-                  />
+                    style={{ ...S.input, width: 90, fontWeight: 700, textAlign: "right" }} />
                 </div>
               </div>
             ))}
