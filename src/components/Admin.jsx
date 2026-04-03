@@ -302,9 +302,8 @@ function AffiliatesTab({ password }) {
           name: form.name,
           email: form.email,
           phone: form.phone,
-          // Map to backend field names
-          ame_code: form.ame_code || null,       // employee who hired this affiliate
-          referred_by: form.ap_code || null,     // existing affiliate who referred this person
+          ame_code: form.ame_code || null,    // internal employee → stored in ame_code
+          referred_by: form.ap_code || null,  // existing affiliate → stored in referred_by
         })
       });
       const data = await res.json();
@@ -374,7 +373,7 @@ function AffiliatesTab({ password }) {
     { key: "name",      label: "Name",         render: v => <span style={{ fontWeight: 600, color: "#111827" }}>{v}</span> },
     { key: "email",     label: "Email",        render: v => <span style={{ color: "#6b7280" }}>{v}</span> },
     { key: "phone",     label: "Phone" },
-    { key: "ame_code",  label: "AME Code",     render: v => <CodeChip value={v} color="#7c3aed" bg="#faf5ff" /> },
+    { key: "ame_code",    label: "AME Code",        render: v => <CodeChip value={v} color="#7c3aed" bg="#faf5ff" /> },
     { key: "referred_by", label: "Referred By (AP)", render: v => <CodeChip value={v} color="#0891b2" bg="#ecfeff" /> },
     { key: "success",        label: "Sales",   render: v => <span style={{ color: "#16a34a", fontWeight: 700 }}>{v || 0}</span> },
     { key: "pending_payout", label: "Pending", render: v => <span style={{ color: "#d97706", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
