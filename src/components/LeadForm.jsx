@@ -10,16 +10,39 @@ const LEVELS = {
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
 
-// ── Read ?ref= from URL once, persist in sessionStorage so it
-//    survives in-page navigation but clears when the tab closes ──
+// ── Read ?ref= from URL, persist in localStorage for 30 days ──
+// This means:
+//   - If a customer lands via ?ref=TUL995, the code is saved
+//   - Even if they close the tab, open a new one, or navigate away,
+//     the code is still there when they eventually fill the form
+//   - After 30 days it expires automatically
+const REF_KEY     = 'isml_ref_code'
+const REF_EXP_KEY = 'isml_ref_expiry'
+const REF_TTL_MS  = 30 * 24 * 60 * 60 * 1000 // 30 days
+
 function getRefCode() {
   const params = new URLSearchParams(window.location.search)
   const urlRef = params.get('ref')
+
   if (urlRef) {
-    sessionStorage.setItem('isml_ref', urlRef)
+    // Fresh ref from URL — always overwrite and reset expiry
+    localStorage.setItem(REF_KEY, urlRef)
+    localStorage.setItem(REF_EXP_KEY, String(Date.now() + REF_TTL_MS))
     return urlRef
   }
-  return sessionStorage.getItem('isml_ref') || ''
+
+  // No ref in URL — check localStorage
+  const stored  = localStorage.getItem(REF_KEY)
+  const expiry  = parseInt(localStorage.getItem(REF_EXP_KEY) || '0', 10)
+
+  if (stored && Date.now() < expiry) {
+    return stored // still valid
+  }
+
+  // Expired or not set — clean up
+  localStorage.removeItem(REF_KEY)
+  localStorage.removeItem(REF_EXP_KEY)
+  return ''
 }
 
 async function submitLead(data) {
@@ -95,6 +118,9 @@ export default function LeadForm() {
     try {
       // ── THE FIX: always attach referral to the payload ──
       await submitLead({ ...form, referral: refCode || null })
+      // Clear stored ref so future form submissions on same device aren't mis-attributed
+      localStorage.removeItem(REF_KEY)
+      localStorage.removeItem(REF_EXP_KEY)
       setStatus('success')
     } catch {
       setStatus('error')

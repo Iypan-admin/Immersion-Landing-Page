@@ -273,6 +273,7 @@ function AffiliatesTab({ password }) {
   const [generatedLink, setGeneratedLink] = useState("");
   const [generatedCode, setGeneratedCode] = useState("");
   const [copied, setCopied]       = useState(false);
+  const [copiedRow, setCopiedRow] = useState(null); // tracks which row's link was just copied
   const [editRow, setEditRow]     = useState(null);
   const [editForm, setEditForm]   = useState({});
   const [saving, setSaving]       = useState(false);
@@ -356,6 +357,18 @@ function AffiliatesTab({ password }) {
   const totalPending = rows.reduce((s, r) => s + parseFloat(r.pending_payout || 0), 0);
   const totalPaid    = rows.reduce((s, r) => s + parseFloat(r.paid_payout || 0), 0);
 
+  // Build the affiliate link for any row using the same base URL the backend uses
+  const FRONTEND_BASE = import.meta.env.VITE_FRONTEND_URL
+    || 'https://immersion.indianschoolformodernlanguages.com';
+
+  const copyLink = (ref_code) => {
+    const link = `${FRONTEND_BASE}/?ref=${ref_code}`;
+    navigator.clipboard.writeText(link).then(() => {
+      setCopiedRow(ref_code);
+      setTimeout(() => setCopiedRow(null), 2200);
+    });
+  };
+
   const columns = [
     { key: "ref_code",  label: "AP Ref Code", render: v => <CodeChip value={v} /> },
     { key: "name",      label: "Name",         render: v => <span style={{ fontWeight: 600, color: "#111827" }}>{v}</span> },
@@ -367,6 +380,28 @@ function AffiliatesTab({ password }) {
     { key: "pending_payout", label: "Pending", render: v => <span style={{ color: "#d97706", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
     { key: "paid_payout",    label: "Paid",    render: v => <span style={{ color: "#16a34a", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
     { key: "total_earnings", label: "Total",   render: v => <span style={{ color: "#4f46e5", fontWeight: 700 }}>₹{parseFloat(v || 0).toLocaleString()}</span> },
+    // ── Permanent copy-link button ──
+    { key: "_copy", label: "Affiliate Link", render: (_, row) => {
+      const isCopied = copiedRow === row.ref_code;
+      return (
+        <button
+          onClick={() => copyLink(row.ref_code)}
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 5,
+            background: isCopied ? "#f0fdf4" : "#f5f3ff",
+            color: isCopied ? "#16a34a" : "#4f46e5",
+            border: `1px solid ${isCopied ? "#bbf7d0" : "#c4b5fd"}`,
+            padding: "5px 12px", borderRadius: 6,
+            fontWeight: 600, fontSize: 12,
+            cursor: "pointer", fontFamily: "inherit",
+            transition: "all 0.2s",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {isCopied ? "✓ Copied!" : "📋 Copy Link"}
+        </button>
+      );
+    }},
     { key: "_edit", label: "", render: (_, row) => <button onClick={() => openEdit(row)} style={S.btnGhost}>✏️ Edit</button> },
   ];
 
