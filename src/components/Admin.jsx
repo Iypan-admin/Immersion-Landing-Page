@@ -832,7 +832,7 @@ export default function Admin() {
     <div style={S.center}>
       <div style={S.loginBox}>
         <span style={S.loginIcon}>✦</span>
-        <h1 style={S.loginTitle}>Success Learning</h1>
+        <h1 style={S.loginTitle}>ISML Immersion</h1>
         <p style={S.loginSub}>Admin Dashboard</p>
         <input type="password" placeholder="Enter admin password" value={password}
           onChange={e => setPassword(e.target.value)}
@@ -850,7 +850,7 @@ export default function Admin() {
     <div style={S.page}>
       <div style={S.header}>
         <div style={S.logo}>✦</div>
-        <span style={S.logoText}>Success Learning <span style={S.logoSub}>Admin</span></span>
+        <span style={S.logoText}>ISML Immersion <span style={S.logoSub}>Admin</span></span>
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 6px #22c55e88" }} />
